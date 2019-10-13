@@ -1,0 +1,6 @@
+project e_invoice_kit is
+for source_dirs use ("source");
+for object_dir use "object";
+for exec_dir use "binary";
+for main use ("main.adb");
+end e_invoice_kit;

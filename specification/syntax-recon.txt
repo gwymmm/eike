@@ -1,0 +1,38 @@
+# syntax recognition
+
+syntax-recon-1 := '0xEF' bom 
+           or '<' pbc
+           or ' ' post-prolog
+
+bom := '0xBB' bom-2
+
+bom-2 := '0xBF' post-bom
+
+post-bom := '<' pbc
+         or ' ' post-prolog
+
+pbc 
+  := '?' prolog
+  or '!' comm
+  or (alpha) begin-elem
+
+begin-elem-or-comm := '!' comm
+                   or (alpha) begin-elem
+
+comm := (char, not '>') comm
+     or '>' post-prolog
+
+prolog := (not '?') prolog
+       or '?' prolog-end
+
+prolog-end := '>' post-prolog
+
+post-prolog := ' ' post-prolog
+           or '<' begin-elem-or-comm
+
+begin-elem := (alpha) begin-elem
+           or ' ' skip-ns
+           or ':' begin-elem
+
+skip-ns := (char, not '>') skip-ns
+        := '>' --<<<< return ubl-invoice or ubl-xxx or cii-invoice
