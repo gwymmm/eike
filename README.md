@@ -1,3 +1,3 @@
-# eike
+# Electronic Invoicing Kit for EU (EIKE) - Tools for EN 16931 E-Invoices
 
 More content to come...

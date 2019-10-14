@@ -1,7 +1,23 @@
+-- Electronic Invoicing Kit for EU (EIKE) - Tools for EN 16931 E-Invoices
+-- Copyright (C) 2019  Dmitrij Novikov
+--
+-- This program is free software: you can redistribute it and/or modify
+-- it under the terms of the GNU General Public License as published by
+-- the Free Software Foundation, either version 3 of the License, or
+-- (at your option) any later version.
+--
+-- This program is distributed in the hope that it will be useful,
+-- but WITHOUT ANY WARRANTY; without even the implied warranty of
+-- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+-- GNU General Public License for more details.
+--
+-- You should have received a copy of the GNU General Public License
+-- along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
 with ada.text_io;
 package body lexer.syntax_recon is
 
-procedure syntax_recon(input: in out input_record; syntax: out syntax_type) is
+procedure run(input: in out input_record; syntax: out syntax_type) is
 
 state: state_of_machine := SYNTAX_RECON_1;
 current_state: active_state_of_machine;
@@ -10,7 +26,7 @@ chars_collected: string_buffer;
 begin
 
   while state not in ERROR_STATE .. END_STATE loop
- ada.text_io.put_line("state: " & state_of_machine'image(state));
+ --ada.text_io.put_line("state: " & state_of_machine'image(state));
     next_char(input, char_buffer);
 -- EOF should not occur
     if input.status = EOF then
@@ -79,7 +95,7 @@ begin
 
   end if;
 
-end syntax_recon;
+end run;
 
 
 procedure do_syntax_recon_1(

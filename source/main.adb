@@ -9,7 +9,7 @@ result: lexer.syntax_recon.syntax_type;
 begin
 lexer.utf8_input.open(log.file, lexer.utf8_input.IN_FILE, "test.xml", "");
 
-lexer.syntax_recon.syntax_recon(log, result);
+lexer.syntax_recon.run(log, result);
 
 if log.status /= lexer.OK then
   ada.text_io.put_line("Error: " & lexer.input_status'image(log.status));

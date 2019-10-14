@@ -12,21 +12,21 @@ Eigenschaften:
 next-elem := ' ' next-elem
           or '<' begin-elem-or-comm-or-end-elem
 
-begin-elem-or-comm-or-end-elem := '!' comm
+begin-stag-or-comm-or-etag := '!' comm
                                or (alphanum) begin-elem
                                or '/' end-elem
 
 comm := (char, not '>') comm
-     or '>' begin-elem-or-comm-or-end-elem
+     or '>' next-elem
 
 -- read up to 2 attributes
 begin-elem := (alphanum) begin-elem
            or ':' begin-elem
            or ' ' skip-to-attr-1-or-end
-           or '>' --<<<<
+           or '>' --<<<< token: STAG
 
 skip-to-attr-1-or-end := ' ' skip-to-attr-1-or-end 
-                      or '>' --<<<<
+                      or '>' --<<<< token: STAG
                       or (alphanum) attr-1-name
 
 attr-1-name := (alphanum) attr-1-name
