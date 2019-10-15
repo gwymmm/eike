@@ -50,6 +50,34 @@ record
   current_column: positive := 1;
 end record;
 
+NAME_BUFFER_LENGTH: constant positive := 40;
+ATTRIBUTE_BUFFER_LENGTH: constant positive := 20;
+
+subtype name_size_type is integer range 0 .. NAME_BUFFER_LENGTH;
+
+type name_buffer is
+record
+last: name_size_type := 0;
+content: string(1 .. NAME_BUFFER_LENGTH);
+end record;
+
+subtype attribute_size_type is integer range 0 .. ATTRIBUTE_BUFFER_LENGTH;
+
+type attribute_buffer is
+record
+last_of_attribute_one_name: attribute_size_type := 0;
+attribute_one_name: string(1 .. ATTRIBUTE_BUFFER_LENGTH);
+
+last_of_attribute_one_value: attribute_size_type := 0;
+attribute_one_value: string(1 .. ATTRIBUTE_BUFFER_LENGTH);
+
+last_of_attribute_two_name: attribute_size_type := 0;
+attribute_two_name: string(1 .. ATTRIBUTE_BUFFER_LENGTH);
+
+last_of_attribute_two_value: attribute_size_type := 0;
+attribute_two_value: string(1 .. ATTRIBUTE_BUFFER_LENGTH);
+end record;
+
 private
 
 procedure next_char(

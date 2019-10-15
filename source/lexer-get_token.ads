@@ -16,17 +16,22 @@
 
 package lexer.get_token is
 
-type token_type is (STAG, ETAG);
+type token_type is (STAG, ETAG, EOF);
 
-procedure run(input: in out input_record; token: out token_type);
+procedure run(input: in out input_record; token: out token_type; 
+              element_name: out name_buffer; attributes: out attribute_buffer);
 
 private
 
 type state_of_machine is (
-  NEXT_ELEMENT, BEGIN_STAG_OR_COMMENT_OR_ETAG,   
+  NEXT_ELEMENT, START_TAG_OR_COMMENT_OR_END_TAG, COMMENT, START_TAG,
+  SKIP_TO_ATTRIBUTE_ONE_OR_END, ATTRIBUTE_ONE_NAME, SKIP_TO_EQUAL_SIGN_ONE,
+  SKIP_TO_ATTRIBUTE_ONE_VALUE, ATTRIBUTE_ONE_VALUE, 
+  SKIP_TO_ATTRIBUTE_TWO_OR_END, ATTRIBUTE_TWO_NAME, SKIP_TO_EQUAL_SIGN_TWO, 
+  SKIP_TO_ATTRIBUTE_TWO_VALUE, ATTRIBUTE_TWO_VALUE, SKIP_WHITESPACES, END_TAG,    
   ERROR_STATE, END_STATE );
 
 subtype active_state_of_machine is state_of_machine 
-  range SYNTAX_RECON_1 .. SKIP_NS;
+  range NEXT_ELEMENT .. END_TAG;
 
 end lexer.get_token;
