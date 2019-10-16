@@ -44,13 +44,12 @@ skip-to-equal-sign-one
 
 skip-to-attribute-one-value
   := ' ' skip-to-attribute-one-value
-  or (alphanum) attribute-one-value
+  or '"' attribute-one-value
 
 
 attribute-one-value
   := (alphanum) attribute-one-value
-  or ' ' skip-to-attribute-two-or-end
-  or '>' --<<<< Token: STAG
+  or '"' skip-to-attribute-two-or-end
 
 
 skip-to-attribute-two-or-end
@@ -71,25 +70,29 @@ skip-to-equal-sign-two
 
 skip-to-attribute-two-value
   := ' ' skip-to-attribute-two-value
-  or (alphanum) attribute-two-value
+  or '"' attribute-two-value
 
 
 attribute-two-value
   := (alphanum) attribute-two-value
-  or ' ' skip-whitespaces
-  or '>' --<<<< Token: STAG
+  or '"' skip-whitespaces
 
 
 skip-whitespaces
   := ' ' skip-whitespaces
   or '>' --<<<< Token: STAG 
 
+
 end-tag
   := (alpha) end-tag
   or ':' end-tag
-  or ' ' skip-whitespaces
+  or ' ' skip-whitespaces-2
   or '>' --<<<< Token: ETAG
 
+
+skip-whitespaces-2
+  := ' ' skip-whitespaces-2
+  or '>' --<<<< Token: ETAG 
 
 # Lexer (get_tail)
 

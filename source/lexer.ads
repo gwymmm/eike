@@ -26,7 +26,9 @@ KET: constant utf8_byte := character'pos('>');
 EXCLAMATION_MARK: constant utf8_byte := character'pos('!');
 QUESTION_MARK: constant utf8_byte := character'pos('?');
 COLON: constant utf8_byte := character'pos(':');
-
+SLASH: constant utf8_byte := character'pos('/');
+EQUAL_SIGN: constant utf8_byte := character'pos('=');
+QUOTATION: constant utf8_byte := character'pos('"');
 
 -- S	   ::=   	(#x20 | #x9 | #xD | #xA)+
 -- 'lf' or 'cr' + 'lf' mark end of line

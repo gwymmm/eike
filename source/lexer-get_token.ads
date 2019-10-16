@@ -28,10 +28,109 @@ type state_of_machine is (
   SKIP_TO_ATTRIBUTE_ONE_OR_END, ATTRIBUTE_ONE_NAME, SKIP_TO_EQUAL_SIGN_ONE,
   SKIP_TO_ATTRIBUTE_ONE_VALUE, ATTRIBUTE_ONE_VALUE, 
   SKIP_TO_ATTRIBUTE_TWO_OR_END, ATTRIBUTE_TWO_NAME, SKIP_TO_EQUAL_SIGN_TWO, 
-  SKIP_TO_ATTRIBUTE_TWO_VALUE, ATTRIBUTE_TWO_VALUE, SKIP_WHITESPACES, END_TAG,    
-  ERROR_STATE, END_STATE );
+  SKIP_TO_ATTRIBUTE_TWO_VALUE, ATTRIBUTE_TWO_VALUE, SKIP_WHITESPACES, END_TAG,
+  SKIP_WHITESPACES_2, ERROR_STATE, END_STATE );
 
 subtype active_state_of_machine is state_of_machine 
-  range NEXT_ELEMENT .. END_TAG;
+  range NEXT_ELEMENT .. SKIP_WHITESPACES_2;
+
+procedure do_next_element(
+  input: in out input_record; 
+  next_state: out state_of_machine;
+  current_char: in utf8_byte);
+
+procedure do_start_tag_or_comment_or_end_tag(
+  input: in out input_record; 
+  next_state: out state_of_machine;
+  current_char: in utf8_byte;
+  tag_name: in out name_buffer );
+
+procedure do_comment(
+  next_state: out state_of_machine;
+  current_char: in utf8_byte);
+
+procedure do_start_tag(
+  input: in out input_record; 
+  next_state: out state_of_machine;
+  current_char: in utf8_byte;
+  returned_token: out token_type;
+  tag_name: in out name_buffer );
+
+procedure do_skip_to_attribute_one_or_end(
+  input: in out input_record; 
+  next_state: out state_of_machine;
+  current_char: in utf8_byte;
+  returned_token: out token_type;
+  attributes: in out attribute_buffer );
+
+procedure do_attribute_one_name(
+  input: in out input_record; 
+  next_state: out state_of_machine;
+  current_char: in utf8_byte;
+  attributes: in out attribute_buffer );
+
+procedure do_skip_to_equal_sign_one(
+  input: in out input_record; 
+  next_state: out state_of_machine;
+  current_char: in utf8_byte);
+
+procedure do_skip_to_attribute_one_value(
+  input: in out input_record; 
+  next_state: out state_of_machine;
+  current_char: in utf8_byte);
+
+procedure do_attribute_one_value(
+  input: in out input_record; 
+  next_state: out state_of_machine;
+  current_char: in utf8_byte;
+  attributes: in out attribute_buffer );
+
+procedure do_skip_to_attribute_two_or_end(
+  input: in out input_record; 
+  next_state: out state_of_machine;
+  current_char: in utf8_byte;
+  returned_token: out token_type;
+  attributes: in out attribute_buffer );
+
+procedure do_attribute_two_name(
+  input: in out input_record; 
+  next_state: out state_of_machine;
+  current_char: in utf8_byte;
+  attributes: in out attribute_buffer );
+
+procedure do_skip_to_equal_sign_two(
+  input: in out input_record; 
+  next_state: out state_of_machine;
+  current_char: in utf8_byte);
+
+procedure do_skip_to_attribute_two_value(
+  input: in out input_record; 
+  next_state: out state_of_machine;
+  current_char: in utf8_byte);
+
+procedure do_attribute_two_value(
+  input: in out input_record; 
+  next_state: out state_of_machine;
+  current_char: in utf8_byte;
+  attributes: in out attribute_buffer );
+
+procedure do_skip_whitespaces(
+  input: in out input_record; 
+  next_state: out state_of_machine;
+  current_char: in utf8_byte;
+  returned_token: out token_type);
+
+procedure do_end_tag(
+  input: in out input_record; 
+  next_state: out state_of_machine;
+  current_char: in utf8_byte;
+  returned_token: out token_type;
+  tag_name: in out name_buffer);
+
+procedure do_skip_whitespaces_2(
+  input: in out input_record; 
+  next_state: out state_of_machine;
+  current_char: in utf8_byte;
+  returned_token: out token_type);
 
 end lexer.get_token;
