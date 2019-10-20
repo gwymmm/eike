@@ -353,7 +353,7 @@ begin
         attributes.attribute_two_name(attributes.last_of_attribute_two_name) := 
           character'val(current_char);
       end if;
-      next_state := ATTRIBUTE_ONE_NAME;
+      next_state := ATTRIBUTE_TWO_NAME;
     when others =>
       input.status := UNEXPECTED_CHARACTER;
       next_state := ERROR_STATE;
