@@ -14,24 +14,19 @@
 -- You should have received a copy of the GNU General Public License
 -- along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-package lexer.get_token is
+with ada.strings.unbounded;
 
-type token_type is (STAG, ETAG, EOF);
+package lexer.get_tail is
 
-procedure run(input: in out input_record; token: out token_type; 
-              element_name: out name_buffer; attributes: out attribute_buffer);
+procedure run(input: in out input_record; element_name: out name_buffer; 
+  content: out ada.strings.unbounded.unbounded_string);
 
 private
 
 type state_of_machine is (
-  NEXT_ELEMENT, START_TAG_OR_COMMENT_OR_END_TAG, COMMENT, START_TAG,
-  SKIP_TO_ATTRIBUTE_ONE_OR_END, ATTRIBUTE_ONE_NAME, SKIP_TO_EQUAL_SIGN_ONE,
-  SKIP_TO_ATTRIBUTE_ONE_VALUE, ATTRIBUTE_ONE_VALUE, 
-  SKIP_TO_ATTRIBUTE_TWO_OR_END, ATTRIBUTE_TWO_NAME, SKIP_TO_EQUAL_SIGN_TWO, 
-  SKIP_TO_ATTRIBUTE_TWO_VALUE, ATTRIBUTE_TWO_VALUE, SKIP_WHITESPACES, END_TAG,
-  SKIP_WHITESPACES_2, ERROR_STATE, END_STATE );
+  CONTENT, END_TAG, END_TAG_2, SKIP_WHITESPACES, ERROR_STATE, END_STATE );
 
 subtype active_state_of_machine is state_of_machine 
-  range NEXT_ELEMENT .. SKIP_WHITESPACES_2;
+  range CONTENT .. SKIP_WHITESPACES;
 
-end lexer.get_token;
+end lexer.get_tail;

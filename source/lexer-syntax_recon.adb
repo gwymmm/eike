@@ -17,6 +17,67 @@
 with ada.text_io;
 package body lexer.syntax_recon is
 
+procedure do_syntax_recon_1(
+  input: in out input_record; 
+  next_state: out state_of_machine;
+  current_char: in utf8_byte);
+
+procedure do_bom(
+  input: in out input_record; 
+  next_state: out state_of_machine;
+  current_char: in utf8_byte);
+
+procedure do_bom_2(
+  input: in out input_record; 
+  next_state: out state_of_machine;
+  current_char: in utf8_byte);
+
+procedure do_post_bom(
+  input: in out input_record; 
+  next_state: out state_of_machine;
+  current_char: in utf8_byte);
+
+procedure do_pbc(
+  input: in out input_record; 
+  next_state: out state_of_machine;
+  current_char: in utf8_byte);
+
+procedure do_begin_elem_or_comm(
+  input: in out input_record; 
+  next_state: out state_of_machine;
+  current_char: in utf8_byte);
+
+procedure do_comm(
+  input: in out input_record; 
+  next_state: out state_of_machine;
+  current_char: in utf8_byte);
+
+procedure do_prolog(
+  input: in out input_record; 
+  next_state: out state_of_machine;
+  current_char: in utf8_byte);
+
+procedure do_prolog_end(
+  input: in out input_record; 
+  next_state: out state_of_machine;
+  current_char: in utf8_byte);
+
+procedure do_post_prolog(
+  input: in out input_record; 
+  next_state: out state_of_machine;
+  current_char: in utf8_byte);   
+
+procedure do_begin_elem(
+  input: in out input_record; 
+  next_state: out state_of_machine;
+  current_char: in utf8_byte;
+  buffer: in out string_buffer);
+
+procedure do_skip_ns(
+  input: in out input_record; 
+  next_state: out state_of_machine;
+  current_char: in utf8_byte);
+
 procedure run(input: in out input_record; syntax: out syntax_type) is
 
 state: state_of_machine := SYNTAX_RECON_1;
