@@ -21,7 +21,7 @@ package body lexer.get_tail is
 procedure do_content(
   next_state: out state_of_machine;
   current_char: in utf8_byte;
-  content: in out ada.strings.unbounded.unbounded_string);
+  content_buffer: in out ada.strings.unbounded.unbounded_string);
 
 procedure do_end_tag(
   input: in out input_record; 
@@ -34,9 +34,13 @@ procedure do_end_tag_2(
   current_char: in utf8_byte;
   tag_name: in out name_buffer);
 
+procedure do_skip_whitespaces(
+  input: in out input_record; 
+  next_state: out state_of_machine;
+  current_char: in utf8_byte);
 
 procedure run(input: in out input_record; element_name: out name_buffer; 
-  content: out ada.strings.unbounded.unbounded_string) is
+  content_buffer: out ada.strings.unbounded.unbounded_string) is
 
 state: state_of_machine := CONTENT;
 current_state: active_state_of_machine;
@@ -61,7 +65,7 @@ element_name.last := 0;
     current_state := state;
       case current_state is
         when CONTENT => 
-          do_content(state, char_buffer, content);
+          do_content(state, char_buffer, content_buffer);
         when END_TAG =>
           do_end_tag(input, state, char_buffer);
         when END_TAG_2 =>
@@ -99,14 +103,14 @@ end run;
 procedure do_content(
   next_state: out state_of_machine;
   current_char: in utf8_byte;
-  content: in out ada.strings.unbounded.unbounded_string) 
+  content_buffer: in out ada.strings.unbounded.unbounded_string) 
 is
 begin
 
   if current_char = BRA then
     next_state := END_TAG; 
   else
-    ada.strings.unbounded.append(content, character'val(current_char));
+    ada.strings.unbounded.append(content_buffer, character'val(current_char));
     next_state := CONTENT;
   end if;
 
@@ -158,5 +162,25 @@ begin
   end case; 
 
 end do_end_tag_2;
+
+
+procedure do_skip_whitespaces(
+  input: in out input_record; 
+  next_state: out state_of_machine;
+  current_char: in utf8_byte) 
+is
+begin
+
+  case current_char is
+    when 16#20# | 16#9# | 16#D# | 16#A# => 
+      next_state := SKIP_WHITESPACES;
+    when KET =>
+      next_state := END_STATE;
+    when others =>
+      input.status := UNEXPECTED_CHARACTER;
+      next_state := ERROR_STATE;
+  end case; 
+
+end do_skip_whitespaces;
 
 end lexer.get_tail;

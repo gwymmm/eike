@@ -19,7 +19,7 @@ with ada.strings.unbounded;
 package lexer.get_tail is
 
 procedure run(input: in out input_record; element_name: out name_buffer; 
-  content: out ada.strings.unbounded.unbounded_string);
+  content_buffer: out ada.strings.unbounded.unbounded_string);
 
 private
 
