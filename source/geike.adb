@@ -46,13 +46,20 @@ gtk.file_chooser_button.gtk_new
 gtk.file_chooser_button.on_file_set
   (eike_gui.fc_button, eike_gui.fc_button_callback'access);
 
--- BUTTON VBOX
+-- VBOXES
 gtk.box.gtk_new_hbox
-  (eike_gui.button_hbox, Homogeneous => False, Spacing => 0);
+  (eike_gui.first_hbox, Homogeneous => False, Spacing => 0);
+gtk.box.gtk_new_hbox
+  (eike_gui.second_hbox, Homogeneous => False, Spacing => 0);
 
 -- REFRESH BUTTON
 eike_gui.refresh_button := 
   gtk.button.gtk_button_new_with_label("Aktualisieren");
+
+-- EXPORT BUTTON
+eike_gui.export_button := 
+  gtk.button.gtk_button_new_with_label("Exportieren");
+
 -- CIUS CHOOSER
 eike_gui.cius_chooser := 
   gtk.combo_box_text.gtk_combo_box_text_new;
@@ -61,10 +68,14 @@ gtk.combo_box_text.append_text(eike_gui.cius_chooser, "XRechnung (Nationale CIUS
 gtk.combo_box_text.append_text(eike_gui.cius_chooser, "FatturaXML (Nationale CIUS: IT)");
 gtk.combo_box_text.set_active(eike_gui.cius_chooser, 0);
 -- pack hbox
+
+gtk.box.pack_start(eike_gui.first_hbox, eike_gui.fc_button, expand => true, fill => true, padding => 10);
+gtk.box.pack_start(eike_gui.first_hbox, eike_gui.cius_chooser, expand => true, fill => true, padding => 10);
+
 --my_label := gtk.label.gtk_label_new("CIUS Wahl:");
-gtk.box.pack_start(eike_gui.button_hbox, eike_gui.refresh_button, expand => true, fill => true, padding => 10);
+gtk.box.pack_start(eike_gui.second_hbox, eike_gui.refresh_button, expand => true, fill => true, padding => 10);
 --gtk.box.pack_start(eike_gui.button_hbox, my_label, expand => false, fill => false, padding => 10);
-gtk.box.pack_start(eike_gui.button_hbox, eike_gui.cius_chooser, expand => true, fill => true, padding => 10);
+gtk.box.pack_start(eike_gui.second_hbox, eike_gui.export_button, expand => true, fill => true, padding => 10);
 
 -- LABEL
 my_label := gtk.label.gtk_label_new;
@@ -73,10 +84,11 @@ my_label := gtk.label.gtk_label_new;
 --          & "This label has <i>markup</i>!</span>"));
 gtk.label.set_markup(my_label, ("<span size=""x-large"" weight=""ultrabold"""
           & " color=""green"">"
-          & "RECHNUNG OK (Syntax: UBL Invoice)</span> <span> und etwas mehr Text... </span>"));
+          & "RECHNUNG OK (Syntax: UBL Invoice)</span> <span>" & character'val(16#A#) & "und etwas mehr Text... </span>"));
+gtk.label.set_selectable(my_label, true);
 
-gtk.box.pack_start(eike_gui.top_level_vbox, eike_gui.fc_button, expand => false, fill => false, padding => 10);
-gtk.box.pack_start(eike_gui.top_level_vbox, eike_gui.button_hbox, expand => false, fill => false, padding => 10);
+gtk.box.pack_start(eike_gui.top_level_vbox, eike_gui.first_hbox, expand => false, fill => false, padding => 10);
+gtk.box.pack_start(eike_gui.top_level_vbox, eike_gui.second_hbox, expand => false, fill => false, padding => 10);
 gtk.box.pack_start(eike_gui.top_level_vbox, my_label, expand => false, fill => false, padding => 10);
 
 gtk.window.add(eike_gui.main_window, eike_gui.top_level_vbox);

@@ -31,8 +31,10 @@ main_window : gtk.window.gtk_window := null;
 
 -- fixed parts
 top_level_vbox : gtk.box.gtk_box;
-button_hbox : gtk.box.gtk_box;
+first_hbox : gtk.box.gtk_box;
+second_hbox : gtk.box.gtk_box;
 refresh_button : gtk.button.gtk_button;
+export_button : gtk.button.gtk_button;
 cius_chooser : gtk.combo_box_text.gtk_combo_box_text;
 fc_button : gtk.file_chooser_button.gtk_file_chooser_button;
 
