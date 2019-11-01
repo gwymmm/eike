@@ -8,6 +8,10 @@ for object_dir use "object";
 
 for exec_dir use "binary";
 
+--package Compiler is
+--  for Default_Switches ("Ada") use ("-gnatW8");
+--end Compiler;
+
 for main use ("main.adb", "geike.adb");
 
 end e_invoice_kit;
