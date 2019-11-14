@@ -251,11 +251,101 @@ bt_120 : ada.strings.unbounded.unbounded_string;
 bt_121 : ada.strings.unbounded.unbounded_string;
 end record;
 
+type bg_24_record is
+record
+bt_122 : ada.strings.unbounded.unbounded_string;
+bt_123 : ada.strings.unbounded.unbounded_string;
+bt_124 : ada.strings.unbounded.unbounded_string;
+bt_125 : ada.strings.unbounded.unbounded_string;
+end record;
+
+type bg_26_record is
+record
+bt_134 : ada.strings.unbounded.unbounded_string;
+bt_135 : ada.strings.unbounded.unbounded_string;
+end record;
+
+type bg_27_record is
+record
+bt_136 : ada.strings.unbounded.unbounded_string;
+bt_137 : ada.strings.unbounded.unbounded_string;
+bt_138 : ada.strings.unbounded.unbounded_string;
+bt_139 : ada.strings.unbounded.unbounded_string;
+bt_140 : ada.strings.unbounded.unbounded_string;
+end record;
+
+type bg_28_record is
+record
+bt_141 : ada.strings.unbounded.unbounded_string;
+bt_142 : ada.strings.unbounded.unbounded_string;
+bt_143 : ada.strings.unbounded.unbounded_string;
+bt_144 : ada.strings.unbounded.unbounded_string;
+bt_145 : ada.strings.unbounded.unbounded_string;
+end record;
+
+package bg_27_lists is new ada.containers.doubly_linked_lists(bg_27_record);
+package bg_28_lists is new ada.containers.doubly_linked_lists(bg_28_record);
+
+type bg_29_record is
+record
+bt_146 : ada.strings.unbounded.unbounded_string;
+bt_147 : ada.strings.unbounded.unbounded_string;
+bt_148 : ada.strings.unbounded.unbounded_string;
+bt_149 : ada.strings.unbounded.unbounded_string;
+bt_150 : ada.strings.unbounded.unbounded_string;
+end record;
+
+type bg_30_record is
+record
+bt_151 : ada.strings.unbounded.unbounded_string;
+bt_152 : ada.strings.unbounded.unbounded_string;
+end record;
+
+type bg_32_record is
+record
+bt_160 : ada.strings.unbounded.unbounded_string;
+bt_161 : ada.strings.unbounded.unbounded_string;
+end record;
+
+package bg_32_lists is new ada.containers.doubly_linked_lists(bg_32_record);
+
+type bg_31_record is
+record
+bt_153 : ada.strings.unbounded.unbounded_string;
+bt_154 : ada.strings.unbounded.unbounded_string;
+bt_155 : ada.strings.unbounded.unbounded_string;
+bt_156 : ada.strings.unbounded.unbounded_string;
+bt_157 : ada.strings.unbounded.unbounded_string;
+bt_158_list : str_lists.list := str_lists.empty_list;
+bt_159 : ada.strings.unbounded.unbounded_string;
+bg_32_list : bg_32_lists.list := bg_32_lists.empty_list;
+end record;
+
+type bg_25_record is
+record
+bt_126 : ada.strings.unbounded.unbounded_string;
+bt_127 : ada.strings.unbounded.unbounded_string;
+bt_128 : ada.strings.unbounded.unbounded_string;
+bt_129 : ada.strings.unbounded.unbounded_string;
+bt_130 : ada.strings.unbounded.unbounded_string;
+bt_131 : ada.strings.unbounded.unbounded_string;
+bt_132 : ada.strings.unbounded.unbounded_string;
+bt_133 : ada.strings.unbounded.unbounded_string;
+bg_26 : bg_26_record;
+bg_27_list : bg_27_lists.list := bg_27_lists.empty_list;
+bg_28_list : bg_28_lists.list := bg_28_lists.empty_list;
+bg_29 : bg_29_record;
+bg_30 : bg_30_record;
+bg_31 : bg_31_record;
+end record;
+
 package bg_1_lists is new ada.containers.doubly_linked_lists(bg_1_record);
 package bg_3_lists is new ada.containers.doubly_linked_lists(bg_3_record);
 package bg_20_lists is new ada.containers.doubly_linked_lists(bg_20_record);
 package bg_21_lists is new ada.containers.doubly_linked_lists(bg_21_record);
 package bg_23_lists is new ada.containers.doubly_linked_lists(bg_23_record);
+package bg_24_lists is new ada.containers.doubly_linked_lists(bg_24_record);
+package bg_25_lists is new ada.containers.doubly_linked_lists(bg_25_record);
 
 type semantic_data_model is
 record
@@ -312,6 +402,8 @@ bg_20_list : bg_20_lists.list := bg_20_lists.empty_list;
 bg_21_list : bg_21_lists.list := bg_21_lists.empty_list;
 bg_22 : bg_22_record;
 bg_23_list : bg_23_lists.list := bg_23_lists.empty_list;
+bg_24_list : bg_24_lists.list := bg_24_lists.empty_list;
+bg_25_list : bg_25_lists.list := bg_25_lists.empty_list;
 end record;
 
 end en_16931;
