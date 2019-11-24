@@ -4,7 +4,7 @@
 
 - Lexer (XML): `[x]`
 - Parser (UBL Invoice): `[ ]`
-- Datastructure for EN 16931 Semantic Model (Simple Version): `[ ]`
+- Datastructure for EN 16931 Semantic Model (Simple Version): `[x]`
 - GUI: `[ ]`
 - Tests (KoSIT Testsuite): `[ ]`
 

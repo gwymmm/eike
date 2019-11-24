@@ -42,5 +42,3 @@ Es soll auch ein graphisches Werkzeug geben, das E-Rechnungen einlesen und
 visualisieren kann. Intern wird das GUI Werkzeug die Werkezeuge für die 
 Kommandozeile nutzen. Etwaige Fehlermeldungen, die sonst auf dem Terminal
 ausgegeben werden, zeigt das GUI Werkzeug dann in einem Fenster an.
-
-## COMING NEXT: Small Scale Prototype
