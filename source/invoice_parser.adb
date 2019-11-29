@@ -37,7 +37,7 @@ begin
 
 -- syntax recon
   lexer.syntax_recon.run(lexer_input, recognized_syntax);
-
+-- check error code
 -- parsing
   if recognized_syntax = lexer.syntax_recon.UBL_INVOICE then
     ubl_invoice_parser.run(lexer_input, log, invoice_data);

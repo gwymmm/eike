@@ -67,14 +67,17 @@
       := 'start-date' post-start-date
       or 'end-date' post-end-date
       or 'description-code' post-description-code
-      or 'ETAG-invoice-period'
+      or 'ETAG-invoice-period' 
 
     post-start-date
-      := end-date' post-end-date
+      := 'end-date' post-end-date
       or 'description-code' post-description-code
       or 'ETAG-invoice-period'
 
     post-end-date
       := 'description-code' post-description-code
       or 'ETAG-invoice-period'
+
+    post-description-code
+      := 'ETAG-invoice-period'
 

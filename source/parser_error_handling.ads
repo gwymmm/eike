@@ -16,7 +16,8 @@
 
 package parser_error_handling is
 
-type parser_error_code is (SYNTAX_NOT_IMPLEMENTED, SYNTAX_UNKNOWN);
+type parser_error_code is (SYNTAX_NOT_IMPLEMENTED, SYNTAX_UNKNOWN, LEXER_ERROR,
+  UNEXPECTED_TAG, UNEXPECTED_ETAG, ATTRIBUTE_NOT_EXPECTED);
 
 type error_log is
 record
