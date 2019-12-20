@@ -1,0 +1,250 @@
+# DESIGN DESCRIPTION ICET
+
+Invoice := E-Invoice according to the EN 16931 standard
+
+ICET := Invoice Compiling and Editing Tools
+
+Leaf-Element := An XML element that contains no further elements inside
+
+Parser Pull := The parser calls special procedures, which read directly from
+ the input bypassing the lexer. Used for parsing attributes and content (finally
+ consuming the end tag in the last case)
+
+
+## Implementation Requirements
+
+A full implementation of the EN 16931 standard should be achieved.
+
+Therefore we need a data structure to contain the invoice data.
+
+The types should be defined according to the types specified in the standard.
+
+Base Types:
+[1, p. 93]
+
+- Binary (de: Binär)
+- Datum (de: Date)
+- Decimal (de: Dezimal)
+- String (de: String)
+
+EN Types:
+[3-2, p. 8]
+[1, p. 94]
+
+- Amount (de: Betrag)
+- Code (de: Code)
+- Date (de: Datum)
+- Identifier (de: Kennung)
+- Percent (de: Prozentsatz)
+- Quantity (de: Quantity)
+- Text (de: Text)
+
+- Unit Price Amount (de: Einheitspreisbetrag)
+- Binary Object (de: Binärobjekt)
+- Document Reference Identifier (de: Dokumentreferenz)
+- Attribute (??)
+
+There are three allowed syntaxes that must be supported:
+
+- UBL Invoice
+- UBL Credit Note
+- CII
+
+The three syntaxes are XML.
+
+Additionally a syntax should be defined that allows writing invoices manually
+(proposed name: MDI := Markdown Invoice, because of the resemblance to Markdown
+formatting language)
+
+Some shortcuts regarding XML parsing are allowed. This includes:
+
+- Comments parsing not XML standard conform
+- XML namespaces are ignored
+- Not all element types recognized (only Start-Tags, End-Tags and Comments are
+  recognized)
+
+Note: XML is case sensitive.
+
+### CIUS Implementation
+
+A CIUS can not define rules that contradict the EN standard. So every invoice
+that is CIUS conformant is also EN conformant.
+
+    "Invoice is CIUS conformant." => "Invoice is EN conformant."
+
+And:
+
+    "Invoice is not EN conformant. => "Invoice is not CIUS conformant."
+
+For the implementation this means that the invoice is parsed and validated
+according to the EN standard. 
+
+### CIUS Support and Validation
+
+The standard defines a set of business rules. These rules can be checked
+immediately after parsing (some will actually be checked during parsing). 
+The checks will be performed on the semantic data model:
+
+    EN_Validate( Invoice_Data_Instance : in Invoice_Data_Structure )
+
+Validation for EN is obligatory, so cannot be omitted.
+
+For CIUS validation an option defines which CIUS standard should be considered.
+Support for a CIUS means, that a procedure is implemented which performs the
+necessary checks. Furthermore a CIUS could pack structured information in 
+unstructured text fields. This would make it necessary to parse the the text
+field and store the results in additional data structures:
+
+    CIUS_Validate( Invoice_Data_Instance : in Invoice_Data_Structure,
+                   Additional_Structured_Content : out CIUS_Data_Structure)
+
+#### Error Reporting during Validation
+
+Business Rule Classifier -> Where?
+Error Classifier -> What? [is this needed?]
+
+## Functional Interface Specification (Top-Down)
+
+... What procedures will be presented as external interface?
+Read invoice from file, validate and return invoice data structure:
+
+    xxx
+
+Read invoice from file, validate, convert to other syntax and write output to
+file:
+
+    xxx 
+
+Validate invoice data structure according to a CIUS standard:
+
+	xxx
+
+Read invoice from file, validate according to EN and a CIUS standard and return 
+invoice data structure:
+
+	xxx
+
+Read invoice from file, validate according to EN and a CIUS standard, 
+convert to other syntax and write output to file:
+
+	xxx
+
+## Invoice Parsing
+
+Invoice Parsing := Lexer + Parser + Parser Pull Procedures
+
+All are **finite state machines**.
+
+... DEFINITIONS?
+
+Parser Pull := The parser calls special procedures, which read directly from
+the input bypassing the lexer. Used for parsing attributes and content (finally
+consuming the end tag in the last case)
+
+Since the invoice can be described by a regular grammar, we parse it with finite
+state machines:
+
+- Parse the prologue (same for all xml invoices)
+- Parse Start-Tags and End-Tags (for every 'syntax' separate)
+
+### Unicode issues (UTF-8)
+
+The standard mandates UTF-8 encoding [where?]. 
+
+The characters from 0 .. 127 are encoded in one byte (corresponding to ascii)
+[source?]. All characters 
+
+
+### Parse Start-Tags and End-Tags (UBL Invoice)
+
+Parse the '<', the name and resolve it to a token. Leaf-Elements are mapped to
+token that are named like the element (example ...). Non-Leaf-Elements are mapped 
+to token that are additionaly prefixed with 'BG_' (example ...). 
+
+Parsing of a Start-Tag stops at '>' or the first whitespace. If there are any
+attributes, they will be pulled by the parser (the parser knows whether and how 
+many attributes are expected for each element; there are very few attributes
+in an invoice). 
+
+OPTIONAL ATTRIBUTES: Possible solution: Return two types of Token 'normal' and 
+'without attribute'. Lexer can decide it partially. When reading Start-Tag ends 
+with '>' the optional attribute was omitted, when it ends with ' ' the lexer
+does not know. So the parser must call a pull procedure.
+
+
+### Parser Pull Procedures (Overview)
+
+Read_Until_End:
+
+Read the content of an element and consume the End-Tag.
+
+Read Attribute:
+
+Read Optional Attribute:
+
+### Error Reporting
+
+The error reports should be in different languages and this is a problem. So you
+can not simply write an error message into a string. A possible solution would
+be to write a classifier (a set of enums) when an error occurs and decode it 
+later. Example:
+
+    Module_Classifier := (READ_START_TAG, READ_END_TAG, READ_ATTRIBUTE, 
+       PARSE_GRAMMAR_RULE_NR_23, ...) --> where?
+
+    Error_Classifier := (UNEXPECTED_TOKEN, UNEXPECTED_CHARACTER, IO_ERROR, ...)
+       --> what?
+
+Furthermore error reporting should be same for all parts of the parsing process.
+Achieved with a data structure that is passed during the whole parsing process.
+
+    Error_Log (
+      Error_Occured : Boolean
+      In_Line : Natural  --> Location in file
+      In_Module : Module_Classifier --> Location in code
+      Error_Code : Error_Classifier ) --> What happended
+
+
+#### Error Classification
+
+Module File Input:
+
+- could not open file
+
+Module Invoice Prologue:
+
+- IO_ERROR
+- EOF_NOT_EXPECTED
+- UNEXPECTED_CHARACTER
+- BOM_NOT_CORRECT
+
+Module Read Start-Tag:
+
+- UNEXPECTED_CHARACTER
+- IO_ERROR
+-
+
+
+## Implementation Prototype
+
+The aim is to implement a viewer for an invoice (UBL Invoice syntax only).
+Since the implementation is very laborious, no simplifications regarding the
+implementation of the modules will be made.
+
+Therefore following modules are needed (with full functionality for the
+implementation of the whole standard):
+
+- File Reader (UTF-8)
+- Error Reporting
+- English Language Package
+- Invoice Semantic Data Model
+- Prologue Reader
+- UBL Lexer (Start- and End-Tag Reader, UBL Invoice/UBL Credit Note combined)
+- UBL Invoice Parser (might be extended to combined UBL Invoice/UBL Credit Note
+  Parser)
+- All Parser Pull procedures needed (Read Date, ...)
+- GUI for Viewer
+- Print Function for Invoice Semantic Data Model (Terminal and GUI)
+
+================================================================================
+- parsing visualization with color highlighting.

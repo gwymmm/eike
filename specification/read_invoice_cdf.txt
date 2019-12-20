@@ -1,0 +1,161 @@
+-- READ INVOICE --
+
+'DF' := data flow
+'CF' := control flow
+'(+)' := SPARK wrapper
+'\-->' := procedure call
+'--)' := leaf procedure
+'>>'  := external library call
+--------------------------------------------------------------------------------
+
+
+read invoice
+--------------------------------------------------------------------------------
+DF:
+  --> (input file name)  
+  -- read invoice --
+  --> (error log, invoice data)
+
+CF:
+read invoice
+  \--> open file (+) 
+  \--> read prologue
+  \--> read ubl invoice / read ubl credit note / read cii
+  \--> close file (+)
+--------------------------------------------------------------------------------
+
+
+open file 
+--------------------------------------------------------------------------------
+DF:
+  --> (input file name)  
+  -- open file -- 
+  --> (status, input file descriptor)
+
+CF:
+open file (+) 
+  \--> open (>> instance of Ada.Sequential_IO)
+--------------------------------------------------------------------------------
+
+
+read prologue
+--------------------------------------------------------------------------------
+DF:
+  --> (input file descriptor)
+  -- read prologue --
+  --> (error log, syntax type)
+
+CF:
+read prologue
+  \--> get char
+--------------------------------------------------------------------------------
+
+
+read ubl invoice
+--------------------------------------------------------------------------------
+DF:
+  --> (input file descriptor, error log)
+  -- read ubl invoice --
+  --> (error log, invoice instance)
+
+CF:
+read ubl invoice
+  \--> ubl lexer
+  \--> {PARSER PULL PROCEDURES}
+--------------------------------------------------------------------------------
+
+
+    -- ubl lexer --
+
+
+--------------------------------------------------------------------------------
+DF:
+  --> (input file descriptor, error log)
+  -- ubl lexer --
+  --> (error log, ubl token)
+
+CF:
+ubl lexer
+  \--> {LEXER PROCEDURES}
+--------------------------------------------------------------------------------
+
+
+read ubl credit note
+--------------------------------------------------------------------------------
+DF:
+  --> (input file descriptor, error log)
+  -- read ubl credit note --
+  --> (error log, invoice instance)
+
+CF:
+read ubl credit note
+  \--> xxx
+--------------------------------------------------------------------------------
+
+
+read cii
+--------------------------------------------------------------------------------
+DF:
+  --> (input file descriptor, error log)
+  -- read cii --
+  --> (error log, invoice instance)
+
+CF:
+read cii
+  \--> xxx
+--------------------------------------------------------------------------------
+
+
+get char
+--------------------------------------------------------------------------------
+DF:
+  --> (input file descriptor, error log)
+  -- get char --
+  --> (utf-8 byte, error log)
+
+CF:
+get char
+  \--> read (+)
+  \--> update line number
+--------------------------------------------------------------------------------
+
+
+read (+)
+--------------------------------------------------------------------------------
+DF:
+  --> (input file descriptor)
+  -- read --
+  --> (status, utf-8 byte)
+
+CF:
+read (+)
+  \--> read (>> instance of Ada.Sequential_IO)
+--------------------------------------------------------------------------------
+
+
+    -- update line number --
+
+Increment line number, if the current character is a newline character. 
+--------------------------------------------------------------------------------
+DF:
+  --> (line number, current char)
+  -- update line number --
+  --> (line number)
+
+CF:
+update line number --)
+--------------------------------------------------------------------------------
+================================================================================
+    -- XXX --
+
+[...]
+--------------------------------------------------------------------------------
+DF:
+  --> (XXX)
+  -- XXX --
+  --> (XXX)
+
+CF:
+XXX
+  \--> XXX
+--------------------------------------------------------------------------------

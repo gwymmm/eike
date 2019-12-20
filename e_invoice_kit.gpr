@@ -2,16 +2,17 @@ with "gtkada.gpr";
 
 project e_invoice_kit is
 
-for source_dirs use ("source");
+--for source_dirs use ("source");
+for source_dirs use ("alternative");
 
 for object_dir use "object";
 
 for exec_dir use "binary";
 
---package Compiler is
---  for Default_Switches ("Ada") use ("-gnatW8");
---end Compiler;
+package Compiler is
+  for Default_Switches ("Ada") use ("-O2", "-gnata");
+end Compiler;
 
-for main use ("main.adb", "geike.adb");
-
+--for main use ("main.adb", "geike.adb");
+for main use ("main.adb");
 end e_invoice_kit;

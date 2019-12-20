@@ -21,61 +21,64 @@
     post-customization-id := 'profile-id' post-profile-id
                           or 'id' post-id 
 
-    post-profile-id := 'id' post-id
+    post-profile-id := 'id' post-id     --> bt-1
 
-    post-id := 'issue-date' post-issue-date
+    post-id := 'issue-date' post-issue-date     --> bt-2
 
-    post-issue-date := 'due-date' post-due-date
-                    or 'invoice-type-code' post-invoice-type-code
+    post-issue-date := 'due-date' post-due-date     --> bt-9
+                    or 'invoice-type-code' post-invoice-type-code   --> bt-3
 
-    post-due-date := 'invoice-type-code' post-invoice-type-code
+    post-due-date := 'invoice-type-code' post-invoice-type-code     --> bt-3
 
-    post-invoice-type-code := 'note' post-note
+    post-invoice-type-code := 'note' post-note  --> bt-21 / bt-22
+          or 'tax-point-date' post-tax-point-date  --> bt-7  
+          or 'document-currency-code' post-document-currency-code  --> bt-5
 
-    post-note := 'note' post-note-2
-          or 'tax-point-date' post-tax-point-date
-          or 'document-currency-code' post-document-currency-code
+    post-note := 'note' post-note-2     --> bt-22
+          or 'tax-point-date' post-tax-point-date  --> bt-7 
+          or 'document-currency-code' post-document-currency-code  --> bt-5
 
-    post-note-2 := 'tax-point-date' post-tax-point-date
-            or 'document-currency-code' post-document-currency-code
+    post-note-2 := 'tax-point-date' post-tax-point-date --> bt-7
+            or 'document-currency-code' post-document-currency-code --> bt-5
 
     post-tax-point-date := 'document-currency-code' post-document-currency-code
+      --> bt-5
 
     post-document-currency-code 
-      := 'tax-currency-code' post-tax-currency-code
-      or 'accounting-cost' post-accounting-cost
-      or 'buyer-reference' post-buyer-reference
-      or 'STAG-invoice-period' BG-invoice-period
+      := 'tax-currency-code' post-tax-currency-code  --> bt-6
+      or 'accounting-cost' post-accounting-cost  --> bt-19
+      or 'buyer-reference' post-buyer-reference  --> bt-10
+      or 'STAG-invoice-period' BG-invoice-period  --> bg-14
       or 'EOF'
 
     post-tax-currency-code 
-      := 'accounting-cost' post-accounting-cost
-      or 'buyer-reference' post-buyer-reference
-      or 'STAG-invoice-period' BG-invoice-period
+      := 'accounting-cost' post-accounting-cost  --> bt-19
+      or 'buyer-reference' post-buyer-reference  --> bt-10
+      or 'STAG-invoice-period' BG-invoice-period  --> bg-14
       or 'EOF'
 
     post-accounting-cost
-      := 'buyer-reference' post-buyer-reference
-      or 'STAG-invoice-period' BG-invoice-period
+      := 'buyer-reference' post-buyer-reference  --> bt-10
+      or 'STAG-invoice-period' BG-invoice-period  --> bg-14
       or 'EOF'
 
     post-buyer-reference 
-      := 'STAG-invoice-period' BG-invoice-period
+      := 'STAG-invoice-period' BG-invoice-period  --> bg-14
       or 'EOF'
 
     BG-invoice-period 
-      := 'start-date' post-start-date
-      or 'end-date' post-end-date
-      or 'description-code' post-description-code
+      := 'start-date' post-start-date  --> bt-73
+      or 'end-date' post-end-date  --> bt-74
+      or 'description-code' post-description-code  --> bt-8
       or 'ETAG-invoice-period' 
 
     post-start-date
-      := 'end-date' post-end-date
-      or 'description-code' post-description-code
+      := 'end-date' post-end-date  --> bt-74
+      or 'description-code' post-description-code  --> bt-8
       or 'ETAG-invoice-period'
 
     post-end-date
-      := 'description-code' post-description-code
+      := 'description-code' post-description-code  --> bt-8
       or 'ETAG-invoice-period'
 
     post-description-code
