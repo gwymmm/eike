@@ -54,20 +54,28 @@ end Open_File_For_Reading;
 procedure Read
   ( File : in File_Descriptor;
     Byte : out UTF_8_Byte;
-    Is_Successful : out Boolean )
+    Status : out Read_Status )
 is
 begin
 
-  UTF_8_IO.Read
-    ( File => UTF_8_IO.File_Type( File ),
-      Item => Byte);
+  if UTF_8_IO.End_Of_File( UTF_8_IO.File_Type( File ) ) then
 
-  Is_Successful := True;
+    Status := EOF;
+
+  else
+
+    UTF_8_IO.Read
+      ( File => UTF_8_IO.File_Type( File ),
+        Item => Byte);
+
+    Status := OK;
+
+  end if;
 
 exception
   when others =>
 
-  Is_Successful := False;
+  Status := Error;
 
 end Read;
 --------------------------------------------------------------------------------

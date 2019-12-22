@@ -1,0 +1,60 @@
+Description of the core invoice semantic model
+==============================================
+
+Unique BT: All parent elements have cardinality of
+0 .. 1 or 1 .. 1, the BT itself has cardinality 0 .. 1 or 1 .. 1.
+
+Getter and Setter
+=================
+
+For BTs that are not part of a list (all parent elements have cardinality of
+0 .. 1 or 1 .. 1, the BT itself has cardinality 0 .. 1 or 1 .. 1) the setter
+updates this element and the getter reads this element.  
+
+  --> (invoice data structure [, BG index 1, BG index 2], BT content)
+  -- set BT XXX --
+  --> (invoice data structure)
+
+  --> (invoice data structure [, BG index 1, BG index 2])
+  -- get BT XXX --
+  --> (BT content)
+
+For **optional BTs and BGs** (cardinality 0 .. 1) it is necessary to check 
+whether the field is set before reading:
+
+  --> (invoice data structure)
+  -- is set BT XXX --
+  --> (answer)
+
+There is no need to get or set BGs. When accessing a BT the corresponding BG is
+resolved automatically if needed.
+
+When writing an invoice new elements can be appended to BTs or BGs corresponding
+to lists (cardinality 0 .. n or 1 .. n).
+
+
+
+BTs that are not unique need to be accessed using iterators (maximum of 2).
+
+For elements with a variable length (lists, unbounded strings) there are methods
+that return the current length
+
+## Data Types
+
+Betrag:
+
+BT-92
+BT-93
+BT-99
+BT-100
+BT-106
+BT-107 -  BT-115
+BT-116
+BT-117
+BT-131
+BT-136
+BT-137
+BT-141
+BT-142
+
+all those are listed in the table [where?]

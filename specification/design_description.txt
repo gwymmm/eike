@@ -246,5 +246,9 @@ implementation of the whole standard):
 - GUI for Viewer
 - Print Function for Invoice Semantic Data Model (Terminal and GUI)
 
+--------------------------------------------------------------------------------
+Next:
+Error Reporting
+UBL Lexer
 ================================================================================
 - parsing visualization with color highlighting.

@@ -1,12 +1,19 @@
 with Ada.Sequential_IO;
+with Ada.Characters.Latin_1;
 
 package File_Handler is
 pragma SPARK_Mode( On );
+
+package Latin renames Ada.Characters.Latin_1;
+
+Dummy : constant Character := Latin.Exclamation;
 
 type UTF_8_Byte is mod 256;
   for UTF_8_Byte'Size use 8;
 
 type File_Descriptor is limited private;
+
+type Read_Status is (OK, EOF, Error);
 
 function Is_Open(File : in File_Descriptor) return Boolean;
 
@@ -27,11 +34,11 @@ procedure Open_File_For_Reading
 procedure Read
   ( File : in File_Descriptor;
     Byte : out UTF_8_Byte;
-    Is_Successful : out Boolean ) 
+    Status : out Read_Status ) 
 
   with
     Global => null,
-    Depends => (Byte => null, Is_Successful => null, null => File),
+    Depends => (Byte => null, Status => null, null => File),
     Pre => Is_Open(File) and then In_Read_Mode(File);  
 
 procedure Close_File
