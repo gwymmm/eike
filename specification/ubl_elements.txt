@@ -42,9 +42,537 @@ URI
 ProjectReference
 AccountingSupplierParty
 Party
-----------------------------
+EndpointID
+PartyIdentification
+PartyName
+Name
+PostalAddress
+StreetName
+AdditionalStreetName
+CityName
+PostalZone
+CountrySubentity
+AddressLine
+Line
+Country
+IdentificationCode
+PartyTaxScheme
+CompanyID
+TaxScheme
+PartyLegalEntity
+RegistrationName
+CompanyID
+CompanyLegalForm
+Contact
+Name
+Telephone
+ElectronicMail
+AccountingCustomerParty
+PayeeParty
+PartyIdentification
+PartyName
+PartyLegalEntity
+TaxRepresentativeParty
+Delivery
+ActualDeliveryDate
+DeliveryLocation
+DeliveryParty
+PaymentMeans
+PaymentMeansCode
+PaymentID
+CardAccount
+PrimaryAccountNumberID
+NetworkID
+HolderName
+PayeeFinancialAccount
+FinancialInstitutionBranch
+PaymentMandate
+PayerFinancialAccount
+PaymentTerms
+AllowanceCharge
+ChargeIndicator
+AllowanceChargeReasonCode
+AllowanceChargeReason
+MultiplierFactorNumeric
+Amount
+BaseAmount
+TaxCategory
+Percent
+TaxTotal
+TaxAmount
+TaxSubtotal
+TaxableAmount
+TaxAmount
+TaxScheme
+TaxExemptionReasonCode
+TaxExemptionReason
+LegalMonetaryTotal
+LineExtensionAmount
+TaxExclusiveAmount
+TaxInclusiveAmount
+AllowanceTotalAmount
+ChargeTotalAmount
+PrepaidAmount
+PayableRoundingAmount
+PayableAmount
+InvoiceLine
+InvoicedQuantity
+LineExtensionAmount
+AccountingCost
+InvoicePeriod
+StartDate
+EndDate
+OrderLineReference
+LineID
+DocumentReference
+AllowanceCharge
+Item
+Description
+Name
+BuyersItemIdentification
+SellersItemIdentification
+StandardItemIdentification
+OriginCountry
+IdentificationCode
+CommodityClassification
+ItemClassificationCode
+ClassifiedTaxCategory
+AdditionalItemProperty
+Value
+Price
+PriceAmount
+BaseQuantity
+AllowanceCharge
+BaseAmount
+<< CREDIT-NOTE >>
+CreditNoteLine
+CreditedQuantity
+---------------------------- 28
 
+## Attributes
 
+@ schemeID
+@ Name
+@ currencyID
+@ unitCode
+@ listID
+@ listVersionID
+@ unitCode
 
+================================================================================
 /rsm:CrossIndustryInvoice/rsm:ExchangedDocumentContext/ram:BusinessProcessSpecifiedD
 ocumentContextParameter/ram:ID  --> BT-23
+
+
+/Invoice/cac:AccountingCustomerParty/cac:Party/cac:PartyLegalEntity/cbc:CompanyID ?
+
+================================================================================
+
+
+## Tags with attributes
+
+### Mandatory
+
+{EmbeddedDocumentBinaryObject, EndpointID, Amount, BaseAmount, TaxAmount, 
+ TaxableAmount, LineExtensionAmount, TaxExclusiveAmount, TaxInclusiveAmount,
+ AllowanceTotalAmount, ChargeTotalAmount, PrepaidAmount, PayableRoundingAmount,
+ PayableAmount, InvoicedQuantity, PriceAmount, CreditedQuantity}
+
+### Optional
+
+{ID, CompanyID, PaymentMeansCode, ItemClassificationCode, BaseQuantity}
+ 
+
+## Get Token
+
+next-element 
+  := EOF --<<<< Token: EOF
+  or ' ' next-element
+  or '<' tag-or-comment
+
+
+tag-or-comment 
+  := '!' comment
+  or (alpha) --<<<< Call: Name resolution
+  or '/' --<<<< Pull + Call: Name resolution (Memorize end)
+
+
+comment
+  := '>' next-element
+  or (char) comment
+
+
+## Name resolution
+
+begin 
+  := 'A' A-prefixed
+  or 'B' B-prefixed
+  or 'C' C-prefixed
+  or 'D' D-prefixed
+  or 'E' E-prefixed
+  or 'F' 'inancialInstitutionBranch'
+  or 'H' 'olderName'
+  or 'I' I-prefixed
+  or 'L' L-prefixed
+  or 'M' 'ultiplierFactorNumeric'
+  or 'N' N-prefixed
+  or 'O' 'r' Or-prefixed
+  or 'P' P-prefixed
+  or 'R' 'e' Re-prefixed
+  or 'S' S-prefixed
+  or 'T' T-prefixed
+  or 'U' 'RI'
+  or 'V' 'alue'
+
+
+{AccountingCost<, AdditionalDocumentReference<, AccountingSupplierParty<, 
+ Attachment<, AllowanceCharge<, AdditionalItemProperty<, AllowanceTotalAmount<,
+ Amount<, AllowanceChargeReason<, ActualDeliveryDate<, AccountingCustomerParty<,
+ AddressLine<, AllowanceChargeReasonCode<, AdditionalStreetName<} 
+ 
+
+A-prefixed
+  := 'c' Ac-prefixed
+  or 'd' 'd' Add-prefixed
+  or 'l' 'lowance' Allowance-prefixed
+  or 'm' 'ount'
+  or 't' 'tachment'
+
+Ac-prefixed
+  := 'c' 'ounting' Accounting-prefixed
+  or 't' 'ualDeliveryDate'
+
+Accounting-prefixed
+  := 'C' AccountingC-prefixed
+  or 'S' 'upplierParty'
+
+AccountingC-prefixed
+  := 'o' 'st' 
+  or 'u' 'stomerParty'
+
+Add-prefixed
+  := 'i' 'tional' Additional-prefixed
+  or 'r' 'essLine'
+
+Additional-prefixed
+  := 'I' 'temProperty'
+  or 'D' 'ocumentReference'
+  or 'S' 'treetName'
+
+Allowance-prefixed
+  := 'C' 'harge' AllowanceCharge-prefixed
+  or 'T' 'otalAmount'
+
+AllowanceCharge-prefixed
+  := ' '
+  or '>'
+  or 'R' 'eason' AllowanceChargeReason-prefixed
+
+AllowanceChargeReason-prefixed
+  := ' '
+  or '>'
+  or 'C' 'ode'
+
+{BuyerReference<, BillingReference<, BaseAmount<, BuyersItemIdentification<, 
+ BaseQuantity< }
+
+B-prefixed
+  := 'a' 'se' Base-prefixed
+  or 'i' 'llingReference'
+  or 'u' 'yer' Buyer-prefixed
+
+Base-prefixed
+  := 'A' 'mount'
+  or 'Q' 'uantity'
+
+Buyer-prefixed
+  := 'R' 'eference'
+  or 's' 'ItemIdentification'
+
+{CustomizationID<, CreditNoteTypeCode<, ContractDocumentReference<, CityName<,
+ CountrySubentity<, Country<, CompanyID<, CompanyLegalForm<, Contact<,
+ CardAccount<, ChargeIndicator<, ChargeTotalAmount<, CommodityClassification<,
+ ClassifiedTaxCategory<, CreditNoteLine<, CreditedQuantity<}
+
+C-prefixed
+  := 'a' 'rdAccount'
+  or 'i' 'tyName'
+  or 'h' 'arge' Charge-prefixed
+  or 'l' 'assifiedTaxCategory'
+  or 'o' Co-prefixed
+  or 'r' 'edit' Credit-prefixed
+  or 'u' 'stomizationID'
+
+Charge-prefixed
+  := 'I' 'ndicator'
+  or 'T' 'otalAmount'
+
+Co-prefixed
+  := 'm' Com-prefixed
+  or 'n' 't' Cont-prefixed
+  or 'u' 'ntry' Country-prefixed
+
+Com-prefixed
+  := 'm' 'odityClassification'
+  or 'pany' Company-prefixed
+
+Company-prefixed
+  := 'I' 'D'
+  or 'L' 'egalForm'
+
+Cont-prefixed
+  := 'a' 'ct'
+  or 'r' 'actDocumentReference' 
+
+Country-prefixed
+  := ' '
+  or '>'
+  or 'S' 'ubentity'
+
+Credit-prefixed
+  := 'e' 'dQuantity'
+  or 'N' 'ote' CreditNote-prefixed
+
+CreditNote-prefixed
+  := 'L' 'ine'
+  or 'T' 'ypeCode'
+
+{DueDate<, DocumentCurrencyCode<, DescriptionCode<, DespatchDocumentReference<,
+ DocumentDescription<, Delivery<, DeliveryLocation<, DeliveryParty<,
+ DocumentReference<, Description<}
+
+D-prefixed
+  := 'e' De-prefixed
+  or 'o' 'cument' Document-prefixed
+  or 'u' 'eDate'
+
+De-prefixed
+  := 's' Des-prefixed
+  or 'l' 'ivery' Delivery-prefixed
+
+Des-prefixed
+  := 'c' 'ription' Description-prefixed
+  or 'p' 'atchDocumentReference'
+
+Description-prefixed
+  := ' '
+  or '>'
+  or 'C' 'ode'
+
+Delivery-prefixed
+  := ' '
+  or '>'
+  or 'L' 'ocation'
+  or 'P' 'arty'
+
+Document-prefixed
+  := 'C' 'urrencyCode'
+  or 'D' 'escription'
+  or 'R' 'eference'
+
+{EndDate<, EmbeddedDocumentBinaryObject<, ExternalReference<, EndpointID<,
+ ElectronicMail<}
+
+E-prefixed
+  := 'l' 'ectronicMail'
+  or 'm' 'beddedDocumentBinaryObject'
+  or 'n' 'd' End-prefixed
+  or 'x' 'ternalReference'
+
+End-prefixed
+  := 'D' 'ate'
+  or 'p' 'ointID'
+
+{ID<, IssueDate<, InvoiceTypeCode<, InvoicePeriod<, InvoiceDocumentReference<,
+ IdentificationCode<, InvoiceLine<, InvoicedQuantity<, Item<,
+ ItemClassificationCode<}
+
+I-prefixed
+  := 'D'
+  or 'd' 'entificationCode'
+  or 'n' 'voice' Invoice-prefixed
+  or 't' 'em' Item-prefixed
+  or 's' 'sueDate'
+
+Invoice-prefixed
+  := 'D' 'ocumentReference'
+  or 'd' 'Quantity'
+  or 'L' 'ine'
+  or 'P' 'eriod'
+  or 'T' 'ypeCode'
+
+Item-prefixed
+  := ' '
+  or '>'
+  or 'C' 'lassificationCode'
+
+{Line<, LegalMonetaryTotal<, LineExtensionAmount<, LineID<}
+
+L-prefixed
+  := 'i' 'ne' Line-prefixed
+  or 'e' 'egalMonetaryTotal'
+
+Line-prefixed
+  := ' '
+  or '>'
+  or 'E' 'xtensionAmount'
+  or 'I' 'D'
+
+{Note, Name, NetworkID}
+
+N-prefixed
+  := 'o' 'te'
+  or 'a' 'me'
+  or 'e' 'tworkID'
+
+{OrderReference<, OriginatorDocumentReference<, OrderLineReference<, 
+ OriginCountry}
+
+Or-prefixed
+  := 'd' 'er' Order-prefixed
+  or 'i' 'gin' Origin-prefixed
+
+Order-prefixed
+  := 'R' 'eference'
+  or 'L' 'ineReference'
+
+Origin-prefixed
+  := 'a' 'torDocumentReference'
+  or 'C' 'ountry'
+
+{ProfileID<, PaymentMeans<, PaymentDueDate<, ProjectReference<, Party<, 
+ PartyIdentification<, PartyName<, PostalAddress<, PostalZone<, PartyTaxScheme<,
+ PartyLegalEntity<, PayeeParty<, PaymentMeansCode<, PaymentID<, 
+ PrimaryAccountNumberID<, PayeeFinancialAccount<, PaymentMandate<, 
+ PayerFinancialAccount<, Percent<, PrepaidAmount<, PayableRoundingAmount<,
+ PayableAmount<, Price<, PriceAmount<}
+
+P-prefixed
+  := 'a' Pa-prefixed
+  or 'e' 'rcent'
+  or 'o' 'stal' Postal-prefixed
+  or 'r' Pr-prefixed
+
+Pa-prefixed
+  := 'r' 'ty' Party-prefixed
+  or 'y' Pay-prefixed
+
+Party-prefixed
+  := ' '
+  or '>'
+  or 'I' 'dentification'
+  or 'L' 'egalEntity'
+  or 'N' 'ame'
+  or 'T' 'axScheme'
+
+Pay-prefixed
+  := 'a' 'ble' Payable-prefixed
+  or 'e' Paye-prefixed
+  or 'm' 'ent' Payment-prefixed
+
+Payable-prefixed
+  := 'A' 'mount'
+  or 'R' 'oundingAmount'
+
+Paye-prefixed
+  := 'e' Payee-prefixed
+  or 'r' 'FinancialAccount'
+
+Payee-prefixed
+  := 'P' 'arty'
+  or 'F' 'inancialAccount'
+
+Payment-prefixed
+  := 'D' 'ueDate'
+  or 'I' 'D'
+  or 'M' PaymentM-prefixed
+
+PaymentM-prefixed
+  := 'a' 'ndate'
+  or 'e' 'ans' PaymentMeans-prefixed
+
+PaymentMeans-prefixed
+  := ' '
+  or '>'
+  or 'C' 'ode'
+
+Postal-prefixed
+  := 'A' 'ddress'
+  or 'Z' 'one'
+
+Pr-prefixed
+  := 'e' 'paidAmount'
+  or 'i' Pri-prefixed
+  or 'o' Pro-prefixed
+
+Pri-prefixed
+  := 'c' 'e' Price-prefixed
+  or 'm' 'aryAccountNumberID'
+
+Price-prefixed
+  := ' '
+  or '>'
+  or 'A' 'mount'
+
+Pro-prefixed
+  := 'f' 'ileID'
+  or 'j' 'ectReference'
+
+{ReceiptDocumentReference<, RegistrationName<}
+
+Re-prefixed
+  := 'c' 'eiptDocumentReference'
+  or 'g' 'istrationName'
+
+{StartDate<, SalesOrderID<, StreetName<, SellersItemIdentification<,
+ StandardItemIdentification<}
+
+S-prefixed
+  := 'a' 'lesOrderID'
+  or 'e' 'llersItemIdentification'
+  or 't' St-prefixed
+
+St-prefixed
+  := 'a' Sta-prefixed
+  or 'r' 'eetName'
+
+Sta-prefixed
+  := 'r' 'tDate'
+  or 'n' 'dardItemIdentification'
+
+{TaxPointDate<, TaxCurrencyCode<, TaxScheme<, Telephone<, 
+ TaxRepresentativeParty<, TaxCategory<, TaxTotal<, TaxAmount<, TaxSubtotal<, 
+ TaxableAmount<, TaxExemptionReasonCode<, TaxExemptionReason<, 
+ TaxExclusiveAmount<, TaxInclusiveAmount<}
+
+T-prefixed
+  := 'a' 'x' Tax-prefixed
+  or 'e' 'lephone'
+
+Tax-prefixed
+  := 'A' 'mount'
+  or 'a' 'bleAmount'
+  or 'C' TaxC-prefixed
+  or 'E' 'x' TaxEx-prefixed
+  or 'I' 'nclusiveAmount'
+  or 'P' 'ointDate'
+  or 'R' 'epresentativeParty'
+  or 'S' TaxS-prefixed
+  or 'T' 'otal'
+
+TaxC-prefixed
+  := 'a' 'tegory'
+  or 'u' 'rrencyCode'
+
+TaxEx-prefixed
+  := 'c' 'lusiveAmount'
+  or 'e' 'mptionReason' TaxExemptionReason-prefixed
+
+TaxExemptionReason-prefixed
+  := ' '
+  or '>'
+  or 'C' 'ode'
+
+TaxS-prefixed
+  := 'c' 'heme'
+  or 'u' 'btotal'
