@@ -16,6 +16,8 @@ DF:
   -- read invoice --
   --> (error log, invoice data)
 
+(input file name) <= read invoice (error log, invoice data)
+
 CF:
 read invoice
   \--> open file (+) 
