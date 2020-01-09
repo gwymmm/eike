@@ -8,13 +8,14 @@ procedure Next_Character
   ( Input : in File_Handler.File_Descriptor;
     Error_Log : in out Error_Handler.Error_Descriptor;
     Is_End_Of_File : out Boolean;
-    Byte_Character : out File_Handler.UTF_8_Byte )
+    Character_Read : out Character )
 
   with 
     Global => null,
     Depends => (Error_Log => Error_Log, Is_End_Of_File => null,
-                  Byte_Character => null, null => Input),
+                  Character_Read => null, null => Input),
     Pre => File_Handler.Is_Open(Input) 
-             and then File_Handler.In_Read_Mode(Input);
+             and then File_Handler.In_Read_Mode(Input)
+             and then Error_Log.Error_Occurred = False;
 
 end Input_Handler;
