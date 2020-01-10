@@ -4,9 +4,7 @@ with Error_Handler;
 package UBL_Lexer is
 pragma SPARK_Mode( On );
 
-type UBL_Token_With_None is (None, XXX);
-
-subtype UBL_Token is UBL_Token_With_None range XXX .. XXX;
+type UBL_Token is (None, EOF);
 
 procedure Next_Token
   ( Input : in File_Handler.File_Descriptor;

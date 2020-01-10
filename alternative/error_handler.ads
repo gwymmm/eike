@@ -1,11 +1,14 @@
 package Error_Handler is
 pragma SPARK_Mode( On );
 
-type Module_Classifier is (None, Input_Handler);
+type Module_Classifier is 
+  ( None, Input_Handler, UBL_Lexer);
 
-type Function_Classifier is (None, Next_Character);
+type Function_Classifier is 
+  ( None, Next_Character, Next_Token, Do_Next_Element);
 
-type Error_Classifier is (None, Read_From_File_Error);
+type Error_Classifier is 
+ ( None, Read_From_File_Error, End_Of_File_Not_Expected, Unexpected_Character);
 
 type Error_Descriptor is
 record
