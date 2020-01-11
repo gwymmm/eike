@@ -173,14 +173,14 @@ ocumentContextParameter/ram:ID  --> BT-23
 
 ### Mandatory
 
-{EmbeddedDocumentBinaryObject, EndpointID, Amount, BaseAmount, TaxAmount, 
- TaxableAmount, LineExtensionAmount, TaxExclusiveAmount, TaxInclusiveAmount,
- AllowanceTotalAmount, ChargeTotalAmount, PrepaidAmount, PayableRoundingAmount,
- PayableAmount, InvoicedQuantity, PriceAmount, CreditedQuantity}
+{EmbeddedDocumentBinaryObject<, EndpointID<, Amount<, BaseAmount<, TaxAmount<, 
+ TaxableAmount<, LineExtensionAmount<, TaxExclusiveAmount<, TaxInclusiveAmount<,
+ AllowanceTotalAmount<, ChargeTotalAmount<, PrepaidAmount<, PayableRoundingAmount<,
+ PayableAmount<, InvoicedQuantity<, PriceAmount<, CreditedQuantity<}
 
 ### Optional
 
-{ID, CompanyID, PaymentMeansCode, ItemClassificationCode, BaseQuantity}
+{ID<, CompanyID<, PaymentMeansCode<, ItemClassificationCode<, BaseQuantity}
  
 
 ## Get Token
@@ -235,7 +235,7 @@ A-prefixed
   := 'c' Ac-prefixed
   or 'd' 'd' Add-prefixed
   or 'l' 'lowance' Allowance-prefixed
-  or 'm' 'ount'
+  or 'm' 'ount' @
   or 't' 'tachment'
 
 Ac-prefixed
@@ -261,7 +261,7 @@ Additional-prefixed
 
 Allowance-prefixed
   := 'C' 'harge' AllowanceCharge-prefixed
-  or 'T' 'otalAmount'
+  or 'T' 'otalAmount' @
 
 AllowanceCharge-prefixed
   := ' '
@@ -282,8 +282,8 @@ B-prefixed
   or 'u' 'yer' Buyer-prefixed
 
 Base-prefixed
-  := 'A' 'mount'
-  or 'Q' 'uantity'
+  := 'A' 'mount' @
+  or 'Q' 'uantity' [@]
 
 Buyer-prefixed
   := 'R' 'eference'
@@ -305,7 +305,7 @@ C-prefixed
 
 Charge-prefixed
   := 'I' 'ndicator'
-  or 'T' 'otalAmount'
+  or 'T' 'otalAmount' @
 
 Co-prefixed
   := 'm' Com-prefixed
@@ -317,7 +317,7 @@ Com-prefixed
   or 'pany' Company-prefixed
 
 Company-prefixed
-  := 'I' 'D'
+  := 'I' 'D' [@]
   or 'L' 'egalForm'
 
 Cont-prefixed
@@ -330,7 +330,7 @@ Country-prefixed
   or 'S' 'ubentity'
 
 Credit-prefixed
-  := 'e' 'dQuantity'
+  := 'e' 'dQuantity' @
   or 'N' 'ote' CreditNote-prefixed
 
 CreditNote-prefixed
@@ -375,20 +375,20 @@ Document-prefixed
 
 E-prefixed
   := 'l' 'ectronicMail'
-  or 'm' 'beddedDocumentBinaryObject'
+  or 'm' 'beddedDocumentBinaryObject' @
   or 'n' 'd' End-prefixed
   or 'x' 'ternalReference'
 
 End-prefixed
   := 'D' 'ate'
-  or 'p' 'ointID'
+  or 'p' 'ointID' @
 
 {ID<, IssueDate<, InvoiceTypeCode<, InvoicePeriod<, InvoiceDocumentReference<,
  IdentificationCode<, InvoiceLine<, InvoicedQuantity<, Item<,
  ItemClassificationCode<}
 
 I-prefixed
-  := 'D'
+  := 'D' [@]
   or 'd' 'entificationCode'
   or 'n' 'voice' Invoice-prefixed
   or 't' 'em' Item-prefixed
@@ -396,7 +396,7 @@ I-prefixed
 
 Invoice-prefixed
   := 'D' 'ocumentReference'
-  or 'd' 'Quantity'
+  or 'd' 'Quantity' @
   or 'L' 'ine'
   or 'P' 'eriod'
   or 'T' 'ypeCode'
@@ -404,7 +404,7 @@ Invoice-prefixed
 Item-prefixed
   := ' '
   or '>'
-  or 'C' 'lassificationCode'
+  or 'C' 'lassificationCode' [@]
 
 {Line<, LegalMonetaryTotal<, LineExtensionAmount<, LineID<}
 
@@ -415,7 +415,7 @@ L-prefixed
 Line-prefixed
   := ' '
   or '>'
-  or 'E' 'xtensionAmount'
+  or 'E' 'xtensionAmount' @
   or 'I' 'D'
 
 {Note, Name, NetworkID}
@@ -471,8 +471,8 @@ Pay-prefixed
   or 'm' 'ent' Payment-prefixed
 
 Payable-prefixed
-  := 'A' 'mount'
-  or 'R' 'oundingAmount'
+  := 'A' 'mount' @
+  or 'R' 'oundingAmount' @
 
 Paye-prefixed
   := 'e' Payee-prefixed
@@ -494,14 +494,14 @@ PaymentM-prefixed
 PaymentMeans-prefixed
   := ' '
   or '>'
-  or 'C' 'ode'
+  or 'C' 'ode' [@]
 
 Postal-prefixed
   := 'A' 'ddress'
   or 'Z' 'one'
 
 Pr-prefixed
-  := 'e' 'paidAmount'
+  := 'e' 'paidAmount' @
   or 'i' Pri-prefixed
   or 'o' Pro-prefixed
 
@@ -512,7 +512,7 @@ Pri-prefixed
 Price-prefixed
   := ' '
   or '>'
-  or 'A' 'mount'
+  or 'A' 'mount' @
 
 Pro-prefixed
   := 'f' 'ileID'
@@ -550,11 +550,11 @@ T-prefixed
   or 'e' 'lephone'
 
 Tax-prefixed
-  := 'A' 'mount'
-  or 'a' 'bleAmount'
+  := 'A' 'mount' @
+  or 'a' 'bleAmount' @
   or 'C' TaxC-prefixed
   or 'E' 'x' TaxEx-prefixed
-  or 'I' 'nclusiveAmount'
+  or 'I' 'nclusiveAmount' @
   or 'P' 'ointDate'
   or 'R' 'epresentativeParty'
   or 'S' TaxS-prefixed
@@ -565,7 +565,7 @@ TaxC-prefixed
   or 'u' 'rrencyCode'
 
 TaxEx-prefixed
-  := 'c' 'lusiveAmount'
+  := 'c' 'lusiveAmount' @
   or 'e' 'mptionReason' TaxExemptionReason-prefixed
 
 TaxExemptionReason-prefixed

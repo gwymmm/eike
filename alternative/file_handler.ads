@@ -26,7 +26,7 @@ procedure Open_File_For_Reading
 
   with
     Global => null,
-    Depends => (File => null, Is_Successful => null),
+    Depends => (File => File_Name, Is_Successful => File_Name),
     Pre => File_Name'Length > 0, 
     Post => ( if Is_Successful then 
       (Is_Open(File) and then In_Read_Mode(File)) );
@@ -38,7 +38,7 @@ procedure Read
 
   with
     Global => null,
-    Depends => (Byte => null, Status => null, null => File),
+    Depends => (Byte => File, Status => File),
     Pre => Is_Open(File) and then In_Read_Mode(File);  
 
 procedure Close_File
@@ -47,7 +47,7 @@ procedure Close_File
 
   with
     Global => null,
-    Depends => (File => null, Is_Successful => null, null => File),
+    Depends => (File => null, Is_Successful => File),
     Pre => Is_Open(File),
     Post => (if Is_Successful then (not Is_Open(File)) );
 

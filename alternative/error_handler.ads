@@ -5,7 +5,8 @@ type Module_Classifier is
   ( None, Input_Handler, UBL_Lexer);
 
 type Function_Classifier is 
-  ( None, Next_Character, Next_Token, Do_Next_Element);
+  ( None, Next_Character, Next_Token, Do_Next_Element, Do_Tag_Or_Comment,
+    Name_Resolution, A_Prefixed);
 
 type Error_Classifier is 
  ( None, Read_From_File_Error, End_Of_File_Not_Expected, Unexpected_Character);

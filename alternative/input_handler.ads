@@ -12,8 +12,8 @@ procedure Next_Character
 
   with 
     Global => null,
-    Depends => (Error_Log => Error_Log, Is_End_Of_File => null,
-                  Character_Read => null, null => Input),
+    Depends => (Error_Log => (Error_Log, Input), Is_End_Of_File => Input,
+                  Character_Read => Input),
     Pre => File_Handler.Is_Open(Input) 
              and then File_Handler.In_Read_Mode(Input)
              and then Error_Log.Error_Occurred = False;
