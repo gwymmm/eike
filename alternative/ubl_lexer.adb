@@ -5,12 +5,12 @@ with Ada.Characters.Latin_1; use Ada.Characters.Latin_1;
 package body UBL_Lexer is
 pragma SPARK_Mode( On );
 
-type XML_Tag_States is (Next_Element, Tag_Or_Comment, Comment, Error_State, 
-  End_State);
+type XML_Tag_States is (Next_Element, Skip_Namespace, Tag_Or_Comment, Comment, 
+  Error_State, End_State);
 
 subtype Active_XML_Tag_State is XML_Tag_States range Next_Element .. Comment;
 
-type XML_Tag_Type is (S_Tag, E_Tag);
+type XML_Tag_Type is (None, Start_Tag, End_Tag);
 
 procedure Evaluate_Next_Token_Rule
   ( Input : in File_Handler.File_Descriptor;
@@ -18,7 +18,8 @@ procedure Evaluate_Next_Token_Rule
     Token : out UBL_Token;
     Current_Character : in Character;
     Current_State : in Active_XML_Tag_State;
-    Next_State : out XML_Tag_States )
+    Next_State : out XML_Tag_States;
+    Tag : in out XML_Tag_Type )
 
   with
     Global => null;
@@ -32,11 +33,21 @@ procedure Do_Next_Element
     Global => null;
 
 procedure Do_Tag_Or_Comment
+  ( Error_Log : in out Error_Handler.Error_Descriptor;
+    Current_Character : in Character;
+    Next_State : out XML_Tag_States;
+    Tag : out XML_Tag_Type )
+
+  with
+    Global => null;
+
+procedure Do_Skip_Namespace
   ( Input : in File_Handler.File_Descriptor;
     Error_Log : in out Error_Handler.Error_Descriptor;
     Token : out UBL_Token;
     Current_Character : in Character;
-    Next_State : out XML_Tag_States )
+    Next_State : out XML_Tag_States;
+    Tag : in XML_Tag_Type )
 
   with
     Global => null;
@@ -53,14 +64,13 @@ procedure Name_Resolution
   ( Input : in File_Handler.File_Descriptor;
     Error_Log : in out Error_Handler.Error_Descriptor;
     Token : out UBL_Token;
-    Start_Character : in Character;
     Tag_Type : in XML_Tag_Type )
 
   with
     Global => null,
     Depends => 
-      ( Error_Log => (Error_Log, Start_Character, Tag_Type, Input),
-        Token => (Start_Character, Tag_Type, Input) );
+      ( Error_Log => (Error_Log, Tag_Type, Input),
+        Token => (Tag_Type, Input) );
 
 procedure Discard_EOF_And_Error
   ( Error_Log : in out Error_Handler.Error_Descriptor;
@@ -75,10 +85,23 @@ procedure Discard_EOF_And_Error
 procedure Expect_Character_Sequence
   ( Sequence : in String;
     Input : in File_Handler.File_Descriptor;
-    Error_Log : in out Error_Handler.Error_Descriptor )
+    In_Module : Error_Handler.Module_Classifier;
+    In_Function : Error_Handler.Function_Classifier;
+    Error_Log : in out Error_Handler.Error_Descriptor;
+    Sequence_Confirmed : out Boolean )
 
   with
     Global => null;    
+
+procedure Expect_Tag_End
+  ( Input : in File_Handler.File_Descriptor;
+    In_Module : Error_Handler.Module_Classifier;
+    In_Function : Error_Handler.Function_Classifier;
+    Error_Log : in out Error_Handler.Error_Descriptor;
+    Tag_End_Confirmed : out Boolean )
+
+  with
+    Global => null;  
 
 procedure A_Prefixed
   ( Input : in File_Handler.File_Descriptor;
@@ -909,6 +932,7 @@ is
   Current_State : Active_XML_Tag_State;
   Current_Character : Character;
   Is_End_Of_File : Boolean;
+  Tag : XML_Tag_Type := None;
 begin
 
   while State not in Error_State .. End_State loop
@@ -950,7 +974,7 @@ begin
       pragma Assert (not Error_Log.Error_Occurred and not Is_End_Of_File);
 
       Evaluate_Next_Token_Rule(Input, Error_Log, Token, Current_Character, 
-        Current_State, State);
+        Current_State, State, Tag);
       --
 
     end if;     
@@ -966,7 +990,8 @@ procedure Evaluate_Next_Token_Rule
     Token : out UBL_Token;
     Current_Character : in Character;
     Current_State : in Active_XML_Tag_State;
-    Next_State : out XML_Tag_States )
+    Next_State : out XML_Tag_States;
+    Tag : in out XML_Tag_Type)
 is
 begin
 
@@ -978,7 +1003,12 @@ begin
 
     when Tag_Or_Comment =>
 
-      Do_Tag_Or_Comment(Input, Error_Log, Token, Current_Character, Next_State);
+      Do_Tag_Or_Comment(Error_Log, Current_Character, Next_State, Tag);
+
+    when Skip_Namespace =>
+
+      Do_Skip_Namespace(Input, Error_Log, Token, Current_Character, Next_State,
+        Tag);
 
     when Comment =>
 
@@ -1019,71 +1049,33 @@ begin
 end Do_Next_Element;
 
 procedure Do_Tag_Or_Comment
-  ( Input : in File_Handler.File_Descriptor;
-    Error_Log : in out Error_Handler.Error_Descriptor;
-    Token : out UBL_Token;
+  ( Error_Log : in out Error_Handler.Error_Descriptor;
     Current_Character : in Character;
-    Next_State : out XML_Tag_States )
+    Next_State : out XML_Tag_States;
+    Tag : out XML_Tag_Type )
 is
-  Is_End_Of_File : Boolean;
-  New_Character : Character;
 begin
 
   case Current_Character is
 
     when '!' =>
 
+      Tag := None;
       Next_State := Comment;
 
     when 'A' .. 'Z' | 'a' .. 'z' =>
 
-      Name_Resolution(Input, Error_Log, Token, Current_Character, S_Tag);
-
-      if not Error_Log.Error_Occurred then
-        Next_State := End_State;
-      else
-        Next_State := Error_State;
-      end if;
+      Tag := Start_Tag;
+      Next_State := Skip_Namespace;
 
     when '/' =>
 
-      Input_Handler.Next_Character(Input, Error_Log, Is_End_Of_File, 
-        New_Character);
-
-      if Error_Log.Error_Occurred then
-
-        Next_State := Error_State;
-        Token := None;
-
-        return;
-
-      end if;
-
-      if Is_End_Of_File then
-
-        Next_State := Error_State;
-        Token := None;
-        
-        Error_Handler.Set_Error
-        ( Error_Log => Error_Log,
-          In_Module => Error_Handler.UBL_Lexer,
-          In_Function => Error_Handler.Do_Tag_Or_Comment,
-          What => Error_Handler.End_Of_File_Not_Expected );
-
-        return;
-
-      end if; 
-
-      Name_Resolution(Input, Error_Log, Token, New_Character, E_Tag);
-
-      if not Error_Log.Error_Occurred then
-        Next_State := End_State;
-      else
-        Next_State := Error_State;
-      end if;
+      Tag := End_Tag;
+      Next_State := Skip_Namespace;
 
     when others =>
 
+      Tag := None;
       Next_State := Error_State;
       Error_Handler.Set_Error
         ( Error_Log => Error_Log,
@@ -1116,16 +1108,74 @@ begin
 
 end Do_Comment;
 
+
+procedure Do_Skip_Namespace
+  ( Input : in File_Handler.File_Descriptor;
+    Error_Log : in out Error_Handler.Error_Descriptor;
+    Token : out UBL_Token;
+    Current_Character : in Character;
+    Next_State : out XML_Tag_States;
+    Tag : in XML_Tag_Type )
+is
+begin
+
+  case Current_Character is
+
+    when 'A' .. 'Z' | 'a' .. 'z' =>
+
+      Next_State := Skip_Namespace;
+
+    when ':' =>
+
+      Name_Resolution(Input, Error_Log, Token, Tag);
+
+      if not Error_Log.Error_Occurred then
+        Next_State := End_State;
+      else
+        Next_State := Error_State;
+      end if;
+
+    when others =>
+
+      Next_State := Error_State;
+      Error_Handler.Set_Error
+        ( Error_Log => Error_Log,
+          In_Module => Error_Handler.UBL_Lexer,
+          In_Function => Error_Handler.Do_Skip_Namespace,
+          What => Error_Handler.Unexpected_Character );
+ 
+  end case;
+
+end Do_Skip_Namespace;
+
+
 procedure Name_Resolution
   ( Input : in File_Handler.File_Descriptor;
     Error_Log : in out Error_Handler.Error_Descriptor;
     Token : out UBL_Token;
-    Start_Character : in Character;
     Tag_Type : in XML_Tag_Type )
 is
+
+  Current_Character : Character;
+  Is_End_Of_File : Boolean;
+  Character_Read : Boolean;
+  Sequence_Confirmed : Boolean;
+  Tag_End_Confirmed : Boolean;
+
 begin
 
-  case Start_Character is
+  Input_Handler.Next_Character(Input, Error_Log, Is_End_Of_File, 
+      Current_Character);
+
+  Discard_EOF_And_Error(Error_Log, Is_End_Of_File, Error_Handler.UBL_Lexer,
+    Error_Handler.Name_Resolution, Character_Read);
+
+  if not Character_Read then
+    Token := None;
+    return;
+  end if;
+
+  case Current_Character is
 
     when 'A' =>
 
@@ -1149,11 +1199,91 @@ begin
 
     when 'F' =>
 
-      --
+      Expect_Character_Sequence("inancialInstitutionBranch", Input, 
+        Error_Handler.UBL_Lexer, Error_Handler.Name_Resolution, Error_Log, 
+        Sequence_Confirmed);
 
+      if not Sequence_Confirmed then
+        Token := None;
+        return;
+      end if;
+
+      Expect_Tag_End(Input, Error_Handler.UBL_Lexer, 
+        Error_Handler.Name_Resolution, Error_Log, Tag_End_Confirmed);
+
+      if not Tag_End_Confirmed then
+        Token := None;
+        return;
+      end if;
+
+      case Tag_Type is
+
+        when Start_Tag =>
+
+          Token := Begin_FinancialInstitutionBranch;
+
+        when End_Tag =>
+
+          Token := End_FinancialInstitutionBranch;
+
+        when None =>
+
+          Token := None;
+
+          Error_Handler.Set_Error
+            ( Error_Log => Error_Log,
+              In_Module => Error_Handler.UBL_Lexer,
+              In_Function => Error_Handler.Name_Resolution,
+              What => Error_Handler.Inconsistent_Tag_Type_Bug );
+
+      end case;
+        
     when 'H' =>
 
-      H_Prefixed(Input, Error_Log, Token, Tag_Type);
+      Expect_Character_Sequence("olderName", Input, 
+        Error_Handler.UBL_Lexer, Error_Handler.Name_Resolution, Error_Log, 
+        Sequence_Confirmed);
+
+      if not Sequence_Confirmed then
+        Token := None;
+        return;
+      end if;
+
+      Expect_Tag_End(Input, Error_Handler.UBL_Lexer, 
+        Error_Handler.Name_Resolution, Error_Log, Tag_End_Confirmed);
+
+      if not Tag_End_Confirmed then
+        Token := None;
+        return;
+      end if;
+
+      case Tag_Type is
+
+        when Start_Tag =>
+
+          Token := HolderName;
+
+        when End_Tag =>
+
+          Token := None;
+
+          Error_Handler.Set_Error
+            ( Error_Log => Error_Log,
+              In_Module => Error_Handler.UBL_Lexer,
+              In_Function => Error_Handler.Name_Resolution,
+              What => Error_Handler.No_End_Tag_For_Leaf_XML_Element_Expected );
+
+        when None =>
+
+          Token := None;
+
+          Error_Handler.Set_Error
+            ( Error_Log => Error_Log,
+              In_Module => Error_Handler.UBL_Lexer,
+              In_Function => Error_Handler.Name_Resolution,
+              What => Error_Handler.Inconsistent_Tag_Type_Bug );
+
+      end case;
 
     when 'I' =>
 
@@ -1165,7 +1295,7 @@ begin
 
     when 'M' =>
 
-      M_Prefixed(Input, Error_Log, Token, Tag_Type);
+      null;
 
     when 'N' =>
 
@@ -1173,7 +1303,14 @@ begin
 
     when 'O' =>
 
-      --
+      Expect_Character_Sequence("r", Input, 
+        Error_Handler.UBL_Lexer, Error_Handler.Name_Resolution, Error_Log, 
+        Sequence_Confirmed);
+
+      if not Sequence_Confirmed then
+        Token := None;
+        return;
+      end if;
 
       Or_Prefixed(Input, Error_Log, Token, Tag_Type);
 
@@ -1196,11 +1333,11 @@ begin
       T_Prefixed(Input, Error_Log, Token, Tag_Type);
 
     when 'U' =>
-
+null;
       --
 
     when 'V' =>
-
+null;
       --
 
     when others =>
@@ -1249,6 +1386,112 @@ begin
 end Discard_EOF_And_Error;
 
 
+procedure Expect_Character_Sequence
+  ( Sequence : in String;
+    Input : in File_Handler.File_Descriptor;
+    In_Module : Error_Handler.Module_Classifier;
+    In_Function : Error_Handler.Function_Classifier;
+    Error_Log : in out Error_Handler.Error_Descriptor;
+    Sequence_Confirmed : out Boolean )
+is
+
+  Character_Read : Boolean;
+  Current_Character : Character;
+  Is_End_Of_File : Boolean;
+
+begin
+
+  for I in Sequence'Range loop
+
+    Input_Handler.Next_Character(Input, Error_Log, Is_End_Of_File, 
+      Current_Character);
+
+    Discard_EOF_And_Error(Error_Log, Is_End_Of_File, In_Module,
+      In_Function, Character_Read);
+
+    if not Character_Read then
+      Sequence_Confirmed := False;
+      return;
+    end if;
+
+    if Current_Character /= Sequence(I) then
+
+      Sequence_Confirmed := False;
+      
+      Error_Handler.Set_Error
+        ( Error_Log => Error_Log,
+          In_Module => In_Module,
+          In_Function => In_Function,
+          What => Error_Handler.Unexpected_Character_Sequence );
+
+      return;
+
+    end if;  
+
+  end loop;
+
+  Sequence_Confirmed := True;
+
+end Expect_Character_Sequence;
+
+
+procedure Expect_Tag_End
+  ( Input : in File_Handler.File_Descriptor;
+    In_Module : Error_Handler.Module_Classifier;
+    In_Function : Error_Handler.Function_Classifier;
+    Error_Log : in out Error_Handler.Error_Descriptor;
+    Tag_End_Confirmed : out Boolean )
+is
+
+  Character_Read : Boolean;
+  Current_Character : Character;
+  Is_End_Of_File : Boolean;
+
+begin
+
+  loop
+
+    Input_Handler.Next_Character(Input, Error_Log, Is_End_Of_File, 
+      Current_Character);
+
+    Discard_EOF_And_Error(Error_Log, Is_End_Of_File, In_Module,
+      In_Function, Character_Read);
+
+    if not Character_Read then
+      Tag_End_Confirmed := False;
+      return;
+    end if;
+
+    case Current_Character is
+
+      when ' ' | HT | CR | LF =>
+
+        null;
+
+      when '>' =>
+
+        Tag_End_Confirmed := True;
+
+        return;
+
+      when others =>
+
+        Tag_End_Confirmed := False;
+
+        Error_Handler.Set_Error
+          ( Error_Log => Error_Log,
+            In_Module => In_Module,
+            In_Function => In_Function,
+            What => Error_Handler.End_Of_XML_Tag_Expected );
+
+        return;
+
+    end case;
+
+  end loop;
+
+end Expect_Tag_End;
+
 procedure A_Prefixed
   ( Input : in File_Handler.File_Descriptor;
     Error_Log : in out Error_Handler.Error_Descriptor;
@@ -1280,12 +1523,15 @@ begin
       Ac_prefixed(Input, Error_Log, Token, Tag_Type);
 
     when 'd' =>
-
+Null;
       --
 
     when 'l' =>
+null;
     when 'm' =>
+null;
     when 't' =>
+null;
     when others =>
 
       Error_Handler.Set_Error

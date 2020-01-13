@@ -4,7 +4,8 @@ with Error_Handler;
 package UBL_Lexer is
 pragma SPARK_Mode( On );
 
-type UBL_Token is (None, EOF);
+type UBL_Token is (None, EOF, Begin_FinancialInstitutionBranch,
+  End_FinancialInstitutionBranch, HolderName);
 
 procedure Next_Token
   ( Input : in File_Handler.File_Descriptor;
