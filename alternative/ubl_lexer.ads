@@ -5,7 +5,10 @@ package UBL_Lexer is
 pragma SPARK_Mode( On );
 
 type UBL_Token is (None, EOF, Begin_FinancialInstitutionBranch,
-  End_FinancialInstitutionBranch, HolderName);
+  End_FinancialInstitutionBranch, HolderName, MultiplierFactorNumeric,
+  URI, Value, Amount_With_Attribute, Begin_Attachment, End_Attachment,
+  ActualDeliveryDate, Begin_AccountingSupplierParty, 
+  End_AccountingSupplierParty);
 
 procedure Next_Token
   ( Input : in File_Handler.File_Descriptor;

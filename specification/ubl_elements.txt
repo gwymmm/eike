@@ -240,7 +240,7 @@ A-prefixed
   or 'd' 'd' Add-prefixed
   or 'l' 'lowance' Allowance-prefixed
   or 'm' 'ount' @ (L)
-  or 't' 'tachment'
+  or 't' 'tachment' (C)
 
 Ac-prefixed
   := 'c' 'ounting' Accounting-prefixed

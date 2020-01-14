@@ -6,7 +6,8 @@ type Module_Classifier is
 
 type Function_Classifier is 
   ( None, Next_Character, Next_Token, Do_Next_Element, Do_Tag_Or_Comment,
-    Do_Skip_Namespace, Name_Resolution, A_Prefixed );
+    Do_Skip_Namespace, Name_Resolution, A_Prefixed, Ac_Prefixed, 
+    Accounting_Prefixed );
 
 type Error_Classifier is 
  ( None, Read_From_File_Error, End_Of_File_Not_Expected, Unexpected_Character,
