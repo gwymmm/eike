@@ -2849,4 +2849,66 @@ begin
 
 end Co_Prefixed;
 
+
+procedure Com_Prefixed
+  ( Input : in File_Handler.File_Descriptor;
+    Error_Log : in out Error_Handler.Error_Descriptor;
+    Token : out UBL_Token;
+    Tag_Type : in XML_Tag_Type )
+is
+
+  Current_Character : Character;
+  Is_End_Of_File : Boolean;
+  Character_Read : Boolean;
+--  Sequence_Confirmed : Boolean;
+
+  This_Function : constant Error_Handler.Function_Classifier 
+    := Error_Handler.Com_Prefixed;
+
+begin
+
+  Input_Handler.Next_Character(Input, Error_Log, Is_End_Of_File, 
+    Current_Character);
+
+  Discard_EOF_And_Error(Error_Log, Is_End_Of_File, Error_Handler.UBL_Lexer,
+    This_Function, Character_Read);
+
+  if not Character_Read then
+    Token := None;
+    return;
+  end if;
+
+  case Current_Character is
+
+    when 'm' =>
+
+      Finish_Composite_Element("odityClassification", 
+        (Begin_CommodityClassification, End_CommodityClassification),
+        This_Function, Input, Error_Log, Token, Tag_Type);
+
+    when 'p' =>
+
+      Expect_Character_Sequence("any", Input, 
+        Error_Handler.UBL_Lexer, This_Function, Error_Log, 
+        Sequence_Confirmed);
+
+      if not Sequence_Confirmed then
+        Token := None;
+        return;
+      end if;
+
+      Company_Prefixed(Input, Error_Log, Token, Tag_Type);
+  
+    when others =>
+
+      Error_Handler.Set_Error
+        ( Error_Log => Error_Log,
+          In_Module => Error_Handler.UBL_Lexer,
+          In_Function => This_Function,
+          What => Error_Handler.Unexpected_Character );
+
+  end case;
+
+end Com_Prefixed;
+
 end UBL_Lexer;

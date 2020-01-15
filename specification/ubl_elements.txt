@@ -318,7 +318,7 @@ Co-prefixed
 
 Com-prefixed
   := 'm' 'odityClassification' (C)
-  or 'pany' Company-prefixed
+  or 'p' 'any' Company-prefixed
 
 Company-prefixed
   := 'I' 'D' [@] (L)
