@@ -5,9 +5,40 @@ type Module_Classifier is
   ( None, Input_Handler, UBL_Lexer );
 
 type Function_Classifier is 
+
   ( None, Next_Character, Next_Token, Do_Next_Element, Do_Tag_Or_Comment,
+
     Do_Skip_Namespace, Name_Resolution, A_Prefixed, Ac_Prefixed, 
-    Accounting_Prefixed );
+
+    Accounting_Prefixed, AccountingC_Prefixed, Add_Prefixed, 
+
+    Additional_Prefixed, Allowance_Prefixed, AllowanceCharge_Prefixed,
+
+    AllowanceChargeReason_Prefixed, B_Prefixed, Base_Prefixed, Buyer_Prefixed,
+
+    C_Prefixed, Charge_Prefixed, Co_Prefixed, Com_Prefixed, Company_Prefixed,
+
+    Cont_Prefixed, Country_Prefixed, Credit_Prefixed, CreditNote_Prefixed,
+
+    D_Prefixed, De_Prefixed, Des_Prefixed, Description_Prefixed, 
+
+    Delivery_Prefixed, Document_Prefixed, E_Prefixed, End_Prefixed, I_Prefixed,
+
+    Invoice_Prefixed, Item_Prefixed, L_Prefixed, Line_Prefixed, N_Prefixed,
+
+    Or_Prefixed, Order_Prefixed, Origin_Prefixed, P_Prefixed, Pa_Prefixed,
+
+    Party_Prefixed, Pay_Prefixed, Payable_Prefixed, Paye_Prefixed, 
+
+    Payee_Prefixed, Payment_Prefixed, PaymentM_Prefixed, PaymentMeans_Prefixed,
+
+    Postal_Prefixed, Pr_Prefixed, Pri_Prefixed, Price_Prefixed, Pro_Prefixed,
+
+    Re_Prefixed, S_Prefixed, St_Prefixed, Sta_Prefixed, T_Prefixed, 
+
+    Tax_Prefixed, TaxC_Prefixed, TaxEx_Prefixed, TaxExemptionReason_Prefixed,
+
+    TaxS_Prefixed );
 
 type Error_Classifier is 
  ( None, Read_From_File_Error, End_Of_File_Not_Expected, Unexpected_Character,

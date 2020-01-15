@@ -6,7 +6,7 @@ package body Input_Handler is
 pragma SPARK_Mode( On );
 
 procedure Update_Line_Number(Line : in out Positive; Char : in Character)
-  with 
+  with
     Global => null,
     Depends => (Line => (Line, Char));
 

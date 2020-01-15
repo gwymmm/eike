@@ -121,12 +121,65 @@ procedure Finish_Leaf_Element
   with
     Global => null;  
 
--- Finish_Leaf_Element_With_Attribute
+procedure Finish_Leaf_Element_No_Character_Sequence
+  ( Expected_Token : in UBL_Token;
+    In_Function : Error_Handler.Function_Classifier;
+    Input : in File_Handler.File_Descriptor;
+    Error_Log : in out Error_Handler.Error_Descriptor;
+    Token : out UBL_Token;
+    Tag_Type : in XML_Tag_Type )
+
+  with
+    Global => null;
+
+procedure Finish_Leaf_Element_Confirm_Tag_Only
+  ( Expected_Token : in UBL_Token;
+    In_Function : Error_Handler.Function_Classifier;
+    Error_Log : in out Error_Handler.Error_Descriptor;
+    Token : out UBL_Token;
+    Tag_Type : in XML_Tag_Type )
+
+  with
+    Global => null;    
+
+procedure Finish_Leaf_Element_With_Attribute
+  ( Tail_Of_Name : in String;
+    Expected_Token : in UBL_Token;
+    In_Function : Error_Handler.Function_Classifier;
+    Input : in File_Handler.File_Descriptor;
+    Error_Log : in out Error_Handler.Error_Descriptor;
+    Token : out UBL_Token;
+    Tag_Type : in XML_Tag_Type )
+
+  with
+    Global => null;  
+
 procedure Finish_Composite_Element
   ( Tail_Of_Name : in String;
     Expected_Token_Pair : in Token_Pair;
     In_Function : Error_Handler.Function_Classifier;
     Input : in File_Handler.File_Descriptor;
+    Error_Log : in out Error_Handler.Error_Descriptor;
+    Token : out UBL_Token;
+    Tag_Type : in XML_Tag_Type )
+
+  with
+    Global => null;  
+
+procedure Finish_Composite_Element_No_Character_Sequence
+  ( Expected_Token_Pair : in Token_Pair;
+    In_Function : Error_Handler.Function_Classifier;
+    Input : in File_Handler.File_Descriptor;
+    Error_Log : in out Error_Handler.Error_Descriptor;
+    Token : out UBL_Token;
+    Tag_Type : in XML_Tag_Type )
+
+  with
+    Global => null; 
+
+procedure Finish_Composite_Element_Confirm_Tag_Only
+  ( Expected_Token_Pair : in Token_Pair;
+    In_Function : Error_Handler.Function_Classifier;
     Error_Log : in out Error_Handler.Error_Descriptor;
     Token : out UBL_Token;
     Tag_Type : in XML_Tag_Type )
@@ -1191,7 +1244,6 @@ is
   Is_End_Of_File : Boolean;
   Character_Read : Boolean;
   Sequence_Confirmed : Boolean;
-  Tag_End_Confirmed : Boolean;
 
   This_Function : constant Error_Handler.Function_Classifier 
     := Error_Handler.Name_Resolution;
@@ -1521,6 +1573,152 @@ begin
 
 end Finish_Leaf_Element;
 
+
+procedure Finish_Leaf_Element_No_Character_Sequence
+  ( Expected_Token : in UBL_Token;
+    In_Function : Error_Handler.Function_Classifier;
+    Input : in File_Handler.File_Descriptor;
+    Error_Log : in out Error_Handler.Error_Descriptor;
+    Token : out UBL_Token;
+    Tag_Type : in XML_Tag_Type )
+is
+
+  Tag_End_Confirmed : Boolean;
+
+begin
+
+      Expect_Tag_End(Input, Error_Handler.UBL_Lexer, 
+        In_Function, Error_Log, Tag_End_Confirmed);
+
+      if not Tag_End_Confirmed then
+        Token := None;
+        return;
+      end if;
+
+      case Tag_Type is
+
+        when Start_Tag =>
+
+          Token := Expected_Token;
+
+        when End_Tag =>
+
+          Token := None;
+
+          Error_Handler.Set_Error
+            ( Error_Log => Error_Log,
+              In_Module => Error_Handler.UBL_Lexer,
+              In_Function => In_Function,
+              What => Error_Handler.No_End_Tag_For_Leaf_XML_Element_Expected );
+
+        when None =>
+
+          Token := None;
+
+          Error_Handler.Set_Error
+            ( Error_Log => Error_Log,
+              In_Module => Error_Handler.UBL_Lexer,
+              In_Function => In_Function,
+              What => Error_Handler.Inconsistent_Tag_Type_Bug );
+
+      end case;
+
+end Finish_Leaf_Element_No_Character_Sequence;
+
+
+procedure Finish_Leaf_Element_Confirm_Tag_Only
+  ( Expected_Token : in UBL_Token;
+    In_Function : Error_Handler.Function_Classifier;
+    Error_Log : in out Error_Handler.Error_Descriptor;
+    Token : out UBL_Token;
+    Tag_Type : in XML_Tag_Type )
+is
+begin
+
+      case Tag_Type is
+
+        when Start_Tag =>
+
+          Token := Expected_Token;
+
+        when End_Tag =>
+
+          Token := None;
+
+          Error_Handler.Set_Error
+            ( Error_Log => Error_Log,
+              In_Module => Error_Handler.UBL_Lexer,
+              In_Function => In_Function,
+              What => Error_Handler.No_End_Tag_For_Leaf_XML_Element_Expected );
+
+        when None =>
+
+          Token := None;
+
+          Error_Handler.Set_Error
+            ( Error_Log => Error_Log,
+              In_Module => Error_Handler.UBL_Lexer,
+              In_Function => In_Function,
+              What => Error_Handler.Inconsistent_Tag_Type_Bug );
+
+      end case;
+
+end Finish_Leaf_Element_Confirm_Tag_Only;
+
+
+procedure Finish_Leaf_Element_With_Attribute
+  ( Tail_Of_Name : in String;
+    Expected_Token : in UBL_Token;
+    In_Function : Error_Handler.Function_Classifier;
+    Input : in File_Handler.File_Descriptor;
+    Error_Log : in out Error_Handler.Error_Descriptor;
+    Token : out UBL_Token;
+    Tag_Type : in XML_Tag_Type )
+is
+
+  Sequence_Confirmed : Boolean;
+
+begin
+
+      Expect_Character_Sequence(Tail_Of_Name, Input, 
+        Error_Handler.UBL_Lexer, In_Function, Error_Log, 
+        Sequence_Confirmed);
+
+      if not Sequence_Confirmed then
+        Token := None;
+        return;
+      end if;
+
+      case Tag_Type is
+
+        when Start_Tag =>
+
+          Token := Expected_Token;
+
+        when End_Tag =>
+
+          Token := None;
+
+          Error_Handler.Set_Error
+            ( Error_Log => Error_Log,
+              In_Module => Error_Handler.UBL_Lexer,
+              In_Function => In_Function,
+              What => Error_Handler.No_End_Tag_For_Leaf_XML_Element_Expected );
+
+        when None =>
+
+          Token := None;
+
+          Error_Handler.Set_Error
+            ( Error_Log => Error_Log,
+              In_Module => Error_Handler.UBL_Lexer,
+              In_Function => In_Function,
+              What => Error_Handler.Inconsistent_Tag_Type_Bug );
+
+      end case;
+
+end Finish_Leaf_Element_With_Attribute;
+
 procedure Finish_Composite_Element
   ( Tail_Of_Name : in String;
     Expected_Token_Pair : in Token_Pair;
@@ -1577,6 +1775,83 @@ begin
 
 end Finish_Composite_Element;
 
+procedure Finish_Composite_Element_No_Character_Sequence
+  ( Expected_Token_Pair : in Token_Pair;
+    In_Function : Error_Handler.Function_Classifier;
+    Input : in File_Handler.File_Descriptor;
+    Error_Log : in out Error_Handler.Error_Descriptor;
+    Token : out UBL_Token;
+    Tag_Type : in XML_Tag_Type )
+is
+
+  Tag_End_Confirmed : Boolean;
+
+begin
+
+      Expect_Tag_End(Input, Error_Handler.UBL_Lexer, 
+        In_Function, Error_Log, Tag_End_Confirmed);
+
+      if not Tag_End_Confirmed then
+        Token := None;
+        return;
+      end if;
+
+      case Tag_Type is
+
+        when Start_Tag =>
+
+          Token := Expected_Token_Pair.Begin_Token;
+
+        when End_Tag =>
+
+          Token := Expected_Token_Pair.End_Token;
+
+        when None =>
+
+          Token := None;
+
+          Error_Handler.Set_Error
+            ( Error_Log => Error_Log,
+              In_Module => Error_Handler.UBL_Lexer,
+              In_Function => In_Function,
+              What => Error_Handler.Inconsistent_Tag_Type_Bug );
+
+      end case;
+
+end Finish_Composite_Element_No_Character_Sequence;
+
+procedure Finish_Composite_Element_Confirm_Tag_Only
+  ( Expected_Token_Pair : in Token_Pair;
+    In_Function : Error_Handler.Function_Classifier;
+    Error_Log : in out Error_Handler.Error_Descriptor;
+    Token : out UBL_Token;
+    Tag_Type : in XML_Tag_Type )
+is
+begin
+
+      case Tag_Type is
+
+        when Start_Tag =>
+
+          Token := Expected_Token_Pair.Begin_Token;
+
+        when End_Tag =>
+
+          Token := Expected_Token_Pair.End_Token;
+
+        when None =>
+
+          Token := None;
+
+          Error_Handler.Set_Error
+            ( Error_Log => Error_Log,
+              In_Module => Error_Handler.UBL_Lexer,
+              In_Function => In_Function,
+              What => Error_Handler.Inconsistent_Tag_Type_Bug );
+
+      end case;
+
+end Finish_Composite_Element_Confirm_Tag_Only;
 
 procedure A_Prefixed
   ( Input : in File_Handler.File_Descriptor;
@@ -1589,7 +1864,9 @@ is
   Is_End_Of_File : Boolean;
   Character_Read : Boolean;
   Sequence_Confirmed : Boolean;
-  Tag_End_Confirmed : Boolean;
+
+  This_Function : constant Error_Handler.Function_Classifier 
+    := Error_Handler.A_Prefixed;
 
 begin
 
@@ -1597,7 +1874,7 @@ begin
       Current_Character);
 
   Discard_EOF_And_Error(Error_Log, Is_End_Of_File, Error_Handler.UBL_Lexer,
-    Error_Handler.A_Prefixed, Character_Read);
+    This_Function, Character_Read);
 
   if not Character_Read then
     Token := None;
@@ -1613,7 +1890,7 @@ begin
     when 'd' =>
 
       Expect_Character_Sequence("d", Input, 
-        Error_Handler.UBL_Lexer, Error_Handler.A_Prefixed, Error_Log, 
+        Error_Handler.UBL_Lexer, This_Function, Error_Log, 
         Sequence_Confirmed);
 
       if not Sequence_Confirmed then
@@ -1626,7 +1903,7 @@ begin
     when 'l' =>
 
       Expect_Character_Sequence("lowance", Input, 
-        Error_Handler.UBL_Lexer, Error_Handler.A_Prefixed, Error_Log, 
+        Error_Handler.UBL_Lexer, This_Function, Error_Log, 
         Sequence_Confirmed);
 
       if not Sequence_Confirmed then
@@ -1638,90 +1915,21 @@ begin
 
     when 'm' =>
 
-      Expect_Character_Sequence("ount", Input, 
-        Error_Handler.UBL_Lexer, Error_Handler.A_Prefixed, Error_Log, 
-        Sequence_Confirmed);
-
-      if not Sequence_Confirmed then
-        Token := None;
-        return;
-      end if;
-
-      case Tag_Type is
-
-        when Start_Tag =>
-
-          Token := Amount_With_Attribute;
-
-        when End_Tag =>
-
-          Token := None;
-
-          Error_Handler.Set_Error
-            ( Error_Log => Error_Log,
-              In_Module => Error_Handler.UBL_Lexer,
-              In_Function => Error_Handler.A_Prefixed,
-              What => Error_Handler.No_End_Tag_For_Leaf_XML_Element_Expected );
-
-        when None =>
-
-          Token := None;
-
-          Error_Handler.Set_Error
-            ( Error_Log => Error_Log,
-              In_Module => Error_Handler.UBL_Lexer,
-              In_Function => Error_Handler.A_Prefixed,
-              What => Error_Handler.Inconsistent_Tag_Type_Bug );
-
-      end case;
+      Finish_Leaf_Element("ount", Amount_With_Attribute, 
+        This_Function, Input, Error_Log, Token, Tag_Type);
 
     when 't' =>
 
-      Expect_Character_Sequence("tachment", Input, 
-        Error_Handler.UBL_Lexer, Error_Handler.A_Prefixed, Error_Log, 
-        Sequence_Confirmed);
-
-      if not Sequence_Confirmed then
-        Token := None;
-        return;
-      end if;
-
-      Expect_Tag_End(Input, Error_Handler.UBL_Lexer, 
-        Error_Handler.A_Prefixed, Error_Log, Tag_End_Confirmed);
-
-      if not Tag_End_Confirmed then
-        Token := None;
-        return;
-      end if;
-
-      case Tag_Type is
-
-        when Start_Tag =>
-
-          Token := Begin_Attachment;
-
-        when End_Tag =>
-
-          Token := End_Attachment;
-
-        when None =>
-
-          Token := None;
-
-          Error_Handler.Set_Error
-            ( Error_Log => Error_Log,
-              In_Module => Error_Handler.UBL_Lexer,
-              In_Function => Error_Handler.A_Prefixed,
-              What => Error_Handler.Inconsistent_Tag_Type_Bug );
-
-      end case;
+      Finish_Composite_Element("tachment", 
+        (Begin_Attachment, End_Attachment),
+        This_Function, Input, Error_Log, Token, Tag_Type);
 
     when others =>
 
       Error_Handler.Set_Error
         ( Error_Log => Error_Log,
           In_Module => Error_Handler.UBL_Lexer,
-          In_Function => Error_Handler.A_Prefixed,
+          In_Function => This_Function,
           What => Error_Handler.Unexpected_Character );
 
   end case;
@@ -1740,7 +1948,6 @@ is
   Is_End_Of_File : Boolean;
   Character_Read : Boolean;
   Sequence_Confirmed : Boolean;
-  Tag_End_Confirmed : Boolean;
 
   This_Function : constant Error_Handler.Function_Classifier 
     := Error_Handler.Ac_Prefixed;
@@ -1775,50 +1982,8 @@ begin
 
     when 't' =>
 
-      Expect_Character_Sequence("ualDeliveryDate", Input, 
-        Error_Handler.UBL_Lexer, This_Function, Error_Log, 
-        Sequence_Confirmed);
-
-      if not Sequence_Confirmed then
-        Token := None;
-        return;
-      end if;
-
-      Expect_Tag_End(Input, Error_Handler.UBL_Lexer, 
-        Error_Handler.A_Prefixed, Error_Log, Tag_End_Confirmed);
-
-      if not Tag_End_Confirmed then
-        Token := None;
-        return;
-      end if;
-
-      case Tag_Type is
-
-        when Start_Tag =>
-
-          Token := ActualDeliveryDate;
-
-        when End_Tag =>
-
-          Token := None;
-
-          Error_Handler.Set_Error
-            ( Error_Log => Error_Log,
-              In_Module => Error_Handler.UBL_Lexer,
-              In_Function => This_Function,
-              What => Error_Handler.No_End_Tag_For_Leaf_XML_Element_Expected );
-
-        when None =>
-
-          Token := None;
-
-          Error_Handler.Set_Error
-            ( Error_Log => Error_Log,
-              In_Module => Error_Handler.UBL_Lexer,
-              In_Function => This_Function,
-              What => Error_Handler.Inconsistent_Tag_Type_Bug );
-
-      end case;
+      Finish_Leaf_Element("ualDeliveryDate", ActualDeliveryDate, 
+        This_Function, Input, Error_Log, Token, Tag_Type);
   
     when others =>
 
@@ -1843,8 +2008,7 @@ is
   Current_Character : Character;
   Is_End_Of_File : Boolean;
   Character_Read : Boolean;
-  Sequence_Confirmed : Boolean;
-  Tag_End_Confirmed : Boolean;
+--  Sequence_Confirmed : Boolean;
 
   This_Function : constant Error_Handler.Function_Classifier 
     := Error_Handler.Accounting_Prefixed;
@@ -1870,7 +2034,110 @@ begin
 
     when 'S' =>
 
-      Expect_Character_Sequence("upplierParty", Input, 
+      Finish_Composite_Element("upplierParty", 
+        (Begin_AccountingSupplierParty, End_AccountingSupplierParty),
+        This_Function, Input, Error_Log, Token, Tag_Type);
+  
+    when others =>
+
+      Error_Handler.Set_Error
+        ( Error_Log => Error_Log,
+          In_Module => Error_Handler.UBL_Lexer,
+          In_Function => This_Function,
+          What => Error_Handler.Unexpected_Character );
+
+  end case;
+
+end Accounting_Prefixed;
+
+
+procedure AccountingC_Prefixed
+  ( Input : in File_Handler.File_Descriptor;
+    Error_Log : in out Error_Handler.Error_Descriptor;
+    Token : out UBL_Token;
+    Tag_Type : in XML_Tag_Type )
+is
+
+  Current_Character : Character;
+  Is_End_Of_File : Boolean;
+  Character_Read : Boolean;
+--  Sequence_Confirmed : Boolean;
+
+  This_Function : constant Error_Handler.Function_Classifier 
+    := Error_Handler.AccountingC_Prefixed;
+
+begin
+
+  Input_Handler.Next_Character(Input, Error_Log, Is_End_Of_File, 
+    Current_Character);
+
+  Discard_EOF_And_Error(Error_Log, Is_End_Of_File, Error_Handler.UBL_Lexer,
+    This_Function, Character_Read);
+
+  if not Character_Read then
+    Token := None;
+    return;
+  end if;
+
+  case Current_Character is
+
+    when 'o' =>
+
+      Finish_Leaf_Element("ost", AccountingCost, 
+        This_Function, Input, Error_Log, Token, Tag_Type);
+
+    when 'u' =>
+
+      Finish_Composite_Element("stomerParty", 
+        (Begin_AccountingCustomerParty, End_AccountingCustomerParty),
+        This_Function, Input, Error_Log, Token, Tag_Type);
+  
+    when others =>
+
+      Error_Handler.Set_Error
+        ( Error_Log => Error_Log,
+          In_Module => Error_Handler.UBL_Lexer,
+          In_Function => This_Function,
+          What => Error_Handler.Unexpected_Character );
+
+  end case;
+
+end AccountingC_Prefixed;
+
+
+procedure Add_Prefixed
+  ( Input : in File_Handler.File_Descriptor;
+    Error_Log : in out Error_Handler.Error_Descriptor;
+    Token : out UBL_Token;
+    Tag_Type : in XML_Tag_Type )
+is
+
+  Current_Character : Character;
+  Is_End_Of_File : Boolean;
+  Character_Read : Boolean;
+  Sequence_Confirmed : Boolean;
+
+  This_Function : constant Error_Handler.Function_Classifier 
+    := Error_Handler.Add_Prefixed;
+
+begin
+
+  Input_Handler.Next_Character(Input, Error_Log, Is_End_Of_File, 
+    Current_Character);
+
+  Discard_EOF_And_Error(Error_Log, Is_End_Of_File, Error_Handler.UBL_Lexer,
+    This_Function, Character_Read);
+
+  if not Character_Read then
+    Token := None;
+    return;
+  end if;
+
+  case Current_Character is
+
+    when 'i' =>
+
+      Expect_Character_Sequence("tional", Input, 
         Error_Handler.UBL_Lexer, This_Function, Error_Log, 
         Sequence_Confirmed);
 
@@ -1879,10 +2146,136 @@ begin
         return;
       end if;
 
-      Expect_Tag_End(Input, Error_Handler.UBL_Lexer, 
-        This_Function, Error_Log, Tag_End_Confirmed);
+      Additional_Prefixed(Input, Error_Log, Token, Tag_Type);
 
-      if not Tag_End_Confirmed then
+    when 'r' =>
+
+      Finish_Leaf_Element("essLine", AddressLine, 
+        This_Function, Input, Error_Log, Token, Tag_Type);
+  
+    when others =>
+
+      Error_Handler.Set_Error
+        ( Error_Log => Error_Log,
+          In_Module => Error_Handler.UBL_Lexer,
+          In_Function => This_Function,
+          What => Error_Handler.Unexpected_Character );
+
+  end case;
+
+end Add_Prefixed;
+
+
+procedure Additional_Prefixed
+  ( Input : in File_Handler.File_Descriptor;
+    Error_Log : in out Error_Handler.Error_Descriptor;
+    Token : out UBL_Token;
+    Tag_Type : in XML_Tag_Type )
+is
+
+  Current_Character : Character;
+  Is_End_Of_File : Boolean;
+  Character_Read : Boolean;
+
+  This_Function : constant Error_Handler.Function_Classifier 
+    := Error_Handler.Additional_Prefixed;
+
+begin
+
+  Input_Handler.Next_Character(Input, Error_Log, Is_End_Of_File, 
+    Current_Character);
+
+  Discard_EOF_And_Error(Error_Log, Is_End_Of_File, Error_Handler.UBL_Lexer,
+    This_Function, Character_Read);
+
+  if not Character_Read then
+    Token := None;
+    return;
+  end if;
+
+  case Current_Character is
+
+    when 'I' =>
+
+      Finish_Composite_Element("temProperty", 
+        (Begin_AdditionalItemProperty, End_AdditionalItemProperty),
+        This_Function, Input, Error_Log, Token, Tag_Type);
+
+    when 'D' =>
+
+      Finish_Composite_Element("ocumentReference", 
+        (Begin_AdditionalDocumentReference, End_AdditionalDocumentReference),
+        This_Function, Input, Error_Log, Token, Tag_Type);
+
+    when 'S' =>
+
+      Finish_Leaf_Element("treetName", AdditionalStreetName, 
+        This_Function, Input, Error_Log, Token, Tag_Type);
+  
+    when others =>
+
+      Error_Handler.Set_Error
+        ( Error_Log => Error_Log,
+          In_Module => Error_Handler.UBL_Lexer,
+          In_Function => This_Function,
+          What => Error_Handler.Unexpected_Character );
+
+  end case;
+
+end Additional_Prefixed;
+
+
+procedure Allowance_Prefixed
+  ( Input : in File_Handler.File_Descriptor;
+    Error_Log : in out Error_Handler.Error_Descriptor;
+    Token : out UBL_Token;
+    Tag_Type : in XML_Tag_Type )
+is
+
+  Current_Character : Character;
+  Is_End_Of_File : Boolean;
+  Character_Read : Boolean;
+  Sequence_Confirmed : Boolean;
+  Tag_End_Confirmed : Boolean;
+
+  This_Function : constant Error_Handler.Function_Classifier 
+    := Error_Handler.Allowance_Prefixed;
+
+begin
+
+  Input_Handler.Next_Character(Input, Error_Log, Is_End_Of_File, 
+    Current_Character);
+
+  Discard_EOF_And_Error(Error_Log, Is_End_Of_File, Error_Handler.UBL_Lexer,
+    This_Function, Character_Read);
+
+  if not Character_Read then
+    Token := None;
+    return;
+  end if;
+
+  case Current_Character is
+
+    when 'C' =>
+
+      Expect_Character_Sequence("harge", Input, 
+        Error_Handler.UBL_Lexer, This_Function, Error_Log, 
+        Sequence_Confirmed);
+
+      if not Sequence_Confirmed then
+        Token := None;
+        return;
+      end if;
+
+      AllowanceCharge_Prefixed(Input, Error_Log, Token, Tag_Type);
+
+    when 'T' =>
+
+      Expect_Character_Sequence("otalAmount", Input, 
+        Error_Handler.UBL_Lexer, This_Function, Error_Log, 
+        Sequence_Confirmed);
+
+      if not Sequence_Confirmed then
         Token := None;
         return;
       end if;
@@ -1891,11 +2284,19 @@ begin
 
         when Start_Tag =>
 
-          Token := Begin_AccountingSupplierParty;
+          Token := Begin_AllowanceTotalAmount_With_Attribute;
 
         when End_Tag =>
 
-          Token := End_AccountingSupplierParty;
+          Expect_Tag_End(Input, Error_Handler.UBL_Lexer, 
+            This_Function, Error_Log, Tag_End_Confirmed);
+
+          if not Tag_End_Confirmed then
+            Token := None;
+            return;
+          end if;
+
+          Token := End_AllowanceTotalAmount;
 
         when None =>
 
@@ -1919,6 +2320,533 @@ begin
 
   end case;
 
-end Accounting_Prefixed;
+end Allowance_Prefixed;
+
+
+procedure AllowanceCharge_Prefixed
+  ( Input : in File_Handler.File_Descriptor;
+    Error_Log : in out Error_Handler.Error_Descriptor;
+    Token : out UBL_Token;
+    Tag_Type : in XML_Tag_Type )
+is
+
+  Current_Character : Character;
+  Is_End_Of_File : Boolean;
+  Character_Read : Boolean;
+  Sequence_Confirmed : Boolean;
+
+  This_Function : constant Error_Handler.Function_Classifier 
+    := Error_Handler.AllowanceCharge_Prefixed;
+
+begin
+
+  Input_Handler.Next_Character(Input, Error_Log, Is_End_Of_File, 
+    Current_Character);
+
+  Discard_EOF_And_Error(Error_Log, Is_End_Of_File, Error_Handler.UBL_Lexer,
+    This_Function, Character_Read);
+
+  if not Character_Read then
+    Token := None;
+    return;
+  end if;
+
+  case Current_Character is
+
+    when ' ' | HT | CR | LF =>
+
+      Finish_Composite_Element_No_Character_Sequence( 
+        (Begin_AllowanceCharge, End_AllowanceCharge),
+        This_Function, Input, Error_Log, Token, Tag_Type);
+
+    when '>' =>
+
+      Finish_Composite_Element_Confirm_Tag_Only( 
+        (Begin_AllowanceCharge, End_AllowanceCharge),
+        This_Function, Error_Log, Token, Tag_Type);
+
+    when 'R' =>
+
+      Expect_Character_Sequence("eason", Input, 
+        Error_Handler.UBL_Lexer, This_Function, Error_Log, 
+        Sequence_Confirmed);
+
+      if not Sequence_Confirmed then
+        Token := None;
+        return;
+      end if;
+
+      AllowanceChargeReason_Prefixed(Input, Error_Log, Token, Tag_Type);
+ 
+    when others =>
+
+      Error_Handler.Set_Error
+        ( Error_Log => Error_Log,
+          In_Module => Error_Handler.UBL_Lexer,
+          In_Function => This_Function,
+          What => Error_Handler.Unexpected_Character );
+
+  end case;
+
+end AllowanceCharge_Prefixed;
+
+
+procedure AllowanceChargeReason_Prefixed
+  ( Input : in File_Handler.File_Descriptor;
+    Error_Log : in out Error_Handler.Error_Descriptor;
+    Token : out UBL_Token;
+    Tag_Type : in XML_Tag_Type )
+is
+
+  Current_Character : Character;
+  Is_End_Of_File : Boolean;
+  Character_Read : Boolean;
+
+  This_Function : constant Error_Handler.Function_Classifier 
+    := Error_Handler.AllowanceChargeReason_Prefixed;
+
+begin
+
+  Input_Handler.Next_Character(Input, Error_Log, Is_End_Of_File, 
+    Current_Character);
+
+  Discard_EOF_And_Error(Error_Log, Is_End_Of_File, Error_Handler.UBL_Lexer,
+    This_Function, Character_Read);
+
+  if not Character_Read then
+    Token := None;
+    return;
+  end if;
+
+  case Current_Character is
+
+    when ' ' | HT | CR | LF =>
+
+      Finish_Leaf_Element_No_Character_Sequence(AllowanceChargeReason, 
+        This_Function, Input, Error_Log, Token, Tag_Type);
+
+    when '>' =>
+
+      Finish_Leaf_Element_Confirm_Tag_Only(AllowanceChargeReason, 
+        This_Function, Error_Log, Token, Tag_Type);
+
+    when 'C' =>
+
+      Finish_Leaf_Element("ode", AllowanceChargeReasonCode, 
+        This_Function, Input, Error_Log, Token, Tag_Type);
+  
+    when others =>
+
+      Error_Handler.Set_Error
+        ( Error_Log => Error_Log,
+          In_Module => Error_Handler.UBL_Lexer,
+          In_Function => This_Function,
+          What => Error_Handler.Unexpected_Character );
+
+  end case;
+
+end AllowanceChargeReason_Prefixed;
+
+
+procedure B_Prefixed
+  ( Input : in File_Handler.File_Descriptor;
+    Error_Log : in out Error_Handler.Error_Descriptor;
+    Token : out UBL_Token;
+    Tag_Type : in XML_Tag_Type )
+is
+
+  Current_Character : Character;
+  Is_End_Of_File : Boolean;
+  Character_Read : Boolean;
+  Sequence_Confirmed : Boolean;
+
+  This_Function : constant Error_Handler.Function_Classifier 
+    := Error_Handler.B_Prefixed;
+
+begin
+
+  Input_Handler.Next_Character(Input, Error_Log, Is_End_Of_File, 
+    Current_Character);
+
+  Discard_EOF_And_Error(Error_Log, Is_End_Of_File, Error_Handler.UBL_Lexer,
+    This_Function, Character_Read);
+
+  if not Character_Read then
+    Token := None;
+    return;
+  end if;
+
+  case Current_Character is
+
+    when 'a' =>
+
+      Expect_Character_Sequence("se", Input, 
+        Error_Handler.UBL_Lexer, This_Function, Error_Log, 
+        Sequence_Confirmed);
+
+      if not Sequence_Confirmed then
+        Token := None;
+        return;
+      end if;
+
+      Base_Prefixed(Input, Error_Log, Token, Tag_Type);
+
+    when 'i' =>
+
+      Finish_Composite_Element("llingReference", 
+        (Begin_BillingReference, End_BillingReference),
+        This_Function, Input, Error_Log, Token, Tag_Type);
+
+    when 'u' =>
+
+      Expect_Character_Sequence("yer", Input, 
+        Error_Handler.UBL_Lexer, This_Function, Error_Log, 
+        Sequence_Confirmed);
+
+      if not Sequence_Confirmed then
+        Token := None;
+        return;
+      end if;
+
+      Buyer_Prefixed(Input, Error_Log, Token, Tag_Type);
+  
+    when others =>
+
+      Error_Handler.Set_Error
+        ( Error_Log => Error_Log,
+          In_Module => Error_Handler.UBL_Lexer,
+          In_Function => This_Function,
+          What => Error_Handler.Unexpected_Character );
+
+  end case;
+
+end B_Prefixed;
+
+
+procedure Base_Prefixed
+  ( Input : in File_Handler.File_Descriptor;
+    Error_Log : in out Error_Handler.Error_Descriptor;
+    Token : out UBL_Token;
+    Tag_Type : in XML_Tag_Type )
+is
+
+  Current_Character : Character;
+  Is_End_Of_File : Boolean;
+  Character_Read : Boolean;
+
+  This_Function : constant Error_Handler.Function_Classifier 
+    := Error_Handler.Base_Prefixed;
+
+begin
+
+  Input_Handler.Next_Character(Input, Error_Log, Is_End_Of_File, 
+    Current_Character);
+
+  Discard_EOF_And_Error(Error_Log, Is_End_Of_File, Error_Handler.UBL_Lexer,
+    This_Function, Character_Read);
+
+  if not Character_Read then
+    Token := None;
+    return;
+  end if;
+
+  case Current_Character is
+
+    when 'A' =>
+
+      Finish_Leaf_Element_With_Attribute("mount", BaseAmount_With_Attribute, 
+        This_Function, Input, Error_Log, Token, Tag_Type);
+
+    when 'Q' =>
+
+      Finish_Leaf_Element_With_Attribute("uantity", 
+        BaseQuantity_With_Optional_Attribute, 
+        This_Function, Input, Error_Log, Token, Tag_Type);
+  
+    when others =>
+
+      Error_Handler.Set_Error
+        ( Error_Log => Error_Log,
+          In_Module => Error_Handler.UBL_Lexer,
+          In_Function => This_Function,
+          What => Error_Handler.Unexpected_Character );
+
+  end case;
+
+end Base_Prefixed;
+
+
+procedure Buyer_Prefixed
+  ( Input : in File_Handler.File_Descriptor;
+    Error_Log : in out Error_Handler.Error_Descriptor;
+    Token : out UBL_Token;
+    Tag_Type : in XML_Tag_Type )
+is
+
+  Current_Character : Character;
+  Is_End_Of_File : Boolean;
+  Character_Read : Boolean;
+
+  This_Function : constant Error_Handler.Function_Classifier 
+    := Error_Handler.Buyer_Prefixed;
+
+begin
+
+  Input_Handler.Next_Character(Input, Error_Log, Is_End_Of_File, 
+    Current_Character);
+
+  Discard_EOF_And_Error(Error_Log, Is_End_Of_File, Error_Handler.UBL_Lexer,
+    This_Function, Character_Read);
+
+  if not Character_Read then
+    Token := None;
+    return;
+  end if;
+
+  case Current_Character is
+
+    when 'R' =>
+
+      Finish_Leaf_Element("eference", BuyerReference, 
+        This_Function, Input, Error_Log, Token, Tag_Type);
+
+    when 's' =>
+
+      Finish_Composite_Element("ItemIdentification", 
+        (Begin_BuyersItemIdentification, End_BuyersItemIdentification),
+        This_Function, Input, Error_Log, Token, Tag_Type);
+  
+    when others =>
+
+      Error_Handler.Set_Error
+        ( Error_Log => Error_Log,
+          In_Module => Error_Handler.UBL_Lexer,
+          In_Function => This_Function,
+          What => Error_Handler.Unexpected_Character );
+
+  end case;
+
+end Buyer_Prefixed;
+
+
+procedure C_Prefixed
+  ( Input : in File_Handler.File_Descriptor;
+    Error_Log : in out Error_Handler.Error_Descriptor;
+    Token : out UBL_Token;
+    Tag_Type : in XML_Tag_Type )
+is
+
+  Current_Character : Character;
+  Is_End_Of_File : Boolean;
+  Character_Read : Boolean;
+  Sequence_Confirmed : Boolean;
+
+  This_Function : constant Error_Handler.Function_Classifier 
+    := Error_Handler.C_Prefixed;
+
+begin
+
+  Input_Handler.Next_Character(Input, Error_Log, Is_End_Of_File, 
+    Current_Character);
+
+  Discard_EOF_And_Error(Error_Log, Is_End_Of_File, Error_Handler.UBL_Lexer,
+    This_Function, Character_Read);
+
+  if not Character_Read then
+    Token := None;
+    return;
+  end if;
+
+  case Current_Character is
+
+    when 'a' =>
+
+      Finish_Composite_Element("rdAccount", 
+        (Begin_CardAccount, End_CardAccount),
+        This_Function, Input, Error_Log, Token, Tag_Type);
+
+    when 'i' =>
+
+      Finish_Leaf_Element("tyName", CityName, 
+        This_Function, Input, Error_Log, Token, Tag_Type);
+
+    when 'h' =>
+
+      Expect_Character_Sequence("arge", Input, 
+        Error_Handler.UBL_Lexer, This_Function, Error_Log, 
+        Sequence_Confirmed);
+
+      if not Sequence_Confirmed then
+        Token := None;
+        return;
+      end if;
+
+      Charge_Prefixed(Input, Error_Log, Token, Tag_Type);
+
+    when 'l' =>
+
+      Finish_Composite_Element("assifiedTaxCategory", 
+        (Begin_ClassifiedTaxCategory, End_ClassifiedTaxCategory),
+        This_Function, Input, Error_Log, Token, Tag_Type);
+
+    when 'o' =>
+
+      Co_Prefixed(Input, Error_Log, Token, Tag_Type);
+
+    when 'r' =>
+
+      Expect_Character_Sequence("edit", Input, 
+        Error_Handler.UBL_Lexer, This_Function, Error_Log, 
+        Sequence_Confirmed);
+
+      if not Sequence_Confirmed then
+        Token := None;
+        return;
+      end if;
+
+      Credit_Prefixed(Input, Error_Log, Token, Tag_Type);
+
+    when 'u' =>
+
+      Finish_Leaf_Element("stomizationID", CustomizationID, 
+        This_Function, Input, Error_Log, Token, Tag_Type);
+  
+    when others =>
+
+      Error_Handler.Set_Error
+        ( Error_Log => Error_Log,
+          In_Module => Error_Handler.UBL_Lexer,
+          In_Function => This_Function,
+          What => Error_Handler.Unexpected_Character );
+
+  end case;
+
+end C_Prefixed;
+
+
+procedure Charge_Prefixed
+  ( Input : in File_Handler.File_Descriptor;
+    Error_Log : in out Error_Handler.Error_Descriptor;
+    Token : out UBL_Token;
+    Tag_Type : in XML_Tag_Type )
+is
+
+  Current_Character : Character;
+  Is_End_Of_File : Boolean;
+  Character_Read : Boolean;
+
+  This_Function : constant Error_Handler.Function_Classifier 
+    := Error_Handler.Charge_Prefixed;
+
+begin
+
+  Input_Handler.Next_Character(Input, Error_Log, Is_End_Of_File, 
+    Current_Character);
+
+  Discard_EOF_And_Error(Error_Log, Is_End_Of_File, Error_Handler.UBL_Lexer,
+    This_Function, Character_Read);
+
+  if not Character_Read then
+    Token := None;
+    return;
+  end if;
+
+  case Current_Character is
+
+    when 'I' =>
+
+      Finish_Leaf_Element("ndicator", ChargeIndicator, 
+        This_Function, Input, Error_Log, Token, Tag_Type);
+
+    when 'T' =>
+
+      Finish_Leaf_Element_With_Attribute("otalAmount", 
+        ChargeTotalAmount_With_Attribute, 
+        This_Function, Input, Error_Log, Token, Tag_Type);
+  
+    when others =>
+
+      Error_Handler.Set_Error
+        ( Error_Log => Error_Log,
+          In_Module => Error_Handler.UBL_Lexer,
+          In_Function => This_Function,
+          What => Error_Handler.Unexpected_Character );
+
+  end case;
+
+end Charge_Prefixed;
+
+
+procedure Co_Prefixed
+  ( Input : in File_Handler.File_Descriptor;
+    Error_Log : in out Error_Handler.Error_Descriptor;
+    Token : out UBL_Token;
+    Tag_Type : in XML_Tag_Type )
+is
+
+  Current_Character : Character;
+  Is_End_Of_File : Boolean;
+  Character_Read : Boolean;
+  Sequence_Confirmed : Boolean;
+
+  This_Function : constant Error_Handler.Function_Classifier 
+    := Error_Handler.Co_Prefixed;
+
+begin
+
+  Input_Handler.Next_Character(Input, Error_Log, Is_End_Of_File, 
+    Current_Character);
+
+  Discard_EOF_And_Error(Error_Log, Is_End_Of_File, Error_Handler.UBL_Lexer,
+    This_Function, Character_Read);
+
+  if not Character_Read then
+    Token := None;
+    return;
+  end if;
+
+  case Current_Character is
+
+    when 'm' =>
+
+      Com_Prefixed(Input, Error_Log, Token, Tag_Type);
+
+    when 'n' =>
+
+      Expect_Character_Sequence("t", Input, 
+        Error_Handler.UBL_Lexer, This_Function, Error_Log, 
+        Sequence_Confirmed);
+
+      if not Sequence_Confirmed then
+        Token := None;
+        return;
+      end if;
+
+      Cont_Prefixed(Input, Error_Log, Token, Tag_Type);
+
+    when 'u' =>
+
+      Expect_Character_Sequence("ntry", Input, 
+        Error_Handler.UBL_Lexer, This_Function, Error_Log, 
+        Sequence_Confirmed);
+
+      if not Sequence_Confirmed then
+        Token := None;
+        return;
+      end if;
+
+      Country_Prefixed(Input, Error_Log, Token, Tag_Type);
+  
+    when others =>
+
+      Error_Handler.Set_Error
+        ( Error_Log => Error_Log,
+          In_Module => Error_Handler.UBL_Lexer,
+          In_Function => This_Function,
+          What => Error_Handler.Unexpected_Character );
+
+  end case;
+
+end Co_Prefixed;
 
 end UBL_Lexer;
