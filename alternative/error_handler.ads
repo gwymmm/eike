@@ -47,8 +47,8 @@ type Error_Classifier is
 
 type Error_Descriptor is
 record
-  Error_Occurred : Boolean;
-  In_Line : Positive;
+  Error_Occurred : Boolean := False;
+  In_Line : Positive := 1;
   In_Module : Module_Classifier;
   In_Function : Function_Classifier;
   Error_Code : Error_Classifier;

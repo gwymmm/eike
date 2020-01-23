@@ -1477,8 +1477,17 @@ begin
       In_Function, Character_Read);
 
     if not Character_Read then
+
       Tag_End_Confirmed := False;
+
+        Error_Handler.Set_Error
+          ( Error_Log => Error_Log,
+            In_Module => In_Module,
+            In_Function => In_Function,
+            What => Error_Handler.End_Of_XML_Tag_Expected );
+
       return;
+
     end if;
 
     case Current_Character is
@@ -3717,8 +3726,8 @@ begin
 
     when 'D' =>
 
-      Finish_Leaf_Element_With_Attribute("D", ID_With_Optional_Attribute, 
-        This_Function, Input, Error_Log, Token, Tag_Type);
+      Finish_Leaf_Element_Confirm_Tag_Only( ID_With_Optional_Attribute, 
+        This_Function, Error_Log, Token, Tag_Type);
 
     when 'd' =>
 
