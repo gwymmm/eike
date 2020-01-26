@@ -129,6 +129,8 @@ type UBL_Token is
     End_TaxSubtotal );
 
 
+subtype Not_None_UBL_Token is UBL_Token range EOF .. End_TaxSubtotal;
+
 procedure Next_Token
   ( Input : in File_Handler.File_Descriptor;
     Error_Log : in out Error_Handler.Error_Descriptor;

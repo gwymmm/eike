@@ -2,7 +2,7 @@ package Error_Handler is
 pragma SPARK_Mode( On );
 
 type Module_Classifier is 
-  ( None, Input_Handler, UBL_Lexer );
+  ( None, Input_Handler, UBL_Lexer, UBL_Parser );
 
 type Function_Classifier is 
 
@@ -38,12 +38,20 @@ type Function_Classifier is
 
     Tax_Prefixed, TaxC_Prefixed, TaxEx_Prefixed, TaxExemptionReason_Prefixed,
 
-    TaxS_Prefixed );
+    TaxS_Prefixed,
+
+-- Parser
+    UBL_Invoice_State
+ );
 
 type Error_Classifier is 
- ( None, Read_From_File_Error, End_Of_File_Not_Expected, Unexpected_Character,
-   Unexpected_Character_Sequence, End_Of_XML_Tag_Expected, 
-   Inconsistent_Tag_Type_Bug, No_End_Tag_For_Leaf_XML_Element_Expected );
+ (  None, Read_From_File_Error, End_Of_File_Not_Expected, Unexpected_Character,
+    Unexpected_Character_Sequence, End_Of_XML_Tag_Expected, 
+    Inconsistent_Tag_Type_Bug, No_End_Tag_For_Leaf_XML_Element_Expected,
+
+-- Parser
+    Unexpected_Token
+ );
 
 type Error_Descriptor is
 record

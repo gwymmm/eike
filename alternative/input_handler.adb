@@ -58,4 +58,151 @@ begin
 
 end Update_Line_Number;
 
+
+procedure Discard_EOF_And_Error
+  ( Error_Log : in out Error_Handler.Error_Descriptor;
+    Is_End_Of_File : in Boolean; 
+    Which_Module : in Error_Handler.Module_Classifier;
+    Which_Function : in Error_Handler.Function_Classifier;
+    Success : out Boolean )
+is
+begin
+
+  if Error_Log.Error_Occurred then
+
+    Success := False;
+   
+  elsif Is_End_Of_File then
+
+    Error_Handler.Set_Error
+      ( Error_Log => Error_Log,
+        In_Module => Which_Module,
+        In_Function => Which_Function,
+        What => Error_Handler.End_Of_File_Not_Expected );
+
+    Success := False;
+
+  else
+
+    Success := True;
+
+  end if;
+
+end Discard_EOF_And_Error;
+
+
+procedure Expect_Character_Sequence
+  ( Sequence : in String;
+    Input : in File_Handler.File_Descriptor;
+    In_Module : Error_Handler.Module_Classifier;
+    In_Function : Error_Handler.Function_Classifier;
+    Error_Log : in out Error_Handler.Error_Descriptor;
+    Sequence_Confirmed : out Boolean )
+is
+
+  Character_Read : Boolean;
+  Current_Character : Character;
+  Is_End_Of_File : Boolean;
+
+begin
+
+  for I in Sequence'Range loop
+
+    Input_Handler.Next_Character(Input, Error_Log, Is_End_Of_File, 
+      Current_Character);
+
+    Discard_EOF_And_Error(Error_Log, Is_End_Of_File, In_Module,
+      In_Function, Character_Read);
+
+    if not Character_Read then
+      Sequence_Confirmed := False;
+      return;
+    end if;
+
+    if Current_Character /= Sequence(I) then
+
+      Sequence_Confirmed := False;
+      
+      Error_Handler.Set_Error
+        ( Error_Log => Error_Log,
+          In_Module => In_Module,
+          In_Function => In_Function,
+          What => Error_Handler.Unexpected_Character_Sequence );
+
+      return;
+
+    end if;  
+
+  end loop;
+
+  Sequence_Confirmed := True;
+
+end Expect_Character_Sequence;
+
+procedure Expect_Tag_End
+  ( Input : in File_Handler.File_Descriptor;
+    In_Module : Error_Handler.Module_Classifier;
+    In_Function : Error_Handler.Function_Classifier;
+    Error_Log : in out Error_Handler.Error_Descriptor;
+    Tag_End_Confirmed : out Boolean )
+is
+
+  Character_Read : Boolean;
+  Current_Character : Character;
+  Is_End_Of_File : Boolean;
+
+begin
+
+  loop
+
+    Input_Handler.Next_Character(Input, Error_Log, Is_End_Of_File, 
+      Current_Character);
+
+    Discard_EOF_And_Error(Error_Log, Is_End_Of_File, In_Module,
+      In_Function, Character_Read);
+
+    if not Character_Read then
+
+      Tag_End_Confirmed := False;
+
+        Error_Handler.Set_Error
+          ( Error_Log => Error_Log,
+            In_Module => In_Module,
+            In_Function => In_Function,
+            What => Error_Handler.End_Of_XML_Tag_Expected );
+
+      return;
+
+    end if;
+
+    case Current_Character is
+
+      when ' ' | HT | CR | LF =>
+
+        null;
+
+      when '>' =>
+
+        Tag_End_Confirmed := True;
+
+        return;
+
+      when others =>
+
+        Tag_End_Confirmed := False;
+
+        Error_Handler.Set_Error
+          ( Error_Log => Error_Log,
+            In_Module => In_Module,
+            In_Function => In_Function,
+            What => Error_Handler.End_Of_XML_Tag_Expected );
+
+        return;
+
+    end case;
+
+  end loop;
+
+end Expect_Tag_End;
+
 end Input_Handler;

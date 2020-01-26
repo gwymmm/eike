@@ -1,0 +1,8 @@
+I := Identifier
+T := Text
+
+Invoice / CreditNote:
+
+  CustomizationID => BT_24 [1..1] (I, no scheme ID)
+  ProfileID => BT_23 [0..1] (T)
+  ID => BT_1 [1..1] (I, no scheme ID)

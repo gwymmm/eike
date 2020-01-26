@@ -16,9 +16,9 @@
 
 # UBL Invoice Grammar
 
-    ubl-invoice := 'customization-id' post-customization-id
+    ubl-invoice := 'customization-id' post-customization-id --> bt-24
 
-    post-customization-id := 'profile-id' post-profile-id
+    post-customization-id := 'profile-id' post-profile-id --> bt-23
                           or 'id' post-id 
 
     post-profile-id := 'id' post-id     --> bt-1

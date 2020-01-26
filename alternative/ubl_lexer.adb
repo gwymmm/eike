@@ -5,7 +5,7 @@ with Ada.Characters.Latin_1; use Ada.Characters.Latin_1;
 package body UBL_Lexer is
 pragma SPARK_Mode( On );
 
-type XML_Tag_States is (Next_Element, Skip_Namespace, Tag_Or_Comment, Comment, 
+type XML_Tag_States is (Next_Element, Skip_Namespace, Tag_Or_Comment, Comment,
   Error_State, End_State);
 
 subtype Active_XML_Tag_State is XML_Tag_States range Next_Element .. Comment;
@@ -74,40 +74,9 @@ procedure Name_Resolution
 
   with
     Global => null,
-    Depends => 
+    Depends =>
       ( Error_Log => (Error_Log, Tag_Type, Input),
         Token => (Tag_Type, Input) );
-
-procedure Discard_EOF_And_Error
-  ( Error_Log : in out Error_Handler.Error_Descriptor;
-    Is_End_Of_File : in Boolean; 
-    Which_Module : in Error_Handler.Module_Classifier;
-    Which_Function : in Error_Handler.Function_Classifier;
-    Success : out Boolean ) 
-
-  with
-    Global => null;
-
-procedure Expect_Character_Sequence
-  ( Sequence : in String;
-    Input : in File_Handler.File_Descriptor;
-    In_Module : Error_Handler.Module_Classifier;
-    In_Function : Error_Handler.Function_Classifier;
-    Error_Log : in out Error_Handler.Error_Descriptor;
-    Sequence_Confirmed : out Boolean )
-
-  with
-    Global => null;    
-
-procedure Expect_Tag_End
-  ( Input : in File_Handler.File_Descriptor;
-    In_Module : Error_Handler.Module_Classifier;
-    In_Function : Error_Handler.Function_Classifier;
-    Error_Log : in out Error_Handler.Error_Descriptor;
-    Tag_End_Confirmed : out Boolean )
-
-  with
-    Global => null;  
 
 procedure Finish_Leaf_Element
   ( Tail_Of_Name : in String;
@@ -119,7 +88,7 @@ procedure Finish_Leaf_Element
     Tag_Type : in XML_Tag_Type )
 
   with
-    Global => null;  
+    Global => null;
 
 procedure Finish_Leaf_Element_No_Character_Sequence
   ( Expected_Token : in UBL_Token;
@@ -140,7 +109,7 @@ procedure Finish_Leaf_Element_Confirm_Tag_Only
     Tag_Type : in XML_Tag_Type )
 
   with
-    Global => null;    
+    Global => null;
 
 procedure Finish_Leaf_Element_With_Attribute
   ( Tail_Of_Name : in String;
@@ -152,7 +121,7 @@ procedure Finish_Leaf_Element_With_Attribute
     Tag_Type : in XML_Tag_Type )
 
   with
-    Global => null;  
+    Global => null;
 
 procedure Finish_Composite_Element
   ( Tail_Of_Name : in String;
@@ -164,7 +133,7 @@ procedure Finish_Composite_Element
     Tag_Type : in XML_Tag_Type )
 
   with
-    Global => null;  
+    Global => null;
 
 procedure Finish_Composite_Element_No_Character_Sequence
   ( Expected_Token_Pair : in Token_Pair;
@@ -175,7 +144,7 @@ procedure Finish_Composite_Element_No_Character_Sequence
     Tag_Type : in XML_Tag_Type )
 
   with
-    Global => null; 
+    Global => null;
 
 procedure Finish_Composite_Element_Confirm_Tag_Only
   ( Expected_Token_Pair : in Token_Pair;
@@ -185,7 +154,7 @@ procedure Finish_Composite_Element_Confirm_Tag_Only
     Tag_Type : in XML_Tag_Type )
 
   with
-    Global => null;  
+    Global => null;
 
 procedure A_Prefixed
   ( Input : in File_Handler.File_Descriptor;
@@ -195,7 +164,7 @@ procedure A_Prefixed
 
   with
     Global => null,
-    Depends => 
+    Depends =>
       ( Error_Log => (Error_Log, Tag_Type, Input),
         Token => (Tag_Type, Input) );
 
@@ -207,7 +176,7 @@ procedure Ac_Prefixed
 
   with
     Global => null,
-    Depends => 
+    Depends =>
       ( Error_Log => (Error_Log, Tag_Type, Input),
         Token => (Tag_Type, Input) );
 
@@ -220,7 +189,7 @@ procedure Accounting_Prefixed
 
   with
     Global => null,
-    Depends => 
+    Depends =>
       ( Error_Log => (Error_Log, Tag_Type, Input),
         Token => (Tag_Type, Input) );
 
@@ -233,7 +202,7 @@ procedure AccountingC_Prefixed
 
   with
     Global => null,
-    Depends => 
+    Depends =>
       ( Error_Log => (Error_Log, Tag_Type, Input),
         Token => (Tag_Type, Input) );
 
@@ -246,7 +215,7 @@ procedure Add_Prefixed
 
   with
     Global => null,
-    Depends => 
+    Depends =>
       ( Error_Log => (Error_Log, Tag_Type, Input),
         Token => (Tag_Type, Input) );
 
@@ -259,7 +228,7 @@ procedure Additional_Prefixed
 
   with
     Global => null,
-    Depends => 
+    Depends =>
       ( Error_Log => (Error_Log, Tag_Type, Input),
         Token => (Tag_Type, Input) );
 
@@ -272,7 +241,7 @@ procedure Allowance_Prefixed
 
   with
     Global => null,
-    Depends => 
+    Depends =>
       ( Error_Log => (Error_Log, Tag_Type, Input),
         Token => (Tag_Type, Input) );
 
@@ -285,7 +254,7 @@ procedure AllowanceCharge_Prefixed
 
   with
     Global => null,
-    Depends => 
+    Depends =>
       ( Error_Log => (Error_Log, Tag_Type, Input),
         Token => (Tag_Type, Input) );
 
@@ -298,7 +267,7 @@ procedure AllowanceChargeReason_Prefixed
 
   with
     Global => null,
-    Depends => 
+    Depends =>
       ( Error_Log => (Error_Log, Tag_Type, Input),
         Token => (Tag_Type, Input) );
 
@@ -311,7 +280,7 @@ procedure B_Prefixed
 
   with
     Global => null,
-    Depends => 
+    Depends =>
       ( Error_Log => (Error_Log, Tag_Type, Input),
         Token => (Tag_Type, Input) );
 
@@ -324,7 +293,7 @@ procedure Base_Prefixed
 
   with
     Global => null,
-    Depends => 
+    Depends =>
       ( Error_Log => (Error_Log, Tag_Type, Input),
         Token => (Tag_Type, Input) );
 
@@ -337,7 +306,7 @@ procedure Buyer_Prefixed
 
   with
     Global => null,
-    Depends => 
+    Depends =>
       ( Error_Log => (Error_Log, Tag_Type, Input),
         Token => (Tag_Type, Input) );
 
@@ -350,7 +319,7 @@ procedure C_Prefixed
 
   with
     Global => null,
-    Depends => 
+    Depends =>
       ( Error_Log => (Error_Log, Tag_Type, Input),
         Token => (Tag_Type, Input) );
 
@@ -363,7 +332,7 @@ procedure Charge_Prefixed
 
   with
     Global => null,
-    Depends => 
+    Depends =>
       ( Error_Log => (Error_Log, Tag_Type, Input),
         Token => (Tag_Type, Input) );
 
@@ -376,7 +345,7 @@ procedure Co_Prefixed
 
   with
     Global => null,
-    Depends => 
+    Depends =>
       ( Error_Log => (Error_Log, Tag_Type, Input),
         Token => (Tag_Type, Input) );
 
@@ -389,7 +358,7 @@ procedure Com_Prefixed
 
   with
     Global => null,
-    Depends => 
+    Depends =>
       ( Error_Log => (Error_Log, Tag_Type, Input),
         Token => (Tag_Type, Input) );
 
@@ -402,7 +371,7 @@ procedure Company_Prefixed
 
   with
     Global => null,
-    Depends => 
+    Depends =>
       ( Error_Log => (Error_Log, Tag_Type, Input),
         Token => (Tag_Type, Input) );
 
@@ -415,7 +384,7 @@ procedure Cont_Prefixed
 
   with
     Global => null,
-    Depends => 
+    Depends =>
       ( Error_Log => (Error_Log, Tag_Type, Input),
         Token => (Tag_Type, Input) );
 
@@ -428,7 +397,7 @@ procedure Country_Prefixed
 
   with
     Global => null,
-    Depends => 
+    Depends =>
       ( Error_Log => (Error_Log, Tag_Type, Input),
         Token => (Tag_Type, Input) );
 
@@ -441,7 +410,7 @@ procedure Credit_Prefixed
 
   with
     Global => null,
-    Depends => 
+    Depends =>
       ( Error_Log => (Error_Log, Tag_Type, Input),
         Token => (Tag_Type, Input) );
 
@@ -454,7 +423,7 @@ procedure CreditNote_Prefixed
 
   with
     Global => null,
-    Depends => 
+    Depends =>
       ( Error_Log => (Error_Log, Tag_Type, Input),
         Token => (Tag_Type, Input) );
 
@@ -467,7 +436,7 @@ procedure D_Prefixed
 
   with
     Global => null,
-    Depends => 
+    Depends =>
       ( Error_Log => (Error_Log, Tag_Type, Input),
         Token => (Tag_Type, Input) );
 
@@ -480,7 +449,7 @@ procedure De_Prefixed
 
   with
     Global => null,
-    Depends => 
+    Depends =>
       ( Error_Log => (Error_Log, Tag_Type, Input),
         Token => (Tag_Type, Input) );
 
@@ -493,7 +462,7 @@ procedure Des_Prefixed
 
   with
     Global => null,
-    Depends => 
+    Depends =>
       ( Error_Log => (Error_Log, Tag_Type, Input),
         Token => (Tag_Type, Input) );
 
@@ -506,7 +475,7 @@ procedure Description_Prefixed
 
   with
     Global => null,
-    Depends => 
+    Depends =>
       ( Error_Log => (Error_Log, Tag_Type, Input),
         Token => (Tag_Type, Input) );
 
@@ -519,7 +488,7 @@ procedure Delivery_Prefixed
 
   with
     Global => null,
-    Depends => 
+    Depends =>
       ( Error_Log => (Error_Log, Tag_Type, Input),
         Token => (Tag_Type, Input) );
 
@@ -532,7 +501,7 @@ procedure Document_Prefixed
 
   with
     Global => null,
-    Depends => 
+    Depends =>
       ( Error_Log => (Error_Log, Tag_Type, Input),
         Token => (Tag_Type, Input) );
 
@@ -545,7 +514,7 @@ procedure E_Prefixed
 
   with
     Global => null,
-    Depends => 
+    Depends =>
       ( Error_Log => (Error_Log, Tag_Type, Input),
         Token => (Tag_Type, Input) );
 
@@ -558,7 +527,7 @@ procedure End_Prefixed
 
   with
     Global => null,
-    Depends => 
+    Depends =>
       ( Error_Log => (Error_Log, Tag_Type, Input),
         Token => (Tag_Type, Input) );
 
@@ -571,7 +540,7 @@ procedure I_Prefixed
 
   with
     Global => null,
-    Depends => 
+    Depends =>
       ( Error_Log => (Error_Log, Tag_Type, Input),
         Token => (Tag_Type, Input) );
 
@@ -584,7 +553,7 @@ procedure Invoice_Prefixed
 
   with
     Global => null,
-    Depends => 
+    Depends =>
       ( Error_Log => (Error_Log, Tag_Type, Input),
         Token => (Tag_Type, Input) );
 
@@ -597,7 +566,7 @@ procedure Item_Prefixed
 
   with
     Global => null,
-    Depends => 
+    Depends =>
       ( Error_Log => (Error_Log, Tag_Type, Input),
         Token => (Tag_Type, Input) );
 
@@ -610,7 +579,7 @@ procedure L_Prefixed
 
   with
     Global => null,
-    Depends => 
+    Depends =>
       ( Error_Log => (Error_Log, Tag_Type, Input),
         Token => (Tag_Type, Input) );
 
@@ -623,7 +592,7 @@ procedure Line_Prefixed
 
   with
     Global => null,
-    Depends => 
+    Depends =>
       ( Error_Log => (Error_Log, Tag_Type, Input),
         Token => (Tag_Type, Input) );
 
@@ -636,7 +605,7 @@ procedure N_Prefixed
 
   with
     Global => null,
-    Depends => 
+    Depends =>
       ( Error_Log => (Error_Log, Tag_Type, Input),
         Token => (Tag_Type, Input) );
 
@@ -649,7 +618,7 @@ procedure Or_Prefixed
 
   with
     Global => null,
-    Depends => 
+    Depends =>
       ( Error_Log => (Error_Log, Tag_Type, Input),
         Token => (Tag_Type, Input) );
 
@@ -662,7 +631,7 @@ procedure Order_Prefixed
 
   with
     Global => null,
-    Depends => 
+    Depends =>
       ( Error_Log => (Error_Log, Tag_Type, Input),
         Token => (Tag_Type, Input) );
 
@@ -675,7 +644,7 @@ procedure Origin_Prefixed
 
   with
     Global => null,
-    Depends => 
+    Depends =>
       ( Error_Log => (Error_Log, Tag_Type, Input),
         Token => (Tag_Type, Input) );
 
@@ -688,7 +657,7 @@ procedure P_Prefixed
 
   with
     Global => null,
-    Depends => 
+    Depends =>
       ( Error_Log => (Error_Log, Tag_Type, Input),
         Token => (Tag_Type, Input) );
 
@@ -701,7 +670,7 @@ procedure Pa_Prefixed
 
   with
     Global => null,
-    Depends => 
+    Depends =>
       ( Error_Log => (Error_Log, Tag_Type, Input),
         Token => (Tag_Type, Input) );
 
@@ -714,7 +683,7 @@ procedure Party_Prefixed
 
   with
     Global => null,
-    Depends => 
+    Depends =>
       ( Error_Log => (Error_Log, Tag_Type, Input),
         Token => (Tag_Type, Input) );
 
@@ -727,7 +696,7 @@ procedure Pay_Prefixed
 
   with
     Global => null,
-    Depends => 
+    Depends =>
       ( Error_Log => (Error_Log, Tag_Type, Input),
         Token => (Tag_Type, Input) );
 
@@ -740,7 +709,7 @@ procedure Payable_Prefixed
 
   with
     Global => null,
-    Depends => 
+    Depends =>
       ( Error_Log => (Error_Log, Tag_Type, Input),
         Token => (Tag_Type, Input) );
 
@@ -753,7 +722,7 @@ procedure Paye_Prefixed
 
   with
     Global => null,
-    Depends => 
+    Depends =>
       ( Error_Log => (Error_Log, Tag_Type, Input),
         Token => (Tag_Type, Input) );
 
@@ -766,7 +735,7 @@ procedure Payee_Prefixed
 
   with
     Global => null,
-    Depends => 
+    Depends =>
       ( Error_Log => (Error_Log, Tag_Type, Input),
         Token => (Tag_Type, Input) );
 
@@ -779,7 +748,7 @@ procedure Payment_Prefixed
 
   with
     Global => null,
-    Depends => 
+    Depends =>
       ( Error_Log => (Error_Log, Tag_Type, Input),
         Token => (Tag_Type, Input) );
 
@@ -792,7 +761,7 @@ procedure PaymentM_Prefixed
 
   with
     Global => null,
-    Depends => 
+    Depends =>
       ( Error_Log => (Error_Log, Tag_Type, Input),
         Token => (Tag_Type, Input) );
 
@@ -805,7 +774,7 @@ procedure PaymentMeans_Prefixed
 
   with
     Global => null,
-    Depends => 
+    Depends =>
       ( Error_Log => (Error_Log, Tag_Type, Input),
         Token => (Tag_Type, Input) );
 
@@ -818,7 +787,7 @@ procedure Postal_Prefixed
 
   with
     Global => null,
-    Depends => 
+    Depends =>
       ( Error_Log => (Error_Log, Tag_Type, Input),
         Token => (Tag_Type, Input) );
 
@@ -831,7 +800,7 @@ procedure Pr_Prefixed
 
   with
     Global => null,
-    Depends => 
+    Depends =>
       ( Error_Log => (Error_Log, Tag_Type, Input),
         Token => (Tag_Type, Input) );
 
@@ -844,7 +813,7 @@ procedure Pri_Prefixed
 
   with
     Global => null,
-    Depends => 
+    Depends =>
       ( Error_Log => (Error_Log, Tag_Type, Input),
         Token => (Tag_Type, Input) );
 
@@ -857,7 +826,7 @@ procedure Price_Prefixed
 
   with
     Global => null,
-    Depends => 
+    Depends =>
       ( Error_Log => (Error_Log, Tag_Type, Input),
         Token => (Tag_Type, Input) );
 
@@ -870,7 +839,7 @@ procedure Pro_Prefixed
 
   with
     Global => null,
-    Depends => 
+    Depends =>
       ( Error_Log => (Error_Log, Tag_Type, Input),
         Token => (Tag_Type, Input) );
 
@@ -883,7 +852,7 @@ procedure Re_Prefixed
 
   with
     Global => null,
-    Depends => 
+    Depends =>
       ( Error_Log => (Error_Log, Tag_Type, Input),
         Token => (Tag_Type, Input) );
 
@@ -896,7 +865,7 @@ procedure S_Prefixed
 
   with
     Global => null,
-    Depends => 
+    Depends =>
       ( Error_Log => (Error_Log, Tag_Type, Input),
         Token => (Tag_Type, Input) );
 
@@ -909,7 +878,7 @@ procedure St_Prefixed
 
   with
     Global => null,
-    Depends => 
+    Depends =>
       ( Error_Log => (Error_Log, Tag_Type, Input),
         Token => (Tag_Type, Input) );
 
@@ -922,7 +891,7 @@ procedure Sta_Prefixed
 
   with
     Global => null,
-    Depends => 
+    Depends =>
       ( Error_Log => (Error_Log, Tag_Type, Input),
         Token => (Tag_Type, Input) );
 
@@ -935,7 +904,7 @@ procedure T_Prefixed
 
   with
     Global => null,
-    Depends => 
+    Depends =>
       ( Error_Log => (Error_Log, Tag_Type, Input),
         Token => (Tag_Type, Input) );
 
@@ -948,7 +917,7 @@ procedure Tax_Prefixed
 
   with
     Global => null,
-    Depends => 
+    Depends =>
       ( Error_Log => (Error_Log, Tag_Type, Input),
         Token => (Tag_Type, Input) );
 
@@ -961,7 +930,7 @@ procedure TaxC_Prefixed
 
   with
     Global => null,
-    Depends => 
+    Depends =>
       ( Error_Log => (Error_Log, Tag_Type, Input),
         Token => (Tag_Type, Input) );
 
@@ -974,7 +943,7 @@ procedure TaxEx_Prefixed
 
   with
     Global => null,
-    Depends => 
+    Depends =>
       ( Error_Log => (Error_Log, Tag_Type, Input),
         Token => (Tag_Type, Input) );
 
@@ -987,7 +956,7 @@ procedure TaxExemptionReason_Prefixed
 
   with
     Global => null,
-    Depends => 
+    Depends =>
       ( Error_Log => (Error_Log, Tag_Type, Input),
         Token => (Tag_Type, Input) );
 
@@ -1000,7 +969,7 @@ procedure TaxS_Prefixed
 
   with
     Global => null,
-    Depends => 
+    Depends =>
       ( Error_Log => (Error_Log, Tag_Type, Input),
         Token => (Tag_Type, Input) );
 
@@ -1024,7 +993,7 @@ begin
     pragma Loop_Invariant(not Error_Log.Error_Occurred);
 
     Current_State := State;
-    Input_Handler.Next_Character(Input, Error_Log, Is_End_Of_File, 
+    Input_Handler.Next_Character(Input, Error_Log, Is_End_Of_File,
       Current_Character);
 
     if Error_Log.Error_Occurred then
@@ -1044,25 +1013,25 @@ begin
 
         State := Error_State;
         Token := None;
-        
+
         Error_Handler.Set_Error
         ( Error_Log => Error_Log,
           In_Module => Error_Handler.UBL_Lexer,
           In_Function => Error_Handler.Next_Token,
           What => Error_Handler.End_Of_File_Not_Expected );
- 
+
       end if;
 
     else
 
       pragma Assert (not Error_Log.Error_Occurred and not Is_End_Of_File);
 
-      Evaluate_Next_Token_Rule(Input, Error_Log, Token, Current_Character, 
+      Evaluate_Next_Token_Rule(Input, Error_Log, Token, Current_Character,
         Current_State, State, Tag);
       --
 
-    end if;     
-    
+    end if;
+
   end loop;
 
 end Next_Token;
@@ -1127,7 +1096,7 @@ begin
           In_Module => Error_Handler.UBL_Lexer,
           In_Function => Error_Handler.Do_Next_Element,
           What => Error_Handler.Unexpected_Character );
- 
+
   end case;
 
 end Do_Next_Element;
@@ -1166,7 +1135,7 @@ begin
           In_Module => Error_Handler.UBL_Lexer,
           In_Function => Error_Handler.Do_Next_Element,
           What => Error_Handler.Unexpected_Character );
- 
+
   end case;
 
 end Do_Tag_Or_Comment;
@@ -1187,7 +1156,7 @@ begin
     when others =>
 
       Next_State := Comment;
- 
+
   end case;
 
 end Do_Comment;
@@ -1227,7 +1196,7 @@ begin
           In_Module => Error_Handler.UBL_Lexer,
           In_Function => Error_Handler.Do_Skip_Namespace,
           What => Error_Handler.Unexpected_Character );
- 
+
   end case;
 
 end Do_Skip_Namespace;
@@ -1245,16 +1214,16 @@ is
   Character_Read : Boolean;
   Sequence_Confirmed : Boolean;
 
-  This_Function : constant Error_Handler.Function_Classifier 
+  This_Function : constant Error_Handler.Function_Classifier
     := Error_Handler.Name_Resolution;
 
 begin
 
-  Input_Handler.Next_Character(Input, Error_Log, Is_End_Of_File, 
+  Input_Handler.Next_Character(Input, Error_Log, Is_End_Of_File,
       Current_Character);
 
-  Discard_EOF_And_Error(Error_Log, Is_End_Of_File, Error_Handler.UBL_Lexer,
-    Error_Handler.Name_Resolution, Character_Read);
+  Input_Handler.Discard_EOF_And_Error(Error_Log, Is_End_Of_File,
+    Error_Handler.UBL_Lexer, Error_Handler.Name_Resolution, Character_Read);
 
   if not Character_Read then
     Token := None;
@@ -1285,13 +1254,13 @@ begin
 
     when 'F' =>
 
-      Finish_Composite_Element("inancialInstitutionBranch", 
+      Finish_Composite_Element("inancialInstitutionBranch",
         (Begin_FinancialInstitutionBranch, End_FinancialInstitutionBranch),
         This_Function, Input, Error_Log, Token, Tag_Type);
-        
+
     when 'H' =>
 
-      Finish_Leaf_Element("olderName", HolderName, 
+      Finish_Leaf_Element("olderName", HolderName,
         This_Function, Input, Error_Log, Token, Tag_Type);
 
     when 'I' =>
@@ -1304,7 +1273,7 @@ begin
 
     when 'M' =>
 
-      Finish_Leaf_Element("ultiplierFactorNumeric", MultiplierFactorNumeric, 
+      Finish_Leaf_Element("ultiplierFactorNumeric", MultiplierFactorNumeric,
         This_Function, Input, Error_Log, Token, Tag_Type);
 
     when 'N' =>
@@ -1313,8 +1282,8 @@ begin
 
     when 'O' =>
 
-      Expect_Character_Sequence("r", Input, 
-        Error_Handler.UBL_Lexer, Error_Handler.Name_Resolution, Error_Log, 
+      Input_Handler.Expect_Character_Sequence("r", Input,
+        Error_Handler.UBL_Lexer, Error_Handler.Name_Resolution, Error_Log,
         Sequence_Confirmed);
 
       if not Sequence_Confirmed then
@@ -1330,8 +1299,8 @@ begin
 
     when 'R' =>
 
-      Expect_Character_Sequence("e", Input, 
-        Error_Handler.UBL_Lexer, Error_Handler.Name_Resolution, Error_Log, 
+      Input_Handler.Expect_Character_Sequence("e", Input,
+        Error_Handler.UBL_Lexer, Error_Handler.Name_Resolution, Error_Log,
         Sequence_Confirmed);
 
       if not Sequence_Confirmed then
@@ -1351,12 +1320,12 @@ begin
 
     when 'U' =>
 
-      Finish_Leaf_Element("RI", URI, 
+      Finish_Leaf_Element("RI", URI,
         This_Function, Input, Error_Log, Token, Tag_Type);
 
     when 'V' =>
 
-      Finish_Leaf_Element("alue", Value, 
+      Finish_Leaf_Element("alue", Value,
         This_Function, Input, Error_Log, Token, Tag_Type);
 
     when others =>
@@ -1373,152 +1342,6 @@ begin
 
 end Name_Resolution;
 
-procedure Discard_EOF_And_Error
-  ( Error_Log : in out Error_Handler.Error_Descriptor;
-    Is_End_Of_File : in Boolean; 
-    Which_Module : in Error_Handler.Module_Classifier;
-    Which_Function : in Error_Handler.Function_Classifier;
-    Success : out Boolean )
-is
-begin
-
-  if Error_Log.Error_Occurred then
-
-    Success := False;
-   
-  elsif Is_End_Of_File then
-
-    Error_Handler.Set_Error
-      ( Error_Log => Error_Log,
-        In_Module => Which_Module,
-        In_Function => Which_Function,
-        What => Error_Handler.End_Of_File_Not_Expected );
-
-    Success := False;
-
-  else
-
-    Success := True;
-
-  end if;
-
-end Discard_EOF_And_Error;
-
-
-procedure Expect_Character_Sequence
-  ( Sequence : in String;
-    Input : in File_Handler.File_Descriptor;
-    In_Module : Error_Handler.Module_Classifier;
-    In_Function : Error_Handler.Function_Classifier;
-    Error_Log : in out Error_Handler.Error_Descriptor;
-    Sequence_Confirmed : out Boolean )
-is
-
-  Character_Read : Boolean;
-  Current_Character : Character;
-  Is_End_Of_File : Boolean;
-
-begin
-
-  for I in Sequence'Range loop
-
-    Input_Handler.Next_Character(Input, Error_Log, Is_End_Of_File, 
-      Current_Character);
-
-    Discard_EOF_And_Error(Error_Log, Is_End_Of_File, In_Module,
-      In_Function, Character_Read);
-
-    if not Character_Read then
-      Sequence_Confirmed := False;
-      return;
-    end if;
-
-    if Current_Character /= Sequence(I) then
-
-      Sequence_Confirmed := False;
-      
-      Error_Handler.Set_Error
-        ( Error_Log => Error_Log,
-          In_Module => In_Module,
-          In_Function => In_Function,
-          What => Error_Handler.Unexpected_Character_Sequence );
-
-      return;
-
-    end if;  
-
-  end loop;
-
-  Sequence_Confirmed := True;
-
-end Expect_Character_Sequence;
-
-
-procedure Expect_Tag_End
-  ( Input : in File_Handler.File_Descriptor;
-    In_Module : Error_Handler.Module_Classifier;
-    In_Function : Error_Handler.Function_Classifier;
-    Error_Log : in out Error_Handler.Error_Descriptor;
-    Tag_End_Confirmed : out Boolean )
-is
-
-  Character_Read : Boolean;
-  Current_Character : Character;
-  Is_End_Of_File : Boolean;
-
-begin
-
-  loop
-
-    Input_Handler.Next_Character(Input, Error_Log, Is_End_Of_File, 
-      Current_Character);
-
-    Discard_EOF_And_Error(Error_Log, Is_End_Of_File, In_Module,
-      In_Function, Character_Read);
-
-    if not Character_Read then
-
-      Tag_End_Confirmed := False;
-
-        Error_Handler.Set_Error
-          ( Error_Log => Error_Log,
-            In_Module => In_Module,
-            In_Function => In_Function,
-            What => Error_Handler.End_Of_XML_Tag_Expected );
-
-      return;
-
-    end if;
-
-    case Current_Character is
-
-      when ' ' | HT | CR | LF =>
-
-        null;
-
-      when '>' =>
-
-        Tag_End_Confirmed := True;
-
-        return;
-
-      when others =>
-
-        Tag_End_Confirmed := False;
-
-        Error_Handler.Set_Error
-          ( Error_Log => Error_Log,
-            In_Module => In_Module,
-            In_Function => In_Function,
-            What => Error_Handler.End_Of_XML_Tag_Expected );
-
-        return;
-
-    end case;
-
-  end loop;
-
-end Expect_Tag_End;
 
 procedure Finish_Leaf_Element
   ( Tail_Of_Name : in String;
@@ -1535,8 +1358,8 @@ is
 
 begin
 
-      Expect_Character_Sequence(Tail_Of_Name, Input, 
-        Error_Handler.UBL_Lexer, In_Function, Error_Log, 
+      Input_Handler.Expect_Character_Sequence(Tail_Of_Name, Input,
+        Error_Handler.UBL_Lexer, In_Function, Error_Log,
         Sequence_Confirmed);
 
       if not Sequence_Confirmed then
@@ -1544,7 +1367,7 @@ begin
         return;
       end if;
 
-      Expect_Tag_End(Input, Error_Handler.UBL_Lexer, 
+      Input_Handler.Expect_Tag_End(Input, Error_Handler.UBL_Lexer,
         In_Function, Error_Log, Tag_End_Confirmed);
 
       if not Tag_End_Confirmed then
@@ -1596,7 +1419,7 @@ is
 
 begin
 
-      Expect_Tag_End(Input, Error_Handler.UBL_Lexer, 
+      Input_Handler.Expect_Tag_End(Input, Error_Handler.UBL_Lexer,
         In_Function, Error_Log, Tag_End_Confirmed);
 
       if not Tag_End_Confirmed then
@@ -1689,8 +1512,8 @@ is
 
 begin
 
-      Expect_Character_Sequence(Tail_Of_Name, Input, 
-        Error_Handler.UBL_Lexer, In_Function, Error_Log, 
+      Input_Handler.Expect_Character_Sequence(Tail_Of_Name, Input,
+        Error_Handler.UBL_Lexer, In_Function, Error_Log,
         Sequence_Confirmed);
 
       if not Sequence_Confirmed then
@@ -1743,8 +1566,8 @@ is
 
 begin
 
-      Expect_Character_Sequence(Tail_Of_Name, Input, 
-        Error_Handler.UBL_Lexer, In_Function, Error_Log, 
+      Input_Handler.Expect_Character_Sequence(Tail_Of_Name, Input,
+        Error_Handler.UBL_Lexer, In_Function, Error_Log,
         Sequence_Confirmed);
 
       if not Sequence_Confirmed then
@@ -1752,7 +1575,7 @@ begin
         return;
       end if;
 
-      Expect_Tag_End(Input, Error_Handler.UBL_Lexer, 
+      Input_Handler.Expect_Tag_End(Input, Error_Handler.UBL_Lexer,
         In_Function, Error_Log, Tag_End_Confirmed);
 
       if not Tag_End_Confirmed then
@@ -1797,7 +1620,7 @@ is
 
 begin
 
-      Expect_Tag_End(Input, Error_Handler.UBL_Lexer, 
+      Input_Handler.Expect_Tag_End(Input, Error_Handler.UBL_Lexer,
         In_Function, Error_Log, Tag_End_Confirmed);
 
       if not Tag_End_Confirmed then
@@ -1874,16 +1697,16 @@ is
   Character_Read : Boolean;
   Sequence_Confirmed : Boolean;
 
-  This_Function : constant Error_Handler.Function_Classifier 
+  This_Function : constant Error_Handler.Function_Classifier
     := Error_Handler.A_Prefixed;
 
 begin
 
-  Input_Handler.Next_Character(Input, Error_Log, Is_End_Of_File, 
+  Input_Handler.Next_Character(Input, Error_Log, Is_End_Of_File,
       Current_Character);
 
-  Discard_EOF_And_Error(Error_Log, Is_End_Of_File, Error_Handler.UBL_Lexer,
-    This_Function, Character_Read);
+  Input_Handler.Discard_EOF_And_Error(Error_Log, Is_End_Of_File,
+    Error_Handler.UBL_Lexer, This_Function, Character_Read);
 
   if not Character_Read then
     Token := None;
@@ -1898,8 +1721,8 @@ begin
 
     when 'd' =>
 
-      Expect_Character_Sequence("d", Input, 
-        Error_Handler.UBL_Lexer, This_Function, Error_Log, 
+      Input_Handler.Expect_Character_Sequence("d", Input,
+        Error_Handler.UBL_Lexer, This_Function, Error_Log,
         Sequence_Confirmed);
 
       if not Sequence_Confirmed then
@@ -1911,8 +1734,8 @@ begin
 
     when 'l' =>
 
-      Expect_Character_Sequence("lowance", Input, 
-        Error_Handler.UBL_Lexer, This_Function, Error_Log, 
+      Input_Handler.Expect_Character_Sequence("lowance", Input,
+        Error_Handler.UBL_Lexer, This_Function, Error_Log,
         Sequence_Confirmed);
 
       if not Sequence_Confirmed then
@@ -1924,12 +1747,12 @@ begin
 
     when 'm' =>
 
-      Finish_Leaf_Element("ount", Amount_With_Attribute, 
+      Finish_Leaf_Element("ount", Amount_With_Attribute,
         This_Function, Input, Error_Log, Token, Tag_Type);
 
     when 't' =>
 
-      Finish_Composite_Element("tachment", 
+      Finish_Composite_Element("tachment",
         (Begin_Attachment, End_Attachment),
         This_Function, Input, Error_Log, Token, Tag_Type);
 
@@ -1958,16 +1781,16 @@ is
   Character_Read : Boolean;
   Sequence_Confirmed : Boolean;
 
-  This_Function : constant Error_Handler.Function_Classifier 
+  This_Function : constant Error_Handler.Function_Classifier
     := Error_Handler.Ac_Prefixed;
 
 begin
 
-  Input_Handler.Next_Character(Input, Error_Log, Is_End_Of_File, 
+  Input_Handler.Next_Character(Input, Error_Log, Is_End_Of_File,
     Current_Character);
 
-  Discard_EOF_And_Error(Error_Log, Is_End_Of_File, Error_Handler.UBL_Lexer,
-    This_Function, Character_Read);
+  Input_Handler.Discard_EOF_And_Error(Error_Log, Is_End_Of_File,
+    Error_Handler.UBL_Lexer, This_Function, Character_Read);
 
   if not Character_Read then
     Token := None;
@@ -1978,8 +1801,8 @@ begin
 
     when 'c' =>
 
-      Expect_Character_Sequence("ounting", Input, 
-        Error_Handler.UBL_Lexer, This_Function, Error_Log, 
+      Input_Handler.Expect_Character_Sequence("ounting", Input,
+        Error_Handler.UBL_Lexer, This_Function, Error_Log,
         Sequence_Confirmed);
 
       if not Sequence_Confirmed then
@@ -1991,9 +1814,9 @@ begin
 
     when 't' =>
 
-      Finish_Leaf_Element("ualDeliveryDate", ActualDeliveryDate, 
+      Finish_Leaf_Element("ualDeliveryDate", ActualDeliveryDate,
         This_Function, Input, Error_Log, Token, Tag_Type);
-  
+
     when others =>
 
       Error_Handler.Set_Error
@@ -2017,18 +1840,17 @@ is
   Current_Character : Character;
   Is_End_Of_File : Boolean;
   Character_Read : Boolean;
---  Sequence_Confirmed : Boolean;
 
-  This_Function : constant Error_Handler.Function_Classifier 
+  This_Function : constant Error_Handler.Function_Classifier
     := Error_Handler.Accounting_Prefixed;
 
 begin
 
-  Input_Handler.Next_Character(Input, Error_Log, Is_End_Of_File, 
+  Input_Handler.Next_Character(Input, Error_Log, Is_End_Of_File,
     Current_Character);
 
-  Discard_EOF_And_Error(Error_Log, Is_End_Of_File, Error_Handler.UBL_Lexer,
-    This_Function, Character_Read);
+  Input_Handler.Discard_EOF_And_Error(Error_Log, Is_End_Of_File,
+    Error_Handler.UBL_Lexer, This_Function, Character_Read);
 
   if not Character_Read then
     Token := None;
@@ -2043,10 +1865,10 @@ begin
 
     when 'S' =>
 
-      Finish_Composite_Element("upplierParty", 
+      Finish_Composite_Element("upplierParty",
         (Begin_AccountingSupplierParty, End_AccountingSupplierParty),
         This_Function, Input, Error_Log, Token, Tag_Type);
-  
+
     when others =>
 
       Error_Handler.Set_Error
@@ -2070,18 +1892,17 @@ is
   Current_Character : Character;
   Is_End_Of_File : Boolean;
   Character_Read : Boolean;
---  Sequence_Confirmed : Boolean;
 
-  This_Function : constant Error_Handler.Function_Classifier 
+  This_Function : constant Error_Handler.Function_Classifier
     := Error_Handler.AccountingC_Prefixed;
 
 begin
 
-  Input_Handler.Next_Character(Input, Error_Log, Is_End_Of_File, 
+  Input_Handler.Next_Character(Input, Error_Log, Is_End_Of_File,
     Current_Character);
 
-  Discard_EOF_And_Error(Error_Log, Is_End_Of_File, Error_Handler.UBL_Lexer,
-    This_Function, Character_Read);
+  Input_Handler.Discard_EOF_And_Error(Error_Log, Is_End_Of_File,
+    Error_Handler.UBL_Lexer, This_Function, Character_Read);
 
   if not Character_Read then
     Token := None;
@@ -2092,15 +1913,15 @@ begin
 
     when 'o' =>
 
-      Finish_Leaf_Element("ost", AccountingCost, 
+      Finish_Leaf_Element("ost", AccountingCost,
         This_Function, Input, Error_Log, Token, Tag_Type);
 
     when 'u' =>
 
-      Finish_Composite_Element("stomerParty", 
+      Finish_Composite_Element("stomerParty",
         (Begin_AccountingCustomerParty, End_AccountingCustomerParty),
         This_Function, Input, Error_Log, Token, Tag_Type);
-  
+
     when others =>
 
       Error_Handler.Set_Error
@@ -2126,16 +1947,16 @@ is
   Character_Read : Boolean;
   Sequence_Confirmed : Boolean;
 
-  This_Function : constant Error_Handler.Function_Classifier 
+  This_Function : constant Error_Handler.Function_Classifier
     := Error_Handler.Add_Prefixed;
 
 begin
 
-  Input_Handler.Next_Character(Input, Error_Log, Is_End_Of_File, 
+  Input_Handler.Next_Character(Input, Error_Log, Is_End_Of_File,
     Current_Character);
 
-  Discard_EOF_And_Error(Error_Log, Is_End_Of_File, Error_Handler.UBL_Lexer,
-    This_Function, Character_Read);
+  Input_Handler.Discard_EOF_And_Error(Error_Log, Is_End_Of_File,
+    Error_Handler.UBL_Lexer, This_Function, Character_Read);
 
   if not Character_Read then
     Token := None;
@@ -2146,8 +1967,8 @@ begin
 
     when 'i' =>
 
-      Expect_Character_Sequence("tional", Input, 
-        Error_Handler.UBL_Lexer, This_Function, Error_Log, 
+      Input_Handler.Expect_Character_Sequence("tional", Input,
+        Error_Handler.UBL_Lexer, This_Function, Error_Log,
         Sequence_Confirmed);
 
       if not Sequence_Confirmed then
@@ -2159,9 +1980,9 @@ begin
 
     when 'r' =>
 
-      Finish_Leaf_Element("essLine", AddressLine, 
+      Finish_Leaf_Element("essLine", AddressLine,
         This_Function, Input, Error_Log, Token, Tag_Type);
-  
+
     when others =>
 
       Error_Handler.Set_Error
@@ -2186,16 +2007,16 @@ is
   Is_End_Of_File : Boolean;
   Character_Read : Boolean;
 
-  This_Function : constant Error_Handler.Function_Classifier 
+  This_Function : constant Error_Handler.Function_Classifier
     := Error_Handler.Additional_Prefixed;
 
 begin
 
-  Input_Handler.Next_Character(Input, Error_Log, Is_End_Of_File, 
+  Input_Handler.Next_Character(Input, Error_Log, Is_End_Of_File,
     Current_Character);
 
-  Discard_EOF_And_Error(Error_Log, Is_End_Of_File, Error_Handler.UBL_Lexer,
-    This_Function, Character_Read);
+  Input_Handler.Discard_EOF_And_Error(Error_Log, Is_End_Of_File,
+    Error_Handler.UBL_Lexer, This_Function, Character_Read);
 
   if not Character_Read then
     Token := None;
@@ -2206,21 +2027,21 @@ begin
 
     when 'I' =>
 
-      Finish_Composite_Element("temProperty", 
+      Finish_Composite_Element("temProperty",
         (Begin_AdditionalItemProperty, End_AdditionalItemProperty),
         This_Function, Input, Error_Log, Token, Tag_Type);
 
     when 'D' =>
 
-      Finish_Composite_Element("ocumentReference", 
+      Finish_Composite_Element("ocumentReference",
         (Begin_AdditionalDocumentReference, End_AdditionalDocumentReference),
         This_Function, Input, Error_Log, Token, Tag_Type);
 
     when 'S' =>
 
-      Finish_Leaf_Element("treetName", AdditionalStreetName, 
+      Finish_Leaf_Element("treetName", AdditionalStreetName,
         This_Function, Input, Error_Log, Token, Tag_Type);
-  
+
     when others =>
 
       Error_Handler.Set_Error
@@ -2247,16 +2068,16 @@ is
   Sequence_Confirmed : Boolean;
   Tag_End_Confirmed : Boolean;
 
-  This_Function : constant Error_Handler.Function_Classifier 
+  This_Function : constant Error_Handler.Function_Classifier
     := Error_Handler.Allowance_Prefixed;
 
 begin
 
-  Input_Handler.Next_Character(Input, Error_Log, Is_End_Of_File, 
+  Input_Handler.Next_Character(Input, Error_Log, Is_End_Of_File,
     Current_Character);
 
-  Discard_EOF_And_Error(Error_Log, Is_End_Of_File, Error_Handler.UBL_Lexer,
-    This_Function, Character_Read);
+  Input_Handler.Discard_EOF_And_Error(Error_Log, Is_End_Of_File,
+    Error_Handler.UBL_Lexer, This_Function, Character_Read);
 
   if not Character_Read then
     Token := None;
@@ -2267,8 +2088,8 @@ begin
 
     when 'C' =>
 
-      Expect_Character_Sequence("harge", Input, 
-        Error_Handler.UBL_Lexer, This_Function, Error_Log, 
+      Input_Handler.Expect_Character_Sequence("harge", Input,
+        Error_Handler.UBL_Lexer, This_Function, Error_Log,
         Sequence_Confirmed);
 
       if not Sequence_Confirmed then
@@ -2280,8 +2101,8 @@ begin
 
     when 'T' =>
 
-      Expect_Character_Sequence("otalAmount", Input, 
-        Error_Handler.UBL_Lexer, This_Function, Error_Log, 
+      Input_Handler.Expect_Character_Sequence("otalAmount", Input,
+        Error_Handler.UBL_Lexer, This_Function, Error_Log,
         Sequence_Confirmed);
 
       if not Sequence_Confirmed then
@@ -2297,7 +2118,7 @@ begin
 
         when End_Tag =>
 
-          Expect_Tag_End(Input, Error_Handler.UBL_Lexer, 
+          Input_Handler.Expect_Tag_End(Input, Error_Handler.UBL_Lexer,
             This_Function, Error_Log, Tag_End_Confirmed);
 
           if not Tag_End_Confirmed then
@@ -2318,7 +2139,7 @@ begin
               What => Error_Handler.Inconsistent_Tag_Type_Bug );
 
       end case;
-  
+
     when others =>
 
       Error_Handler.Set_Error
@@ -2344,16 +2165,16 @@ is
   Character_Read : Boolean;
   Sequence_Confirmed : Boolean;
 
-  This_Function : constant Error_Handler.Function_Classifier 
+  This_Function : constant Error_Handler.Function_Classifier
     := Error_Handler.AllowanceCharge_Prefixed;
 
 begin
 
-  Input_Handler.Next_Character(Input, Error_Log, Is_End_Of_File, 
+  Input_Handler.Next_Character(Input, Error_Log, Is_End_Of_File,
     Current_Character);
 
-  Discard_EOF_And_Error(Error_Log, Is_End_Of_File, Error_Handler.UBL_Lexer,
-    This_Function, Character_Read);
+  Input_Handler.Discard_EOF_And_Error(Error_Log, Is_End_Of_File,
+    Error_Handler.UBL_Lexer, This_Function, Character_Read);
 
   if not Character_Read then
     Token := None;
@@ -2364,20 +2185,20 @@ begin
 
     when ' ' | HT | CR | LF =>
 
-      Finish_Composite_Element_No_Character_Sequence( 
+      Finish_Composite_Element_No_Character_Sequence(
         (Begin_AllowanceCharge, End_AllowanceCharge),
         This_Function, Input, Error_Log, Token, Tag_Type);
 
     when '>' =>
 
-      Finish_Composite_Element_Confirm_Tag_Only( 
+      Finish_Composite_Element_Confirm_Tag_Only(
         (Begin_AllowanceCharge, End_AllowanceCharge),
         This_Function, Error_Log, Token, Tag_Type);
 
     when 'R' =>
 
-      Expect_Character_Sequence("eason", Input, 
-        Error_Handler.UBL_Lexer, This_Function, Error_Log, 
+      Input_Handler.Expect_Character_Sequence("eason", Input,
+        Error_Handler.UBL_Lexer, This_Function, Error_Log,
         Sequence_Confirmed);
 
       if not Sequence_Confirmed then
@@ -2386,7 +2207,7 @@ begin
       end if;
 
       AllowanceChargeReason_Prefixed(Input, Error_Log, Token, Tag_Type);
- 
+
     when others =>
 
       Error_Handler.Set_Error
@@ -2411,16 +2232,16 @@ is
   Is_End_Of_File : Boolean;
   Character_Read : Boolean;
 
-  This_Function : constant Error_Handler.Function_Classifier 
+  This_Function : constant Error_Handler.Function_Classifier
     := Error_Handler.AllowanceChargeReason_Prefixed;
 
 begin
 
-  Input_Handler.Next_Character(Input, Error_Log, Is_End_Of_File, 
+  Input_Handler.Next_Character(Input, Error_Log, Is_End_Of_File,
     Current_Character);
 
-  Discard_EOF_And_Error(Error_Log, Is_End_Of_File, Error_Handler.UBL_Lexer,
-    This_Function, Character_Read);
+  Input_Handler.Discard_EOF_And_Error(Error_Log, Is_End_Of_File,
+    Error_Handler.UBL_Lexer, This_Function, Character_Read);
 
   if not Character_Read then
     Token := None;
@@ -2431,19 +2252,19 @@ begin
 
     when ' ' | HT | CR | LF =>
 
-      Finish_Leaf_Element_No_Character_Sequence(AllowanceChargeReason, 
+      Finish_Leaf_Element_No_Character_Sequence(AllowanceChargeReason,
         This_Function, Input, Error_Log, Token, Tag_Type);
 
     when '>' =>
 
-      Finish_Leaf_Element_Confirm_Tag_Only(AllowanceChargeReason, 
+      Finish_Leaf_Element_Confirm_Tag_Only(AllowanceChargeReason,
         This_Function, Error_Log, Token, Tag_Type);
 
     when 'C' =>
 
-      Finish_Leaf_Element("ode", AllowanceChargeReasonCode, 
+      Finish_Leaf_Element("ode", AllowanceChargeReasonCode,
         This_Function, Input, Error_Log, Token, Tag_Type);
-  
+
     when others =>
 
       Error_Handler.Set_Error
@@ -2469,16 +2290,16 @@ is
   Character_Read : Boolean;
   Sequence_Confirmed : Boolean;
 
-  This_Function : constant Error_Handler.Function_Classifier 
+  This_Function : constant Error_Handler.Function_Classifier
     := Error_Handler.B_Prefixed;
 
 begin
 
-  Input_Handler.Next_Character(Input, Error_Log, Is_End_Of_File, 
+  Input_Handler.Next_Character(Input, Error_Log, Is_End_Of_File,
     Current_Character);
 
-  Discard_EOF_And_Error(Error_Log, Is_End_Of_File, Error_Handler.UBL_Lexer,
-    This_Function, Character_Read);
+  Input_Handler.Discard_EOF_And_Error(Error_Log, Is_End_Of_File,
+    Error_Handler.UBL_Lexer, This_Function, Character_Read);
 
   if not Character_Read then
     Token := None;
@@ -2489,8 +2310,8 @@ begin
 
     when 'a' =>
 
-      Expect_Character_Sequence("se", Input, 
-        Error_Handler.UBL_Lexer, This_Function, Error_Log, 
+      Input_Handler.Expect_Character_Sequence("se", Input,
+        Error_Handler.UBL_Lexer, This_Function, Error_Log,
         Sequence_Confirmed);
 
       if not Sequence_Confirmed then
@@ -2502,14 +2323,14 @@ begin
 
     when 'i' =>
 
-      Finish_Composite_Element("llingReference", 
+      Finish_Composite_Element("llingReference",
         (Begin_BillingReference, End_BillingReference),
         This_Function, Input, Error_Log, Token, Tag_Type);
 
     when 'u' =>
 
-      Expect_Character_Sequence("yer", Input, 
-        Error_Handler.UBL_Lexer, This_Function, Error_Log, 
+      Input_Handler.Expect_Character_Sequence("yer", Input,
+        Error_Handler.UBL_Lexer, This_Function, Error_Log,
         Sequence_Confirmed);
 
       if not Sequence_Confirmed then
@@ -2518,7 +2339,7 @@ begin
       end if;
 
       Buyer_Prefixed(Input, Error_Log, Token, Tag_Type);
-  
+
     when others =>
 
       Error_Handler.Set_Error
@@ -2543,16 +2364,16 @@ is
   Is_End_Of_File : Boolean;
   Character_Read : Boolean;
 
-  This_Function : constant Error_Handler.Function_Classifier 
+  This_Function : constant Error_Handler.Function_Classifier
     := Error_Handler.Base_Prefixed;
 
 begin
 
-  Input_Handler.Next_Character(Input, Error_Log, Is_End_Of_File, 
+  Input_Handler.Next_Character(Input, Error_Log, Is_End_Of_File,
     Current_Character);
 
-  Discard_EOF_And_Error(Error_Log, Is_End_Of_File, Error_Handler.UBL_Lexer,
-    This_Function, Character_Read);
+  Input_Handler.Discard_EOF_And_Error(Error_Log, Is_End_Of_File,
+    Error_Handler.UBL_Lexer, This_Function, Character_Read);
 
   if not Character_Read then
     Token := None;
@@ -2563,15 +2384,15 @@ begin
 
     when 'A' =>
 
-      Finish_Leaf_Element_With_Attribute("mount", BaseAmount_With_Attribute, 
+      Finish_Leaf_Element_With_Attribute("mount", BaseAmount_With_Attribute,
         This_Function, Input, Error_Log, Token, Tag_Type);
 
     when 'Q' =>
 
-      Finish_Leaf_Element_With_Attribute("uantity", 
-        BaseQuantity_With_Optional_Attribute, 
+      Finish_Leaf_Element_With_Attribute("uantity",
+        BaseQuantity_With_Optional_Attribute,
         This_Function, Input, Error_Log, Token, Tag_Type);
-  
+
     when others =>
 
       Error_Handler.Set_Error
@@ -2596,16 +2417,16 @@ is
   Is_End_Of_File : Boolean;
   Character_Read : Boolean;
 
-  This_Function : constant Error_Handler.Function_Classifier 
+  This_Function : constant Error_Handler.Function_Classifier
     := Error_Handler.Buyer_Prefixed;
 
 begin
 
-  Input_Handler.Next_Character(Input, Error_Log, Is_End_Of_File, 
+  Input_Handler.Next_Character(Input, Error_Log, Is_End_Of_File,
     Current_Character);
 
-  Discard_EOF_And_Error(Error_Log, Is_End_Of_File, Error_Handler.UBL_Lexer,
-    This_Function, Character_Read);
+  Input_Handler.Discard_EOF_And_Error(Error_Log, Is_End_Of_File,
+    Error_Handler.UBL_Lexer, This_Function, Character_Read);
 
   if not Character_Read then
     Token := None;
@@ -2616,15 +2437,15 @@ begin
 
     when 'R' =>
 
-      Finish_Leaf_Element("eference", BuyerReference, 
+      Finish_Leaf_Element("eference", BuyerReference,
         This_Function, Input, Error_Log, Token, Tag_Type);
 
     when 's' =>
 
-      Finish_Composite_Element("ItemIdentification", 
+      Finish_Composite_Element("ItemIdentification",
         (Begin_BuyersItemIdentification, End_BuyersItemIdentification),
         This_Function, Input, Error_Log, Token, Tag_Type);
-  
+
     when others =>
 
       Error_Handler.Set_Error
@@ -2650,16 +2471,16 @@ is
   Character_Read : Boolean;
   Sequence_Confirmed : Boolean;
 
-  This_Function : constant Error_Handler.Function_Classifier 
+  This_Function : constant Error_Handler.Function_Classifier
     := Error_Handler.C_Prefixed;
 
 begin
 
-  Input_Handler.Next_Character(Input, Error_Log, Is_End_Of_File, 
+  Input_Handler.Next_Character(Input, Error_Log, Is_End_Of_File,
     Current_Character);
 
-  Discard_EOF_And_Error(Error_Log, Is_End_Of_File, Error_Handler.UBL_Lexer,
-    This_Function, Character_Read);
+  Input_Handler.Discard_EOF_And_Error(Error_Log, Is_End_Of_File,
+    Error_Handler.UBL_Lexer, This_Function, Character_Read);
 
   if not Character_Read then
     Token := None;
@@ -2670,19 +2491,19 @@ begin
 
     when 'a' =>
 
-      Finish_Composite_Element("rdAccount", 
+      Finish_Composite_Element("rdAccount",
         (Begin_CardAccount, End_CardAccount),
         This_Function, Input, Error_Log, Token, Tag_Type);
 
     when 'i' =>
 
-      Finish_Leaf_Element("tyName", CityName, 
+      Finish_Leaf_Element("tyName", CityName,
         This_Function, Input, Error_Log, Token, Tag_Type);
 
     when 'h' =>
 
-      Expect_Character_Sequence("arge", Input, 
-        Error_Handler.UBL_Lexer, This_Function, Error_Log, 
+      Input_Handler.Expect_Character_Sequence("arge", Input,
+        Error_Handler.UBL_Lexer, This_Function, Error_Log,
         Sequence_Confirmed);
 
       if not Sequence_Confirmed then
@@ -2694,7 +2515,7 @@ begin
 
     when 'l' =>
 
-      Finish_Composite_Element("assifiedTaxCategory", 
+      Finish_Composite_Element("assifiedTaxCategory",
         (Begin_ClassifiedTaxCategory, End_ClassifiedTaxCategory),
         This_Function, Input, Error_Log, Token, Tag_Type);
 
@@ -2704,8 +2525,8 @@ begin
 
     when 'r' =>
 
-      Expect_Character_Sequence("edit", Input, 
-        Error_Handler.UBL_Lexer, This_Function, Error_Log, 
+      Input_Handler.Expect_Character_Sequence("edit", Input,
+        Error_Handler.UBL_Lexer, This_Function, Error_Log,
         Sequence_Confirmed);
 
       if not Sequence_Confirmed then
@@ -2717,9 +2538,9 @@ begin
 
     when 'u' =>
 
-      Finish_Leaf_Element("stomizationID", CustomizationID, 
+      Finish_Leaf_Element("stomizationID", CustomizationID,
         This_Function, Input, Error_Log, Token, Tag_Type);
-  
+
     when others =>
 
       Error_Handler.Set_Error
@@ -2744,16 +2565,16 @@ is
   Is_End_Of_File : Boolean;
   Character_Read : Boolean;
 
-  This_Function : constant Error_Handler.Function_Classifier 
+  This_Function : constant Error_Handler.Function_Classifier
     := Error_Handler.Charge_Prefixed;
 
 begin
 
-  Input_Handler.Next_Character(Input, Error_Log, Is_End_Of_File, 
+  Input_Handler.Next_Character(Input, Error_Log, Is_End_Of_File,
     Current_Character);
 
-  Discard_EOF_And_Error(Error_Log, Is_End_Of_File, Error_Handler.UBL_Lexer,
-    This_Function, Character_Read);
+  Input_Handler.Discard_EOF_And_Error(Error_Log, Is_End_Of_File,
+    Error_Handler.UBL_Lexer, This_Function, Character_Read);
 
   if not Character_Read then
     Token := None;
@@ -2764,15 +2585,15 @@ begin
 
     when 'I' =>
 
-      Finish_Leaf_Element("ndicator", ChargeIndicator, 
+      Finish_Leaf_Element("ndicator", ChargeIndicator,
         This_Function, Input, Error_Log, Token, Tag_Type);
 
     when 'T' =>
 
-      Finish_Leaf_Element_With_Attribute("otalAmount", 
-        ChargeTotalAmount_With_Attribute, 
+      Finish_Leaf_Element_With_Attribute("otalAmount",
+        ChargeTotalAmount_With_Attribute,
         This_Function, Input, Error_Log, Token, Tag_Type);
-  
+
     when others =>
 
       Error_Handler.Set_Error
@@ -2798,16 +2619,16 @@ is
   Character_Read : Boolean;
   Sequence_Confirmed : Boolean;
 
-  This_Function : constant Error_Handler.Function_Classifier 
+  This_Function : constant Error_Handler.Function_Classifier
     := Error_Handler.Co_Prefixed;
 
 begin
 
-  Input_Handler.Next_Character(Input, Error_Log, Is_End_Of_File, 
+  Input_Handler.Next_Character(Input, Error_Log, Is_End_Of_File,
     Current_Character);
 
-  Discard_EOF_And_Error(Error_Log, Is_End_Of_File, Error_Handler.UBL_Lexer,
-    This_Function, Character_Read);
+  Input_Handler.Discard_EOF_And_Error(Error_Log, Is_End_Of_File,
+    Error_Handler.UBL_Lexer, This_Function, Character_Read);
 
   if not Character_Read then
     Token := None;
@@ -2822,8 +2643,8 @@ begin
 
     when 'n' =>
 
-      Expect_Character_Sequence("t", Input, 
-        Error_Handler.UBL_Lexer, This_Function, Error_Log, 
+      Input_Handler.Expect_Character_Sequence("t", Input,
+        Error_Handler.UBL_Lexer, This_Function, Error_Log,
         Sequence_Confirmed);
 
       if not Sequence_Confirmed then
@@ -2835,8 +2656,8 @@ begin
 
     when 'u' =>
 
-      Expect_Character_Sequence("ntry", Input, 
-        Error_Handler.UBL_Lexer, This_Function, Error_Log, 
+      Input_Handler.Expect_Character_Sequence("ntry", Input,
+        Error_Handler.UBL_Lexer, This_Function, Error_Log,
         Sequence_Confirmed);
 
       if not Sequence_Confirmed then
@@ -2845,7 +2666,7 @@ begin
       end if;
 
       Country_Prefixed(Input, Error_Log, Token, Tag_Type);
-  
+
     when others =>
 
       Error_Handler.Set_Error
@@ -2871,16 +2692,16 @@ is
   Character_Read : Boolean;
   Sequence_Confirmed : Boolean;
 
-  This_Function : constant Error_Handler.Function_Classifier 
+  This_Function : constant Error_Handler.Function_Classifier
     := Error_Handler.Com_Prefixed;
 
 begin
 
-  Input_Handler.Next_Character(Input, Error_Log, Is_End_Of_File, 
+  Input_Handler.Next_Character(Input, Error_Log, Is_End_Of_File,
     Current_Character);
 
-  Discard_EOF_And_Error(Error_Log, Is_End_Of_File, Error_Handler.UBL_Lexer,
-    This_Function, Character_Read);
+  Input_Handler.Discard_EOF_And_Error(Error_Log, Is_End_Of_File,
+    Error_Handler.UBL_Lexer, This_Function, Character_Read);
 
   if not Character_Read then
     Token := None;
@@ -2891,14 +2712,14 @@ begin
 
     when 'm' =>
 
-      Finish_Composite_Element("odityClassification", 
+      Finish_Composite_Element("odityClassification",
         (Begin_CommodityClassification, End_CommodityClassification),
         This_Function, Input, Error_Log, Token, Tag_Type);
 
     when 'p' =>
 
-      Expect_Character_Sequence("any", Input, 
-        Error_Handler.UBL_Lexer, This_Function, Error_Log, 
+      Input_Handler.Expect_Character_Sequence("any", Input,
+        Error_Handler.UBL_Lexer, This_Function, Error_Log,
         Sequence_Confirmed);
 
       if not Sequence_Confirmed then
@@ -2907,7 +2728,7 @@ begin
       end if;
 
       Company_Prefixed(Input, Error_Log, Token, Tag_Type);
-  
+
     when others =>
 
       Error_Handler.Set_Error
@@ -2932,16 +2753,16 @@ is
   Is_End_Of_File : Boolean;
   Character_Read : Boolean;
 
-  This_Function : constant Error_Handler.Function_Classifier 
+  This_Function : constant Error_Handler.Function_Classifier
     := Error_Handler.Company_Prefixed;
 
 begin
 
-  Input_Handler.Next_Character(Input, Error_Log, Is_End_Of_File, 
+  Input_Handler.Next_Character(Input, Error_Log, Is_End_Of_File,
     Current_Character);
 
-  Discard_EOF_And_Error(Error_Log, Is_End_Of_File, Error_Handler.UBL_Lexer,
-    This_Function, Character_Read);
+  Input_Handler.Discard_EOF_And_Error(Error_Log, Is_End_Of_File,
+    Error_Handler.UBL_Lexer, This_Function, Character_Read);
 
   if not Character_Read then
     Token := None;
@@ -2952,14 +2773,14 @@ begin
 
     when 'I' =>
 
-      Finish_Leaf_Element_With_Attribute("D", CompanyID_With_Optional_Attribute, 
+      Finish_Leaf_Element_With_Attribute("D", CompanyID_With_Optional_Attribute,
         This_Function, Input, Error_Log, Token, Tag_Type);
 
     when 'L' =>
 
-      Finish_Leaf_Element("egalForm", CompanyLegalForm, 
+      Finish_Leaf_Element("egalForm", CompanyLegalForm,
         This_Function, Input, Error_Log, Token, Tag_Type);
-  
+
     when others =>
 
       Error_Handler.Set_Error
@@ -2984,16 +2805,16 @@ is
   Is_End_Of_File : Boolean;
   Character_Read : Boolean;
 
-  This_Function : constant Error_Handler.Function_Classifier 
+  This_Function : constant Error_Handler.Function_Classifier
     := Error_Handler.Cont_Prefixed;
 
 begin
 
-  Input_Handler.Next_Character(Input, Error_Log, Is_End_Of_File, 
+  Input_Handler.Next_Character(Input, Error_Log, Is_End_Of_File,
     Current_Character);
 
-  Discard_EOF_And_Error(Error_Log, Is_End_Of_File, Error_Handler.UBL_Lexer,
-    This_Function, Character_Read);
+  Input_Handler.Discard_EOF_And_Error(Error_Log, Is_End_Of_File,
+    Error_Handler.UBL_Lexer, This_Function, Character_Read);
 
   if not Character_Read then
     Token := None;
@@ -3004,16 +2825,16 @@ begin
 
     when 'a' =>
 
-      Finish_Composite_Element("ct", 
+      Finish_Composite_Element("ct",
         (Begin_Contact, End_Contact),
         This_Function, Input, Error_Log, Token, Tag_Type);
 
     when 'r' =>
 
-      Finish_Composite_Element("actDocumentReference", 
+      Finish_Composite_Element("actDocumentReference",
         (Begin_ContractDocumentReference, End_ContractDocumentReference),
         This_Function, Input, Error_Log, Token, Tag_Type);
-  
+
     when others =>
 
       Error_Handler.Set_Error
@@ -3038,16 +2859,16 @@ is
   Is_End_Of_File : Boolean;
   Character_Read : Boolean;
 
-  This_Function : constant Error_Handler.Function_Classifier 
+  This_Function : constant Error_Handler.Function_Classifier
     := Error_Handler.Country_Prefixed;
 
 begin
 
-  Input_Handler.Next_Character(Input, Error_Log, Is_End_Of_File, 
+  Input_Handler.Next_Character(Input, Error_Log, Is_End_Of_File,
     Current_Character);
 
-  Discard_EOF_And_Error(Error_Log, Is_End_Of_File, Error_Handler.UBL_Lexer,
-    This_Function, Character_Read);
+  Input_Handler.Discard_EOF_And_Error(Error_Log, Is_End_Of_File,
+    Error_Handler.UBL_Lexer, This_Function, Character_Read);
 
   if not Character_Read then
     Token := None;
@@ -3058,21 +2879,21 @@ begin
 
     when ' ' | HT | CR | LF =>
 
-      Finish_Composite_Element_No_Character_Sequence( 
+      Finish_Composite_Element_No_Character_Sequence(
         (Begin_Country, End_Country),
         This_Function, Input, Error_Log, Token, Tag_Type);
 
     when '>' =>
 
-      Finish_Composite_Element_Confirm_Tag_Only( 
+      Finish_Composite_Element_Confirm_Tag_Only(
         (Begin_Country, End_Country),
         This_Function, Error_Log, Token, Tag_Type);
 
     when 'S' =>
 
-      Finish_Leaf_Element("ubentity", CountrySubentity, 
+      Finish_Leaf_Element("ubentity", CountrySubentity,
         This_Function, Input, Error_Log, Token, Tag_Type);
-  
+
     when others =>
 
       Error_Handler.Set_Error
@@ -3098,16 +2919,16 @@ is
   Character_Read : Boolean;
   Sequence_Confirmed : Boolean;
 
-  This_Function : constant Error_Handler.Function_Classifier 
+  This_Function : constant Error_Handler.Function_Classifier
     := Error_Handler.Credit_Prefixed;
 
 begin
 
-  Input_Handler.Next_Character(Input, Error_Log, Is_End_Of_File, 
+  Input_Handler.Next_Character(Input, Error_Log, Is_End_Of_File,
     Current_Character);
 
-  Discard_EOF_And_Error(Error_Log, Is_End_Of_File, Error_Handler.UBL_Lexer,
-    This_Function, Character_Read);
+  Input_Handler.Discard_EOF_And_Error(Error_Log, Is_End_Of_File,
+    Error_Handler.UBL_Lexer, This_Function, Character_Read);
 
   if not Character_Read then
     Token := None;
@@ -3118,14 +2939,14 @@ begin
 
     when 'e' =>
 
-      Finish_Leaf_Element_With_Attribute("dQuantity", 
-        CreditedQuantity_With_Attribute, 
+      Finish_Leaf_Element_With_Attribute("dQuantity",
+        CreditedQuantity_With_Attribute,
         This_Function, Input, Error_Log, Token, Tag_Type);
 
     when 'N' =>
 
-      Expect_Character_Sequence("ote", Input, 
-        Error_Handler.UBL_Lexer, This_Function, Error_Log, 
+      Input_Handler.Expect_Character_Sequence("ote", Input,
+        Error_Handler.UBL_Lexer, This_Function, Error_Log,
         Sequence_Confirmed);
 
       if not Sequence_Confirmed then
@@ -3134,7 +2955,7 @@ begin
       end if;
 
       CreditNote_Prefixed(Input, Error_Log, Token, Tag_Type);
-  
+
     when others =>
 
       Error_Handler.Set_Error
@@ -3159,16 +2980,16 @@ is
   Is_End_Of_File : Boolean;
   Character_Read : Boolean;
 
-  This_Function : constant Error_Handler.Function_Classifier 
+  This_Function : constant Error_Handler.Function_Classifier
     := Error_Handler.CreditNote_Prefixed;
 
 begin
 
-  Input_Handler.Next_Character(Input, Error_Log, Is_End_Of_File, 
+  Input_Handler.Next_Character(Input, Error_Log, Is_End_Of_File,
     Current_Character);
 
-  Discard_EOF_And_Error(Error_Log, Is_End_Of_File, Error_Handler.UBL_Lexer,
-    This_Function, Character_Read);
+  Input_Handler.Discard_EOF_And_Error(Error_Log, Is_End_Of_File,
+    Error_Handler.UBL_Lexer, This_Function, Character_Read);
 
   if not Character_Read then
     Token := None;
@@ -3179,15 +3000,15 @@ begin
 
     when 'L' =>
 
-      Finish_Composite_Element("ine", 
+      Finish_Composite_Element("ine",
         (Begin_CreditNoteLine, End_CreditNoteLine),
         This_Function, Input, Error_Log, Token, Tag_Type);
 
     when 'T' =>
 
-      Finish_Leaf_Element("ypeCode", CreditNoteTypeCode, 
+      Finish_Leaf_Element("ypeCode", CreditNoteTypeCode,
         This_Function, Input, Error_Log, Token, Tag_Type);
-  
+
     when others =>
 
       Error_Handler.Set_Error
@@ -3213,16 +3034,16 @@ is
   Character_Read : Boolean;
   Sequence_Confirmed : Boolean;
 
-  This_Function : constant Error_Handler.Function_Classifier 
+  This_Function : constant Error_Handler.Function_Classifier
     := Error_Handler.D_Prefixed;
 
 begin
 
-  Input_Handler.Next_Character(Input, Error_Log, Is_End_Of_File, 
+  Input_Handler.Next_Character(Input, Error_Log, Is_End_Of_File,
     Current_Character);
 
-  Discard_EOF_And_Error(Error_Log, Is_End_Of_File, Error_Handler.UBL_Lexer,
-    This_Function, Character_Read);
+  Input_Handler.Discard_EOF_And_Error(Error_Log, Is_End_Of_File,
+    Error_Handler.UBL_Lexer, This_Function, Character_Read);
 
   if not Character_Read then
     Token := None;
@@ -3237,8 +3058,8 @@ begin
 
     when 'o' =>
 
-      Expect_Character_Sequence("cument", Input, 
-        Error_Handler.UBL_Lexer, This_Function, Error_Log, 
+      Input_Handler.Expect_Character_Sequence("cument", Input,
+        Error_Handler.UBL_Lexer, This_Function, Error_Log,
         Sequence_Confirmed);
 
       if not Sequence_Confirmed then
@@ -3250,9 +3071,9 @@ begin
 
     when 'u' =>
 
-      Finish_Leaf_Element("eDate", DueDate, 
+      Finish_Leaf_Element("eDate", DueDate,
         This_Function, Input, Error_Log, Token, Tag_Type);
-  
+
     when others =>
 
       Error_Handler.Set_Error
@@ -3278,16 +3099,16 @@ is
   Character_Read : Boolean;
   Sequence_Confirmed : Boolean;
 
-  This_Function : constant Error_Handler.Function_Classifier 
+  This_Function : constant Error_Handler.Function_Classifier
     := Error_Handler.De_Prefixed;
 
 begin
 
-  Input_Handler.Next_Character(Input, Error_Log, Is_End_Of_File, 
+  Input_Handler.Next_Character(Input, Error_Log, Is_End_Of_File,
     Current_Character);
 
-  Discard_EOF_And_Error(Error_Log, Is_End_Of_File, Error_Handler.UBL_Lexer,
-    This_Function, Character_Read);
+  Input_Handler.Discard_EOF_And_Error(Error_Log, Is_End_Of_File,
+    Error_Handler.UBL_Lexer, This_Function, Character_Read);
 
   if not Character_Read then
     Token := None;
@@ -3302,8 +3123,8 @@ begin
 
     when 'l' =>
 
-      Expect_Character_Sequence("ivery", Input, 
-        Error_Handler.UBL_Lexer, This_Function, Error_Log, 
+      Input_Handler.Expect_Character_Sequence("ivery", Input,
+        Error_Handler.UBL_Lexer, This_Function, Error_Log,
         Sequence_Confirmed);
 
       if not Sequence_Confirmed then
@@ -3312,7 +3133,7 @@ begin
       end if;
 
       Delivery_Prefixed(Input, Error_Log, Token, Tag_Type);
-  
+
     when others =>
 
       Error_Handler.Set_Error
@@ -3338,16 +3159,16 @@ is
   Character_Read : Boolean;
   Sequence_Confirmed : Boolean;
 
-  This_Function : constant Error_Handler.Function_Classifier 
+  This_Function : constant Error_Handler.Function_Classifier
     := Error_Handler.Des_Prefixed;
 
 begin
 
-  Input_Handler.Next_Character(Input, Error_Log, Is_End_Of_File, 
+  Input_Handler.Next_Character(Input, Error_Log, Is_End_Of_File,
     Current_Character);
 
-  Discard_EOF_And_Error(Error_Log, Is_End_Of_File, Error_Handler.UBL_Lexer,
-    This_Function, Character_Read);
+  Input_Handler.Discard_EOF_And_Error(Error_Log, Is_End_Of_File,
+    Error_Handler.UBL_Lexer, This_Function, Character_Read);
 
   if not Character_Read then
     Token := None;
@@ -3358,8 +3179,8 @@ begin
 
     when 'c' =>
 
-      Expect_Character_Sequence("ription", Input, 
-        Error_Handler.UBL_Lexer, This_Function, Error_Log, 
+      Input_Handler.Expect_Character_Sequence("ription", Input,
+        Error_Handler.UBL_Lexer, This_Function, Error_Log,
         Sequence_Confirmed);
 
       if not Sequence_Confirmed then
@@ -3371,10 +3192,10 @@ begin
 
     when 'p' =>
 
-      Finish_Composite_Element("atchDocumentReference", 
+      Finish_Composite_Element("atchDocumentReference",
         (Begin_DespatchDocumentReference, End_DespatchDocumentReference),
         This_Function, Input, Error_Log, Token, Tag_Type);
-  
+
     when others =>
 
       Error_Handler.Set_Error
@@ -3399,16 +3220,16 @@ is
   Is_End_Of_File : Boolean;
   Character_Read : Boolean;
 
-  This_Function : constant Error_Handler.Function_Classifier 
+  This_Function : constant Error_Handler.Function_Classifier
     := Error_Handler.Description_Prefixed;
 
 begin
 
-  Input_Handler.Next_Character(Input, Error_Log, Is_End_Of_File, 
+  Input_Handler.Next_Character(Input, Error_Log, Is_End_Of_File,
     Current_Character);
 
-  Discard_EOF_And_Error(Error_Log, Is_End_Of_File, Error_Handler.UBL_Lexer,
-    This_Function, Character_Read);
+  Input_Handler.Discard_EOF_And_Error(Error_Log, Is_End_Of_File,
+    Error_Handler.UBL_Lexer, This_Function, Character_Read);
 
   if not Character_Read then
     Token := None;
@@ -3419,19 +3240,19 @@ begin
 
     when ' ' | HT | CR | LF =>
 
-      Finish_Leaf_Element_No_Character_Sequence( Description, 
+      Finish_Leaf_Element_No_Character_Sequence( Description,
         This_Function, Input, Error_Log, Token, Tag_Type);
 
     when '>' =>
 
-      Finish_Leaf_Element_Confirm_Tag_Only( Description, 
+      Finish_Leaf_Element_Confirm_Tag_Only( Description,
         This_Function, Error_Log, Token, Tag_Type);
 
     when 'C' =>
 
-      Finish_Leaf_Element("ode", DescriptionCode, 
+      Finish_Leaf_Element("ode", DescriptionCode,
         This_Function, Input, Error_Log, Token, Tag_Type);
-  
+
     when others =>
 
       Error_Handler.Set_Error
@@ -3456,16 +3277,16 @@ is
   Is_End_Of_File : Boolean;
   Character_Read : Boolean;
 
-  This_Function : constant Error_Handler.Function_Classifier 
+  This_Function : constant Error_Handler.Function_Classifier
     := Error_Handler.Delivery_Prefixed;
 
 begin
 
-  Input_Handler.Next_Character(Input, Error_Log, Is_End_Of_File, 
+  Input_Handler.Next_Character(Input, Error_Log, Is_End_Of_File,
     Current_Character);
 
-  Discard_EOF_And_Error(Error_Log, Is_End_Of_File, Error_Handler.UBL_Lexer,
-    This_Function, Character_Read);
+  Input_Handler.Discard_EOF_And_Error(Error_Log, Is_End_Of_File,
+    Error_Handler.UBL_Lexer, This_Function, Character_Read);
 
   if not Character_Read then
     Token := None;
@@ -3476,28 +3297,28 @@ begin
 
     when ' ' | HT | CR | LF =>
 
-      Finish_Composite_Element_No_Character_Sequence( 
+      Finish_Composite_Element_No_Character_Sequence(
         (Begin_Delivery, End_Delivery),
         This_Function, Input, Error_Log, Token, Tag_Type);
 
     when '>' =>
 
-      Finish_Composite_Element_Confirm_Tag_Only( 
+      Finish_Composite_Element_Confirm_Tag_Only(
         (Begin_Delivery, End_Delivery),
         This_Function, Error_Log, Token, Tag_Type);
 
     when 'L' =>
 
-      Finish_Composite_Element("ocation", 
+      Finish_Composite_Element("ocation",
         (Begin_DeliveryLocation, End_DeliveryLocation),
         This_Function, Input, Error_Log, Token, Tag_Type);
 
     when 'P' =>
 
-      Finish_Composite_Element("arty", 
+      Finish_Composite_Element("arty",
         (Begin_DeliveryParty, End_DeliveryParty),
         This_Function, Input, Error_Log, Token, Tag_Type);
-  
+
     when others =>
 
       Error_Handler.Set_Error
@@ -3522,16 +3343,16 @@ is
   Is_End_Of_File : Boolean;
   Character_Read : Boolean;
 
-  This_Function : constant Error_Handler.Function_Classifier 
+  This_Function : constant Error_Handler.Function_Classifier
     := Error_Handler.Document_Prefixed;
 
 begin
 
-  Input_Handler.Next_Character(Input, Error_Log, Is_End_Of_File, 
+  Input_Handler.Next_Character(Input, Error_Log, Is_End_Of_File,
     Current_Character);
 
-  Discard_EOF_And_Error(Error_Log, Is_End_Of_File, Error_Handler.UBL_Lexer,
-    This_Function, Character_Read);
+  Input_Handler.Discard_EOF_And_Error(Error_Log, Is_End_Of_File,
+    Error_Handler.UBL_Lexer, This_Function, Character_Read);
 
   if not Character_Read then
     Token := None;
@@ -3542,20 +3363,20 @@ begin
 
     when 'C' =>
 
-      Finish_Leaf_Element("urrencyCode", DocumentCurrencyCode, 
+      Finish_Leaf_Element("urrencyCode", DocumentCurrencyCode,
         This_Function, Input, Error_Log, Token, Tag_Type);
 
     when 'D' =>
 
-      Finish_Leaf_Element("escription", DocumentDescription, 
+      Finish_Leaf_Element("escription", DocumentDescription,
         This_Function, Input, Error_Log, Token, Tag_Type);
 
     when 'R' =>
 
-      Finish_Composite_Element("eference", 
+      Finish_Composite_Element("eference",
         (Begin_DocumentReference, End_DocumentReference),
         This_Function, Input, Error_Log, Token, Tag_Type);
-  
+
     when others =>
 
       Error_Handler.Set_Error
@@ -3581,16 +3402,16 @@ is
   Character_Read : Boolean;
   Sequence_Confirmed : Boolean;
 
-  This_Function : constant Error_Handler.Function_Classifier 
+  This_Function : constant Error_Handler.Function_Classifier
     := Error_Handler.E_Prefixed;
 
 begin
 
-  Input_Handler.Next_Character(Input, Error_Log, Is_End_Of_File, 
+  Input_Handler.Next_Character(Input, Error_Log, Is_End_Of_File,
     Current_Character);
 
-  Discard_EOF_And_Error(Error_Log, Is_End_Of_File, Error_Handler.UBL_Lexer,
-    This_Function, Character_Read);
+  Input_Handler.Discard_EOF_And_Error(Error_Log, Is_End_Of_File,
+    Error_Handler.UBL_Lexer, This_Function, Character_Read);
 
   if not Character_Read then
     Token := None;
@@ -3601,19 +3422,19 @@ begin
 
     when 'l' =>
 
-      Finish_Leaf_Element("ectronicMail", ElectronicMail, 
+      Finish_Leaf_Element("ectronicMail", ElectronicMail,
         This_Function, Input, Error_Log, Token, Tag_Type);
 
     when 'm' =>
 
-      Finish_Leaf_Element_With_Attribute("beddedDocumentBinaryObject", 
-        EmbeddedDocumentBinaryObject_With_Attribute, 
+      Finish_Leaf_Element_With_Attribute("beddedDocumentBinaryObject",
+        EmbeddedDocumentBinaryObject_With_Attribute,
         This_Function, Input, Error_Log, Token, Tag_Type);
 
     when 'n' =>
 
-      Expect_Character_Sequence("d", Input, 
-        Error_Handler.UBL_Lexer, This_Function, Error_Log, 
+      Input_Handler.Expect_Character_Sequence("d", Input,
+        Error_Handler.UBL_Lexer, This_Function, Error_Log,
         Sequence_Confirmed);
 
       if not Sequence_Confirmed then
@@ -3625,10 +3446,10 @@ begin
 
     when 'x' =>
 
-      Finish_Composite_Element("ternalReference", 
+      Finish_Composite_Element("ternalReference",
         (Begin_ExternalReference, End_ExternalReference),
         This_Function, Input, Error_Log, Token, Tag_Type);
-  
+
     when others =>
 
       Error_Handler.Set_Error
@@ -3653,16 +3474,16 @@ is
   Is_End_Of_File : Boolean;
   Character_Read : Boolean;
 
-  This_Function : constant Error_Handler.Function_Classifier 
+  This_Function : constant Error_Handler.Function_Classifier
     := Error_Handler.End_Prefixed;
 
 begin
 
-  Input_Handler.Next_Character(Input, Error_Log, Is_End_Of_File, 
+  Input_Handler.Next_Character(Input, Error_Log, Is_End_Of_File,
     Current_Character);
 
-  Discard_EOF_And_Error(Error_Log, Is_End_Of_File, Error_Handler.UBL_Lexer,
-    This_Function, Character_Read);
+  Input_Handler.Discard_EOF_And_Error(Error_Log, Is_End_Of_File,
+    Error_Handler.UBL_Lexer, This_Function, Character_Read);
 
   if not Character_Read then
     Token := None;
@@ -3673,14 +3494,14 @@ begin
 
     when 'D' =>
 
-      Finish_Leaf_Element("ate", EndDate, 
+      Finish_Leaf_Element("ate", EndDate,
         This_Function, Input, Error_Log, Token, Tag_Type);
 
     when 'p' =>
 
-      Finish_Leaf_Element_With_Attribute("ointID", EndpointID_With_Attribute, 
+      Finish_Leaf_Element_With_Attribute("ointID", EndpointID_With_Attribute,
         This_Function, Input, Error_Log, Token, Tag_Type);
-  
+
     when others =>
 
       Error_Handler.Set_Error
@@ -3706,16 +3527,16 @@ is
   Character_Read : Boolean;
   Sequence_Confirmed : Boolean;
 
-  This_Function : constant Error_Handler.Function_Classifier 
+  This_Function : constant Error_Handler.Function_Classifier
     := Error_Handler.I_Prefixed;
 
 begin
 
-  Input_Handler.Next_Character(Input, Error_Log, Is_End_Of_File, 
+  Input_Handler.Next_Character(Input, Error_Log, Is_End_Of_File,
     Current_Character);
 
-  Discard_EOF_And_Error(Error_Log, Is_End_Of_File, Error_Handler.UBL_Lexer,
-    This_Function, Character_Read);
+  Input_Handler.Discard_EOF_And_Error(Error_Log, Is_End_Of_File,
+    Error_Handler.UBL_Lexer, This_Function, Character_Read);
 
   if not Character_Read then
     Token := None;
@@ -3726,18 +3547,18 @@ begin
 
     when 'D' =>
 
-      Finish_Leaf_Element_Confirm_Tag_Only( ID_With_Optional_Attribute, 
+      Finish_Leaf_Element_Confirm_Tag_Only( ID_With_Optional_Attribute,
         This_Function, Error_Log, Token, Tag_Type);
 
     when 'd' =>
 
-      Finish_Leaf_Element("entificationCode", IdentificationCode, 
+      Finish_Leaf_Element("entificationCode", IdentificationCode,
         This_Function, Input, Error_Log, Token, Tag_Type);
 
     when 'n' =>
 
-      Expect_Character_Sequence("voice", Input, 
-        Error_Handler.UBL_Lexer, This_Function, Error_Log, 
+      Input_Handler.Expect_Character_Sequence("voice", Input,
+        Error_Handler.UBL_Lexer, This_Function, Error_Log,
         Sequence_Confirmed);
 
       if not Sequence_Confirmed then
@@ -3749,8 +3570,8 @@ begin
 
     when 't' =>
 
-      Expect_Character_Sequence("em", Input, 
-        Error_Handler.UBL_Lexer, This_Function, Error_Log, 
+      Input_Handler.Expect_Character_Sequence("em", Input,
+        Error_Handler.UBL_Lexer, This_Function, Error_Log,
         Sequence_Confirmed);
 
       if not Sequence_Confirmed then
@@ -3762,9 +3583,9 @@ begin
 
     when 's' =>
 
-      Finish_Leaf_Element("sueDate", IssueDate, 
+      Finish_Leaf_Element("sueDate", IssueDate,
         This_Function, Input, Error_Log, Token, Tag_Type);
-  
+
     when others =>
 
       Error_Handler.Set_Error
@@ -3789,16 +3610,16 @@ is
   Is_End_Of_File : Boolean;
   Character_Read : Boolean;
 
-  This_Function : constant Error_Handler.Function_Classifier 
+  This_Function : constant Error_Handler.Function_Classifier
     := Error_Handler.Invoice_Prefixed;
 
 begin
 
-  Input_Handler.Next_Character(Input, Error_Log, Is_End_Of_File, 
+  Input_Handler.Next_Character(Input, Error_Log, Is_End_Of_File,
     Current_Character);
 
-  Discard_EOF_And_Error(Error_Log, Is_End_Of_File, Error_Handler.UBL_Lexer,
-    This_Function, Character_Read);
+  Input_Handler.Discard_EOF_And_Error(Error_Log, Is_End_Of_File,
+    Error_Handler.UBL_Lexer, This_Function, Character_Read);
 
   if not Character_Read then
     Token := None;
@@ -3809,33 +3630,33 @@ begin
 
     when 'D' =>
 
-      Finish_Composite_Element("ocumentReference", 
+      Finish_Composite_Element("ocumentReference",
         (Begin_InvoiceDocumentReference, End_InvoiceDocumentReference),
         This_Function, Input, Error_Log, Token, Tag_Type);
 
     when 'd' =>
 
-      Finish_Leaf_Element_With_Attribute("Quantity", 
-        InvoicedQuantity_With_Attribute, 
+      Finish_Leaf_Element_With_Attribute("Quantity",
+        InvoicedQuantity_With_Attribute,
         This_Function, Input, Error_Log, Token, Tag_Type);
 
     when 'L' =>
 
-      Finish_Composite_Element("ine", 
+      Finish_Composite_Element("ine",
         (Begin_InvoiceLine, End_InvoiceLine),
         This_Function, Input, Error_Log, Token, Tag_Type);
 
     when 'P' =>
 
-      Finish_Composite_Element("eriod", 
+      Finish_Composite_Element("eriod",
         (Begin_InvoicePeriod, End_InvoicePeriod),
         This_Function, Input, Error_Log, Token, Tag_Type);
 
     when 'T' =>
 
-      Finish_Leaf_Element("ypeCode", InvoiceTypeCode, 
+      Finish_Leaf_Element("ypeCode", InvoiceTypeCode,
         This_Function, Input, Error_Log, Token, Tag_Type);
-  
+
     when others =>
 
       Error_Handler.Set_Error
@@ -3860,16 +3681,16 @@ is
   Is_End_Of_File : Boolean;
   Character_Read : Boolean;
 
-  This_Function : constant Error_Handler.Function_Classifier 
+  This_Function : constant Error_Handler.Function_Classifier
     := Error_Handler.Item_Prefixed;
 
 begin
 
-  Input_Handler.Next_Character(Input, Error_Log, Is_End_Of_File, 
+  Input_Handler.Next_Character(Input, Error_Log, Is_End_Of_File,
     Current_Character);
 
-  Discard_EOF_And_Error(Error_Log, Is_End_Of_File, Error_Handler.UBL_Lexer,
-    This_Function, Character_Read);
+  Input_Handler.Discard_EOF_And_Error(Error_Log, Is_End_Of_File,
+    Error_Handler.UBL_Lexer, This_Function, Character_Read);
 
   if not Character_Read then
     Token := None;
@@ -3880,7 +3701,7 @@ begin
 
     when ' ' | HT | CR | LF =>
 
-      Finish_Composite_Element_No_Character_Sequence( 
+      Finish_Composite_Element_No_Character_Sequence(
         (Begin_Item, End_Item),
         This_Function, Input, Error_Log, Token, Tag_Type);
 
@@ -3892,10 +3713,10 @@ begin
 
     when 'C' =>
 
-      Finish_Leaf_Element_With_Attribute("lassificationCode", 
-        ItemClassificationCode_With_Optional_Attribute, 
+      Finish_Leaf_Element_With_Attribute("lassificationCode",
+        ItemClassificationCode_With_Optional_Attribute,
         This_Function, Input, Error_Log, Token, Tag_Type);
-  
+
     when others =>
 
       Error_Handler.Set_Error
@@ -3921,16 +3742,16 @@ is
   Character_Read : Boolean;
   Sequence_Confirmed : Boolean;
 
-  This_Function : constant Error_Handler.Function_Classifier 
+  This_Function : constant Error_Handler.Function_Classifier
     := Error_Handler.L_Prefixed;
 
 begin
 
-  Input_Handler.Next_Character(Input, Error_Log, Is_End_Of_File, 
+  Input_Handler.Next_Character(Input, Error_Log, Is_End_Of_File,
     Current_Character);
 
-  Discard_EOF_And_Error(Error_Log, Is_End_Of_File, Error_Handler.UBL_Lexer,
-    This_Function, Character_Read);
+  Input_Handler.Discard_EOF_And_Error(Error_Log, Is_End_Of_File,
+    Error_Handler.UBL_Lexer, This_Function, Character_Read);
 
   if not Character_Read then
     Token := None;
@@ -3941,8 +3762,8 @@ begin
 
     when 'i' =>
 
-      Expect_Character_Sequence("ne", Input, 
-        Error_Handler.UBL_Lexer, This_Function, Error_Log, 
+      Input_Handler.Expect_Character_Sequence("ne", Input,
+        Error_Handler.UBL_Lexer, This_Function, Error_Log,
         Sequence_Confirmed);
 
       if not Sequence_Confirmed then
@@ -3954,10 +3775,10 @@ begin
 
     when 'e' =>
 
-      Finish_Composite_Element("egalMonetaryTotal", 
+      Finish_Composite_Element("egalMonetaryTotal",
         (Begin_LegalMonetaryTotal, End_LegalMonetaryTotal),
         This_Function, Input, Error_Log, Token, Tag_Type);
-  
+
     when others =>
 
       Error_Handler.Set_Error
@@ -3982,16 +3803,16 @@ is
   Is_End_Of_File : Boolean;
   Character_Read : Boolean;
 
-  This_Function : constant Error_Handler.Function_Classifier 
+  This_Function : constant Error_Handler.Function_Classifier
     := Error_Handler.Line_Prefixed;
 
 begin
 
-  Input_Handler.Next_Character(Input, Error_Log, Is_End_Of_File, 
+  Input_Handler.Next_Character(Input, Error_Log, Is_End_Of_File,
     Current_Character);
 
-  Discard_EOF_And_Error(Error_Log, Is_End_Of_File, Error_Handler.UBL_Lexer,
-    This_Function, Character_Read);
+  Input_Handler.Discard_EOF_And_Error(Error_Log, Is_End_Of_File,
+    Error_Handler.UBL_Lexer, This_Function, Character_Read);
 
   if not Character_Read then
     Token := None;
@@ -4002,25 +3823,25 @@ begin
 
     when ' ' | HT | CR | LF =>
 
-      Finish_Leaf_Element_No_Character_Sequence( Line, 
+      Finish_Leaf_Element_No_Character_Sequence( Line,
         This_Function, Input, Error_Log, Token, Tag_Type);
 
     when '>' =>
 
-      Finish_Leaf_Element_Confirm_Tag_Only( Line, 
+      Finish_Leaf_Element_Confirm_Tag_Only( Line,
         This_Function, Error_Log, Token, Tag_Type);
 
     when 'E' =>
 
-      Finish_Leaf_Element_With_Attribute("xtensionAmount", 
-        LineExtensionAmount_With_Attribute, 
+      Finish_Leaf_Element_With_Attribute("xtensionAmount",
+        LineExtensionAmount_With_Attribute,
         This_Function, Input, Error_Log, Token, Tag_Type);
 
     when 'I' =>
 
-      Finish_Leaf_Element("D", LineID, 
+      Finish_Leaf_Element("D", LineID,
         This_Function, Input, Error_Log, Token, Tag_Type);
-  
+
     when others =>
 
       Error_Handler.Set_Error
@@ -4045,16 +3866,16 @@ is
   Is_End_Of_File : Boolean;
   Character_Read : Boolean;
 
-  This_Function : constant Error_Handler.Function_Classifier 
+  This_Function : constant Error_Handler.Function_Classifier
     := Error_Handler.N_Prefixed;
 
 begin
 
-  Input_Handler.Next_Character(Input, Error_Log, Is_End_Of_File, 
+  Input_Handler.Next_Character(Input, Error_Log, Is_End_Of_File,
     Current_Character);
 
-  Discard_EOF_And_Error(Error_Log, Is_End_Of_File, Error_Handler.UBL_Lexer,
-    This_Function, Character_Read);
+  Input_Handler.Discard_EOF_And_Error(Error_Log, Is_End_Of_File,
+    Error_Handler.UBL_Lexer, This_Function, Character_Read);
 
   if not Character_Read then
     Token := None;
@@ -4065,19 +3886,19 @@ begin
 
     when 'o' =>
 
-      Finish_Leaf_Element("te", Note, 
+      Finish_Leaf_Element("te", Note,
         This_Function, Input, Error_Log, Token, Tag_Type);
 
     when 'a' =>
 
-      Finish_Leaf_Element("me", Name, 
+      Finish_Leaf_Element("me", Name,
         This_Function, Input, Error_Log, Token, Tag_Type);
 
     when 'e' =>
 
-      Finish_Leaf_Element("tworkID", NetworkID, 
+      Finish_Leaf_Element("tworkID", NetworkID,
         This_Function, Input, Error_Log, Token, Tag_Type);
-  
+
     when others =>
 
       Error_Handler.Set_Error
@@ -4103,16 +3924,16 @@ is
   Character_Read : Boolean;
   Sequence_Confirmed : Boolean;
 
-  This_Function : constant Error_Handler.Function_Classifier 
+  This_Function : constant Error_Handler.Function_Classifier
     := Error_Handler.Or_Prefixed;
 
 begin
 
-  Input_Handler.Next_Character(Input, Error_Log, Is_End_Of_File, 
+  Input_Handler.Next_Character(Input, Error_Log, Is_End_Of_File,
     Current_Character);
 
-  Discard_EOF_And_Error(Error_Log, Is_End_Of_File, Error_Handler.UBL_Lexer,
-    This_Function, Character_Read);
+  Input_Handler.Discard_EOF_And_Error(Error_Log, Is_End_Of_File,
+    Error_Handler.UBL_Lexer, This_Function, Character_Read);
 
   if not Character_Read then
     Token := None;
@@ -4123,8 +3944,8 @@ begin
 
     when 'd' =>
 
-      Expect_Character_Sequence("er", Input, 
-        Error_Handler.UBL_Lexer, This_Function, Error_Log, 
+      Input_Handler.Expect_Character_Sequence("er", Input,
+        Error_Handler.UBL_Lexer, This_Function, Error_Log,
         Sequence_Confirmed);
 
       if not Sequence_Confirmed then
@@ -4136,8 +3957,8 @@ begin
 
     when 'i' =>
 
-      Expect_Character_Sequence("gin", Input, 
-        Error_Handler.UBL_Lexer, This_Function, Error_Log, 
+      Input_Handler.Expect_Character_Sequence("gin", Input,
+        Error_Handler.UBL_Lexer, This_Function, Error_Log,
         Sequence_Confirmed);
 
       if not Sequence_Confirmed then
@@ -4146,7 +3967,7 @@ begin
       end if;
 
       Origin_Prefixed(Input, Error_Log, Token, Tag_Type);
-  
+
     when others =>
 
       Error_Handler.Set_Error
@@ -4171,16 +3992,16 @@ is
   Is_End_Of_File : Boolean;
   Character_Read : Boolean;
 
-  This_Function : constant Error_Handler.Function_Classifier 
+  This_Function : constant Error_Handler.Function_Classifier
     := Error_Handler.Order_Prefixed;
 
 begin
 
-  Input_Handler.Next_Character(Input, Error_Log, Is_End_Of_File, 
+  Input_Handler.Next_Character(Input, Error_Log, Is_End_Of_File,
     Current_Character);
 
-  Discard_EOF_And_Error(Error_Log, Is_End_Of_File, Error_Handler.UBL_Lexer,
-    This_Function, Character_Read);
+  Input_Handler.Discard_EOF_And_Error(Error_Log, Is_End_Of_File,
+    Error_Handler.UBL_Lexer, This_Function, Character_Read);
 
   if not Character_Read then
     Token := None;
@@ -4191,16 +4012,16 @@ begin
 
     when 'R' =>
 
-      Finish_Composite_Element("eference", 
+      Finish_Composite_Element("eference",
         (Begin_OrderReference, End_OrderReference),
         This_Function, Input, Error_Log, Token, Tag_Type);
 
     when 'L' =>
 
-      Finish_Composite_Element("ineReference", 
+      Finish_Composite_Element("ineReference",
         (Begin_OrderLineReference, End_OrderLineReference),
         This_Function, Input, Error_Log, Token, Tag_Type);
-  
+
     when others =>
 
       Error_Handler.Set_Error
@@ -4225,16 +4046,16 @@ is
   Is_End_Of_File : Boolean;
   Character_Read : Boolean;
 
-  This_Function : constant Error_Handler.Function_Classifier 
+  This_Function : constant Error_Handler.Function_Classifier
     := Error_Handler.Origin_Prefixed;
 
 begin
 
-  Input_Handler.Next_Character(Input, Error_Log, Is_End_Of_File, 
+  Input_Handler.Next_Character(Input, Error_Log, Is_End_Of_File,
     Current_Character);
 
-  Discard_EOF_And_Error(Error_Log, Is_End_Of_File, Error_Handler.UBL_Lexer,
-    This_Function, Character_Read);
+  Input_Handler.Discard_EOF_And_Error(Error_Log, Is_End_Of_File,
+    Error_Handler.UBL_Lexer, This_Function, Character_Read);
 
   if not Character_Read then
     Token := None;
@@ -4245,16 +4066,16 @@ begin
 
     when 'a' =>
 
-      Finish_Composite_Element("torDocumentReference", 
+      Finish_Composite_Element("torDocumentReference",
         (Begin_OriginatorDocumentReference, End_OriginatorDocumentReference),
         This_Function, Input, Error_Log, Token, Tag_Type);
 
     when 'C' =>
 
-      Finish_Composite_Element("ountry", 
+      Finish_Composite_Element("ountry",
         (Begin_OriginCountry, End_OriginCountry),
         This_Function, Input, Error_Log, Token, Tag_Type);
-  
+
     when others =>
 
       Error_Handler.Set_Error
@@ -4280,16 +4101,16 @@ is
   Character_Read : Boolean;
   Sequence_Confirmed : Boolean;
 
-  This_Function : constant Error_Handler.Function_Classifier 
+  This_Function : constant Error_Handler.Function_Classifier
     := Error_Handler.P_Prefixed;
 
 begin
 
-  Input_Handler.Next_Character(Input, Error_Log, Is_End_Of_File, 
+  Input_Handler.Next_Character(Input, Error_Log, Is_End_Of_File,
     Current_Character);
 
-  Discard_EOF_And_Error(Error_Log, Is_End_Of_File, Error_Handler.UBL_Lexer,
-    This_Function, Character_Read);
+  Input_Handler.Discard_EOF_And_Error(Error_Log, Is_End_Of_File,
+    Error_Handler.UBL_Lexer, This_Function, Character_Read);
 
   if not Character_Read then
     Token := None;
@@ -4304,13 +4125,13 @@ begin
 
     when 'e' =>
 
-      Finish_Leaf_Element("rcent", Percent, 
+      Finish_Leaf_Element("rcent", Percent,
         This_Function, Input, Error_Log, Token, Tag_Type);
 
     when 'o' =>
 
-      Expect_Character_Sequence("stal", Input, 
-        Error_Handler.UBL_Lexer, This_Function, Error_Log, 
+      Input_Handler.Expect_Character_Sequence("stal", Input,
+        Error_Handler.UBL_Lexer, This_Function, Error_Log,
         Sequence_Confirmed);
 
       if not Sequence_Confirmed then
@@ -4323,7 +4144,7 @@ begin
     when 'r' =>
 
       Pr_Prefixed(Input, Error_Log, Token, Tag_Type);
-  
+
     when others =>
 
       Error_Handler.Set_Error
@@ -4349,16 +4170,16 @@ is
   Character_Read : Boolean;
   Sequence_Confirmed : Boolean;
 
-  This_Function : constant Error_Handler.Function_Classifier 
+  This_Function : constant Error_Handler.Function_Classifier
     := Error_Handler.Pa_Prefixed;
 
 begin
 
-  Input_Handler.Next_Character(Input, Error_Log, Is_End_Of_File, 
+  Input_Handler.Next_Character(Input, Error_Log, Is_End_Of_File,
     Current_Character);
 
-  Discard_EOF_And_Error(Error_Log, Is_End_Of_File, Error_Handler.UBL_Lexer,
-    This_Function, Character_Read);
+  Input_Handler.Discard_EOF_And_Error(Error_Log, Is_End_Of_File,
+    Error_Handler.UBL_Lexer, This_Function, Character_Read);
 
   if not Character_Read then
     Token := None;
@@ -4369,8 +4190,8 @@ begin
 
     when 'r' =>
 
-      Expect_Character_Sequence("ty", Input, 
-        Error_Handler.UBL_Lexer, This_Function, Error_Log, 
+      Input_Handler.Expect_Character_Sequence("ty", Input,
+        Error_Handler.UBL_Lexer, This_Function, Error_Log,
         Sequence_Confirmed);
 
       if not Sequence_Confirmed then
@@ -4383,7 +4204,7 @@ begin
     when 'y' =>
 
       Pay_Prefixed(Input, Error_Log, Token, Tag_Type);
-  
+
     when others =>
 
       Error_Handler.Set_Error
@@ -4408,16 +4229,16 @@ is
   Is_End_Of_File : Boolean;
   Character_Read : Boolean;
 
-  This_Function : constant Error_Handler.Function_Classifier 
+  This_Function : constant Error_Handler.Function_Classifier
     := Error_Handler.Party_Prefixed;
 
 begin
 
-  Input_Handler.Next_Character(Input, Error_Log, Is_End_Of_File, 
+  Input_Handler.Next_Character(Input, Error_Log, Is_End_Of_File,
     Current_Character);
 
-  Discard_EOF_And_Error(Error_Log, Is_End_Of_File, Error_Handler.UBL_Lexer,
-    This_Function, Character_Read);
+  Input_Handler.Discard_EOF_And_Error(Error_Log, Is_End_Of_File,
+    Error_Handler.UBL_Lexer, This_Function, Character_Read);
 
   if not Character_Read then
     Token := None;
@@ -4434,34 +4255,34 @@ begin
 
     when '>' =>
 
-      Finish_Composite_Element_Confirm_Tag_Only( 
+      Finish_Composite_Element_Confirm_Tag_Only(
         (Begin_Party, End_Party),
         This_Function, Error_Log, Token, Tag_Type);
 
     when 'I' =>
 
-      Finish_Composite_Element("dentification", 
+      Finish_Composite_Element("dentification",
         (Begin_PartyIdentification, End_PartyIdentification),
         This_Function, Input, Error_Log, Token, Tag_Type);
 
     when 'L' =>
 
-      Finish_Composite_Element("egalEntity", 
+      Finish_Composite_Element("egalEntity",
         (Begin_PartyLegalEntity, End_PartyLegalEntity),
         This_Function, Input, Error_Log, Token, Tag_Type);
 
     when 'N' =>
 
-      Finish_Composite_Element("ame", 
+      Finish_Composite_Element("ame",
         (Begin_PartyName, End_PartyName),
         This_Function, Input, Error_Log, Token, Tag_Type);
 
     when 'T' =>
 
-      Finish_Composite_Element("axScheme", 
+      Finish_Composite_Element("axScheme",
         (Begin_PartyTaxScheme, End_PartyTaxScheme),
         This_Function, Input, Error_Log, Token, Tag_Type);
-  
+
     when others =>
 
       Error_Handler.Set_Error
@@ -4487,16 +4308,16 @@ is
   Character_Read : Boolean;
   Sequence_Confirmed : Boolean;
 
-  This_Function : constant Error_Handler.Function_Classifier 
+  This_Function : constant Error_Handler.Function_Classifier
     := Error_Handler.Pay_Prefixed;
 
 begin
 
-  Input_Handler.Next_Character(Input, Error_Log, Is_End_Of_File, 
+  Input_Handler.Next_Character(Input, Error_Log, Is_End_Of_File,
     Current_Character);
 
-  Discard_EOF_And_Error(Error_Log, Is_End_Of_File, Error_Handler.UBL_Lexer,
-    This_Function, Character_Read);
+  Input_Handler.Discard_EOF_And_Error(Error_Log, Is_End_Of_File,
+    Error_Handler.UBL_Lexer, This_Function, Character_Read);
 
   if not Character_Read then
     Token := None;
@@ -4507,8 +4328,8 @@ begin
 
     when 'a' =>
 
-      Expect_Character_Sequence("ble", Input, 
-        Error_Handler.UBL_Lexer, This_Function, Error_Log, 
+      Input_Handler.Expect_Character_Sequence("ble", Input,
+        Error_Handler.UBL_Lexer, This_Function, Error_Log,
         Sequence_Confirmed);
 
       if not Sequence_Confirmed then
@@ -4524,8 +4345,8 @@ begin
 
     when 'm' =>
 
-      Expect_Character_Sequence("ent", Input, 
-        Error_Handler.UBL_Lexer, This_Function, Error_Log, 
+      Input_Handler.Expect_Character_Sequence("ent", Input,
+        Error_Handler.UBL_Lexer, This_Function, Error_Log,
         Sequence_Confirmed);
 
       if not Sequence_Confirmed then
@@ -4534,7 +4355,7 @@ begin
       end if;
 
       Payment_Prefixed(Input, Error_Log, Token, Tag_Type);
-  
+
     when others =>
 
       Error_Handler.Set_Error
@@ -4559,16 +4380,16 @@ is
   Is_End_Of_File : Boolean;
   Character_Read : Boolean;
 
-  This_Function : constant Error_Handler.Function_Classifier 
+  This_Function : constant Error_Handler.Function_Classifier
     := Error_Handler.Payable_Prefixed;
 
 begin
 
-  Input_Handler.Next_Character(Input, Error_Log, Is_End_Of_File, 
+  Input_Handler.Next_Character(Input, Error_Log, Is_End_Of_File,
     Current_Character);
 
-  Discard_EOF_And_Error(Error_Log, Is_End_Of_File, Error_Handler.UBL_Lexer,
-    This_Function, Character_Read);
+  Input_Handler.Discard_EOF_And_Error(Error_Log, Is_End_Of_File,
+    Error_Handler.UBL_Lexer, This_Function, Character_Read);
 
   if not Character_Read then
     Token := None;
@@ -4579,15 +4400,15 @@ begin
 
     when 'A' =>
 
-      Finish_Leaf_Element_With_Attribute("mount", PayableAmount_With_Attribute, 
+      Finish_Leaf_Element_With_Attribute("mount", PayableAmount_With_Attribute,
         This_Function, Input, Error_Log, Token, Tag_Type);
 
     when 'R' =>
 
-      Finish_Leaf_Element_With_Attribute("oundingAmount", 
-        PayableRoundingAmount_With_Attribute, 
+      Finish_Leaf_Element_With_Attribute("oundingAmount",
+        PayableRoundingAmount_With_Attribute,
         This_Function, Input, Error_Log, Token, Tag_Type);
-  
+
     when others =>
 
       Error_Handler.Set_Error
@@ -4612,16 +4433,16 @@ is
   Is_End_Of_File : Boolean;
   Character_Read : Boolean;
 
-  This_Function : constant Error_Handler.Function_Classifier 
+  This_Function : constant Error_Handler.Function_Classifier
     := Error_Handler.Paye_Prefixed;
 
 begin
 
-  Input_Handler.Next_Character(Input, Error_Log, Is_End_Of_File, 
+  Input_Handler.Next_Character(Input, Error_Log, Is_End_Of_File,
     Current_Character);
 
-  Discard_EOF_And_Error(Error_Log, Is_End_Of_File, Error_Handler.UBL_Lexer,
-    This_Function, Character_Read);
+  Input_Handler.Discard_EOF_And_Error(Error_Log, Is_End_Of_File,
+    Error_Handler.UBL_Lexer, This_Function, Character_Read);
 
   if not Character_Read then
     Token := None;
@@ -4636,10 +4457,10 @@ begin
 
     when 'r' =>
 
-      Finish_Composite_Element("FinancialAccount", 
+      Finish_Composite_Element("FinancialAccount",
         (Begin_PayerFinancialAccount, End_PayerFinancialAccount),
         This_Function, Input, Error_Log, Token, Tag_Type);
-  
+
     when others =>
 
       Error_Handler.Set_Error
@@ -4664,16 +4485,16 @@ is
   Is_End_Of_File : Boolean;
   Character_Read : Boolean;
 
-  This_Function : constant Error_Handler.Function_Classifier 
+  This_Function : constant Error_Handler.Function_Classifier
     := Error_Handler.Payee_Prefixed;
 
 begin
 
-  Input_Handler.Next_Character(Input, Error_Log, Is_End_Of_File, 
+  Input_Handler.Next_Character(Input, Error_Log, Is_End_Of_File,
     Current_Character);
 
-  Discard_EOF_And_Error(Error_Log, Is_End_Of_File, Error_Handler.UBL_Lexer,
-    This_Function, Character_Read);
+  Input_Handler.Discard_EOF_And_Error(Error_Log, Is_End_Of_File,
+    Error_Handler.UBL_Lexer, This_Function, Character_Read);
 
   if not Character_Read then
     Token := None;
@@ -4684,16 +4505,16 @@ begin
 
     when 'P' =>
 
-      Finish_Composite_Element("arty", 
+      Finish_Composite_Element("arty",
         (Begin_PayeeParty, End_PayeeParty),
         This_Function, Input, Error_Log, Token, Tag_Type);
 
     when 'F' =>
 
-      Finish_Composite_Element("inancialAccount", 
+      Finish_Composite_Element("inancialAccount",
         (Begin_PayeeFinancialAccount, End_PayeeFinancialAccount),
         This_Function, Input, Error_Log, Token, Tag_Type);
-  
+
     when others =>
 
       Error_Handler.Set_Error
@@ -4718,16 +4539,16 @@ is
   Is_End_Of_File : Boolean;
   Character_Read : Boolean;
 
-  This_Function : constant Error_Handler.Function_Classifier 
+  This_Function : constant Error_Handler.Function_Classifier
     := Error_Handler.Payment_Prefixed;
 
 begin
 
-  Input_Handler.Next_Character(Input, Error_Log, Is_End_Of_File, 
+  Input_Handler.Next_Character(Input, Error_Log, Is_End_Of_File,
     Current_Character);
 
-  Discard_EOF_And_Error(Error_Log, Is_End_Of_File, Error_Handler.UBL_Lexer,
-    This_Function, Character_Read);
+  Input_Handler.Discard_EOF_And_Error(Error_Log, Is_End_Of_File,
+    Error_Handler.UBL_Lexer, This_Function, Character_Read);
 
   if not Character_Read then
     Token := None;
@@ -4738,18 +4559,18 @@ begin
 
     when 'D' =>
 
-      Finish_Leaf_Element("ueDate", PaymentDueDate, 
+      Finish_Leaf_Element("ueDate", PaymentDueDate,
         This_Function, Input, Error_Log, Token, Tag_Type);
 
     when 'I' =>
 
-      Finish_Leaf_Element("D", PaymentID, 
+      Finish_Leaf_Element("D", PaymentID,
         This_Function, Input, Error_Log, Token, Tag_Type);
 
     when 'M' =>
 
       PaymentM_Prefixed(Input, Error_Log, Token, Tag_Type);
-  
+
     when others =>
 
       Error_Handler.Set_Error
@@ -4775,16 +4596,16 @@ is
   Character_Read : Boolean;
   Sequence_Confirmed : Boolean;
 
-  This_Function : constant Error_Handler.Function_Classifier 
+  This_Function : constant Error_Handler.Function_Classifier
     := Error_Handler.PaymentM_Prefixed;
 
 begin
 
-  Input_Handler.Next_Character(Input, Error_Log, Is_End_Of_File, 
+  Input_Handler.Next_Character(Input, Error_Log, Is_End_Of_File,
     Current_Character);
 
-  Discard_EOF_And_Error(Error_Log, Is_End_Of_File, Error_Handler.UBL_Lexer,
-    This_Function, Character_Read);
+  Input_Handler.Discard_EOF_And_Error(Error_Log, Is_End_Of_File,
+    Error_Handler.UBL_Lexer, This_Function, Character_Read);
 
   if not Character_Read then
     Token := None;
@@ -4795,14 +4616,14 @@ begin
 
     when 'a' =>
 
-      Finish_Composite_Element("ndate", 
+      Finish_Composite_Element("ndate",
         (Begin_PaymentMandate, End_PaymentMandate),
         This_Function, Input, Error_Log, Token, Tag_Type);
 
     when 'e' =>
 
-      Expect_Character_Sequence("ans", Input, 
-        Error_Handler.UBL_Lexer, This_Function, Error_Log, 
+      Input_Handler.Expect_Character_Sequence("ans", Input,
+        Error_Handler.UBL_Lexer, This_Function, Error_Log,
         Sequence_Confirmed);
 
       if not Sequence_Confirmed then
@@ -4811,7 +4632,7 @@ begin
       end if;
 
       PaymentMeans_Prefixed(Input, Error_Log, Token, Tag_Type);
-  
+
     when others =>
 
       Error_Handler.Set_Error
@@ -4836,16 +4657,16 @@ is
   Is_End_Of_File : Boolean;
   Character_Read : Boolean;
 
-  This_Function : constant Error_Handler.Function_Classifier 
+  This_Function : constant Error_Handler.Function_Classifier
     := Error_Handler.PaymentMeans_Prefixed;
 
 begin
 
-  Input_Handler.Next_Character(Input, Error_Log, Is_End_Of_File, 
+  Input_Handler.Next_Character(Input, Error_Log, Is_End_Of_File,
     Current_Character);
 
-  Discard_EOF_And_Error(Error_Log, Is_End_Of_File, Error_Handler.UBL_Lexer,
-    This_Function, Character_Read);
+  Input_Handler.Discard_EOF_And_Error(Error_Log, Is_End_Of_File,
+    Error_Handler.UBL_Lexer, This_Function, Character_Read);
 
   if not Character_Read then
     Token := None;
@@ -4862,14 +4683,14 @@ begin
 
     when '>' =>
 
-      Finish_Composite_Element_Confirm_Tag_Only( 
+      Finish_Composite_Element_Confirm_Tag_Only(
         (Begin_PaymentMeans, End_PaymentMeans),
         This_Function, Error_Log, Token, Tag_Type);
 
     when 'C' =>
 
-      Finish_Leaf_Element_With_Attribute("ode", 
-        PaymentMeansCode_With_Optional_Attribute, 
+      Finish_Leaf_Element_With_Attribute("ode",
+        PaymentMeansCode_With_Optional_Attribute,
         This_Function, Input, Error_Log, Token, Tag_Type);
 
     when others =>
@@ -4896,16 +4717,16 @@ is
   Is_End_Of_File : Boolean;
   Character_Read : Boolean;
 
-  This_Function : constant Error_Handler.Function_Classifier 
+  This_Function : constant Error_Handler.Function_Classifier
     := Error_Handler.Postal_Prefixed;
 
 begin
 
-  Input_Handler.Next_Character(Input, Error_Log, Is_End_Of_File, 
+  Input_Handler.Next_Character(Input, Error_Log, Is_End_Of_File,
     Current_Character);
 
-  Discard_EOF_And_Error(Error_Log, Is_End_Of_File, Error_Handler.UBL_Lexer,
-    This_Function, Character_Read);
+  Input_Handler.Discard_EOF_And_Error(Error_Log, Is_End_Of_File,
+    Error_Handler.UBL_Lexer, This_Function, Character_Read);
 
   if not Character_Read then
     Token := None;
@@ -4916,15 +4737,15 @@ begin
 
     when 'A' =>
 
-      Finish_Composite_Element("ddress", 
+      Finish_Composite_Element("ddress",
         (Begin_PostalAddress, End_PostalAddress),
         This_Function, Input, Error_Log, Token, Tag_Type);
 
     when 'Z' =>
 
-      Finish_Leaf_Element("one", PostalZone, 
+      Finish_Leaf_Element("one", PostalZone,
         This_Function, Input, Error_Log, Token, Tag_Type);
-  
+
     when others =>
 
       Error_Handler.Set_Error
@@ -4949,16 +4770,16 @@ is
   Is_End_Of_File : Boolean;
   Character_Read : Boolean;
 
-  This_Function : constant Error_Handler.Function_Classifier 
+  This_Function : constant Error_Handler.Function_Classifier
     := Error_Handler.Pr_Prefixed;
 
 begin
 
-  Input_Handler.Next_Character(Input, Error_Log, Is_End_Of_File, 
+  Input_Handler.Next_Character(Input, Error_Log, Is_End_Of_File,
     Current_Character);
 
-  Discard_EOF_And_Error(Error_Log, Is_End_Of_File, Error_Handler.UBL_Lexer,
-    This_Function, Character_Read);
+  Input_Handler.Discard_EOF_And_Error(Error_Log, Is_End_Of_File,
+    Error_Handler.UBL_Lexer, This_Function, Character_Read);
 
   if not Character_Read then
     Token := None;
@@ -4969,8 +4790,8 @@ begin
 
     when 'e' =>
 
-      Finish_Leaf_Element_With_Attribute("paidAmount", 
-        PrepaidAmount_With_Attribute, 
+      Finish_Leaf_Element_With_Attribute("paidAmount",
+        PrepaidAmount_With_Attribute,
         This_Function, Input, Error_Log, Token, Tag_Type);
 
     when 'i' =>
@@ -4980,7 +4801,7 @@ begin
     when 'o' =>
 
       Pro_Prefixed(Input, Error_Log, Token, Tag_Type);
-  
+
     when others =>
 
       Error_Handler.Set_Error
@@ -5006,16 +4827,16 @@ is
   Character_Read : Boolean;
   Sequence_Confirmed : Boolean;
 
-  This_Function : constant Error_Handler.Function_Classifier 
+  This_Function : constant Error_Handler.Function_Classifier
     := Error_Handler.Pri_Prefixed;
 
 begin
 
-  Input_Handler.Next_Character(Input, Error_Log, Is_End_Of_File, 
+  Input_Handler.Next_Character(Input, Error_Log, Is_End_Of_File,
     Current_Character);
 
-  Discard_EOF_And_Error(Error_Log, Is_End_Of_File, Error_Handler.UBL_Lexer,
-    This_Function, Character_Read);
+  Input_Handler.Discard_EOF_And_Error(Error_Log, Is_End_Of_File,
+    Error_Handler.UBL_Lexer, This_Function, Character_Read);
 
   if not Character_Read then
     Token := None;
@@ -5026,8 +4847,8 @@ begin
 
     when 'c' =>
 
-      Expect_Character_Sequence("e", Input, 
-        Error_Handler.UBL_Lexer, This_Function, Error_Log, 
+      Input_Handler.Expect_Character_Sequence("e", Input,
+        Error_Handler.UBL_Lexer, This_Function, Error_Log,
         Sequence_Confirmed);
 
       if not Sequence_Confirmed then
@@ -5039,9 +4860,9 @@ begin
 
     when 'm' =>
 
-      Finish_Leaf_Element("aryAccountNumberID", PrimaryAccountNumberID, 
+      Finish_Leaf_Element("aryAccountNumberID", PrimaryAccountNumberID,
         This_Function, Input, Error_Log, Token, Tag_Type);
-  
+
     when others =>
 
       Error_Handler.Set_Error
@@ -5066,16 +4887,16 @@ is
   Is_End_Of_File : Boolean;
   Character_Read : Boolean;
 
-  This_Function : constant Error_Handler.Function_Classifier 
+  This_Function : constant Error_Handler.Function_Classifier
     := Error_Handler.Price_Prefixed;
 
 begin
 
-  Input_Handler.Next_Character(Input, Error_Log, Is_End_Of_File, 
+  Input_Handler.Next_Character(Input, Error_Log, Is_End_Of_File,
     Current_Character);
 
-  Discard_EOF_And_Error(Error_Log, Is_End_Of_File, Error_Handler.UBL_Lexer,
-    This_Function, Character_Read);
+  Input_Handler.Discard_EOF_And_Error(Error_Log, Is_End_Of_File,
+    Error_Handler.UBL_Lexer, This_Function, Character_Read);
 
   if not Character_Read then
     Token := None;
@@ -5092,15 +4913,15 @@ begin
 
     when '>' =>
 
-      Finish_Composite_Element_Confirm_Tag_Only( 
+      Finish_Composite_Element_Confirm_Tag_Only(
         (Begin_Price, End_Price),
         This_Function, Error_Log, Token, Tag_Type);
 
     when 'A' =>
 
-      Finish_Leaf_Element_With_Attribute("mount", PriceAmount_With_Attribute, 
+      Finish_Leaf_Element_With_Attribute("mount", PriceAmount_With_Attribute,
         This_Function, Input, Error_Log, Token, Tag_Type);
-  
+
     when others =>
 
       Error_Handler.Set_Error
@@ -5125,16 +4946,16 @@ is
   Is_End_Of_File : Boolean;
   Character_Read : Boolean;
 
-  This_Function : constant Error_Handler.Function_Classifier 
+  This_Function : constant Error_Handler.Function_Classifier
     := Error_Handler.Pro_Prefixed;
 
 begin
 
-  Input_Handler.Next_Character(Input, Error_Log, Is_End_Of_File, 
+  Input_Handler.Next_Character(Input, Error_Log, Is_End_Of_File,
     Current_Character);
 
-  Discard_EOF_And_Error(Error_Log, Is_End_Of_File, Error_Handler.UBL_Lexer,
-    This_Function, Character_Read);
+  Input_Handler.Discard_EOF_And_Error(Error_Log, Is_End_Of_File,
+    Error_Handler.UBL_Lexer, This_Function, Character_Read);
 
   if not Character_Read then
     Token := None;
@@ -5145,15 +4966,15 @@ begin
 
     when 'f' =>
 
-      Finish_Leaf_Element("ileID", ProfileID, 
+      Finish_Leaf_Element("ileID", ProfileID,
         This_Function, Input, Error_Log, Token, Tag_Type);
 
     when 'j' =>
 
-      Finish_Composite_Element("ectReference", 
+      Finish_Composite_Element("ectReference",
         (Begin_ProjectReference, End_ProjectReference),
         This_Function, Input, Error_Log, Token, Tag_Type);
-  
+
     when others =>
 
       Error_Handler.Set_Error
@@ -5178,16 +4999,16 @@ is
   Is_End_Of_File : Boolean;
   Character_Read : Boolean;
 
-  This_Function : constant Error_Handler.Function_Classifier 
+  This_Function : constant Error_Handler.Function_Classifier
     := Error_Handler.Re_Prefixed;
 
 begin
 
-  Input_Handler.Next_Character(Input, Error_Log, Is_End_Of_File, 
+  Input_Handler.Next_Character(Input, Error_Log, Is_End_Of_File,
     Current_Character);
 
-  Discard_EOF_And_Error(Error_Log, Is_End_Of_File, Error_Handler.UBL_Lexer,
-    This_Function, Character_Read);
+  Input_Handler.Discard_EOF_And_Error(Error_Log, Is_End_Of_File,
+    Error_Handler.UBL_Lexer, This_Function, Character_Read);
 
   if not Character_Read then
     Token := None;
@@ -5198,15 +5019,15 @@ begin
 
     when 'c' =>
 
-      Finish_Composite_Element("eiptDocumentReference", 
+      Finish_Composite_Element("eiptDocumentReference",
         (Begin_ReceiptDocumentReference, End_ReceiptDocumentReference),
         This_Function, Input, Error_Log, Token, Tag_Type);
 
     when 'g' =>
 
-      Finish_Leaf_Element("istrationName", RegistrationName, 
+      Finish_Leaf_Element("istrationName", RegistrationName,
         This_Function, Input, Error_Log, Token, Tag_Type);
-  
+
     when others =>
 
       Error_Handler.Set_Error
@@ -5231,16 +5052,16 @@ is
   Is_End_Of_File : Boolean;
   Character_Read : Boolean;
 
-  This_Function : constant Error_Handler.Function_Classifier 
+  This_Function : constant Error_Handler.Function_Classifier
     := Error_Handler.S_Prefixed;
 
 begin
 
-  Input_Handler.Next_Character(Input, Error_Log, Is_End_Of_File, 
+  Input_Handler.Next_Character(Input, Error_Log, Is_End_Of_File,
     Current_Character);
 
-  Discard_EOF_And_Error(Error_Log, Is_End_Of_File, Error_Handler.UBL_Lexer,
-    This_Function, Character_Read);
+  Input_Handler.Discard_EOF_And_Error(Error_Log, Is_End_Of_File,
+    Error_Handler.UBL_Lexer, This_Function, Character_Read);
 
   if not Character_Read then
     Token := None;
@@ -5251,19 +5072,19 @@ begin
 
     when 'a' =>
 
-      Finish_Leaf_Element("lesOrderID", SalesOrderID, 
+      Finish_Leaf_Element("lesOrderID", SalesOrderID,
         This_Function, Input, Error_Log, Token, Tag_Type);
 
     when 'e' =>
 
-      Finish_Composite_Element("llersItemIdentification", 
+      Finish_Composite_Element("llersItemIdentification",
         (Begin_SellersItemIdentification, End_SellersItemIdentification),
         This_Function, Input, Error_Log, Token, Tag_Type);
 
     when 't' =>
 
       St_Prefixed(Input, Error_Log, Token, Tag_Type);
-  
+
     when others =>
 
       Error_Handler.Set_Error
@@ -5288,16 +5109,16 @@ is
   Is_End_Of_File : Boolean;
   Character_Read : Boolean;
 
-  This_Function : constant Error_Handler.Function_Classifier 
+  This_Function : constant Error_Handler.Function_Classifier
     := Error_Handler.St_Prefixed;
 
 begin
 
-  Input_Handler.Next_Character(Input, Error_Log, Is_End_Of_File, 
+  Input_Handler.Next_Character(Input, Error_Log, Is_End_Of_File,
     Current_Character);
 
-  Discard_EOF_And_Error(Error_Log, Is_End_Of_File, Error_Handler.UBL_Lexer,
-    This_Function, Character_Read);
+  Input_Handler.Discard_EOF_And_Error(Error_Log, Is_End_Of_File,
+    Error_Handler.UBL_Lexer, This_Function, Character_Read);
 
   if not Character_Read then
     Token := None;
@@ -5312,9 +5133,9 @@ begin
 
     when 'r' =>
 
-      Finish_Leaf_Element("eetName", StreetName, 
+      Finish_Leaf_Element("eetName", StreetName,
         This_Function, Input, Error_Log, Token, Tag_Type);
-  
+
     when others =>
 
       Error_Handler.Set_Error
@@ -5339,16 +5160,16 @@ is
   Is_End_Of_File : Boolean;
   Character_Read : Boolean;
 
-  This_Function : constant Error_Handler.Function_Classifier 
+  This_Function : constant Error_Handler.Function_Classifier
     := Error_Handler.Sta_Prefixed;
 
 begin
 
-  Input_Handler.Next_Character(Input, Error_Log, Is_End_Of_File, 
+  Input_Handler.Next_Character(Input, Error_Log, Is_End_Of_File,
     Current_Character);
 
-  Discard_EOF_And_Error(Error_Log, Is_End_Of_File, Error_Handler.UBL_Lexer,
-    This_Function, Character_Read);
+  Input_Handler.Discard_EOF_And_Error(Error_Log, Is_End_Of_File,
+    Error_Handler.UBL_Lexer, This_Function, Character_Read);
 
   if not Character_Read then
     Token := None;
@@ -5359,15 +5180,15 @@ begin
 
     when 'r' =>
 
-      Finish_Leaf_Element("tDate", StartDate, 
+      Finish_Leaf_Element("tDate", StartDate,
         This_Function, Input, Error_Log, Token, Tag_Type);
 
     when 'n' =>
 
-      Finish_Composite_Element("dardItemIdentification", 
+      Finish_Composite_Element("dardItemIdentification",
         (Begin_StandardItemIdentification, End_StandardItemIdentification),
         This_Function, Input, Error_Log, Token, Tag_Type);
-  
+
     when others =>
 
       Error_Handler.Set_Error
@@ -5393,16 +5214,16 @@ is
   Character_Read : Boolean;
   Sequence_Confirmed : Boolean;
 
-  This_Function : constant Error_Handler.Function_Classifier 
+  This_Function : constant Error_Handler.Function_Classifier
     := Error_Handler.T_Prefixed;
 
 begin
 
-  Input_Handler.Next_Character(Input, Error_Log, Is_End_Of_File, 
+  Input_Handler.Next_Character(Input, Error_Log, Is_End_Of_File,
     Current_Character);
 
-  Discard_EOF_And_Error(Error_Log, Is_End_Of_File, Error_Handler.UBL_Lexer,
-    This_Function, Character_Read);
+  Input_Handler.Discard_EOF_And_Error(Error_Log, Is_End_Of_File,
+    Error_Handler.UBL_Lexer, This_Function, Character_Read);
 
   if not Character_Read then
     Token := None;
@@ -5413,8 +5234,8 @@ begin
 
     when 'a' =>
 
-      Expect_Character_Sequence("x", Input, 
-        Error_Handler.UBL_Lexer, This_Function, Error_Log, 
+      Input_Handler.Expect_Character_Sequence("x", Input,
+        Error_Handler.UBL_Lexer, This_Function, Error_Log,
         Sequence_Confirmed);
 
       if not Sequence_Confirmed then
@@ -5426,9 +5247,9 @@ begin
 
     when 'e' =>
 
-      Finish_Leaf_Element("lephone", Telephone, 
+      Finish_Leaf_Element("lephone", Telephone,
         This_Function, Input, Error_Log, Token, Tag_Type);
-  
+
     when others =>
 
       Error_Handler.Set_Error
@@ -5454,16 +5275,16 @@ is
   Character_Read : Boolean;
   Sequence_Confirmed : Boolean;
 
-  This_Function : constant Error_Handler.Function_Classifier 
+  This_Function : constant Error_Handler.Function_Classifier
     := Error_Handler.Tax_Prefixed;
 
 begin
 
-  Input_Handler.Next_Character(Input, Error_Log, Is_End_Of_File, 
+  Input_Handler.Next_Character(Input, Error_Log, Is_End_Of_File,
     Current_Character);
 
-  Discard_EOF_And_Error(Error_Log, Is_End_Of_File, Error_Handler.UBL_Lexer,
-    This_Function, Character_Read);
+  Input_Handler.Discard_EOF_And_Error(Error_Log, Is_End_Of_File,
+    Error_Handler.UBL_Lexer, This_Function, Character_Read);
 
   if not Character_Read then
     Token := None;
@@ -5474,13 +5295,13 @@ begin
 
     when 'A' =>
 
-      Finish_Leaf_Element_With_Attribute("mount", TaxAmount_With_Attribute, 
+      Finish_Leaf_Element_With_Attribute("mount", TaxAmount_With_Attribute,
         This_Function, Input, Error_Log, Token, Tag_Type);
 
     when 'a' =>
 
-      Finish_Leaf_Element_With_Attribute("bleAmount", 
-        TaxableAmount_With_Attribute, 
+      Finish_Leaf_Element_With_Attribute("bleAmount",
+        TaxableAmount_With_Attribute,
         This_Function, Input, Error_Log, Token, Tag_Type);
 
     when 'C' =>
@@ -5489,8 +5310,8 @@ begin
 
     when 'E' =>
 
-      Expect_Character_Sequence("x", Input, 
-        Error_Handler.UBL_Lexer, This_Function, Error_Log, 
+      Input_Handler.Expect_Character_Sequence("x", Input,
+        Error_Handler.UBL_Lexer, This_Function, Error_Log,
         Sequence_Confirmed);
 
       if not Sequence_Confirmed then
@@ -5502,18 +5323,18 @@ begin
 
     when 'I' =>
 
-      Finish_Leaf_Element_With_Attribute("nclusiveAmount", 
-        TaxInclusiveAmount_With_Attribute, 
+      Finish_Leaf_Element_With_Attribute("nclusiveAmount",
+        TaxInclusiveAmount_With_Attribute,
         This_Function, Input, Error_Log, Token, Tag_Type);
 
     when 'P' =>
 
-      Finish_Leaf_Element("ointDate", TaxPointDate, 
+      Finish_Leaf_Element("ointDate", TaxPointDate,
         This_Function, Input, Error_Log, Token, Tag_Type);
 
     when 'R' =>
 
-      Finish_Composite_Element("epresentativeParty", 
+      Finish_Composite_Element("epresentativeParty",
         (Begin_TaxRepresentativeParty, End_TaxRepresentativeParty),
         This_Function, Input, Error_Log, Token, Tag_Type);
 
@@ -5523,10 +5344,10 @@ begin
 
     when 'T' =>
 
-      Finish_Composite_Element("otal", 
+      Finish_Composite_Element("otal",
         (Begin_TaxTotal, End_TaxTotal),
         This_Function, Input, Error_Log, Token, Tag_Type);
-  
+
     when others =>
 
       Error_Handler.Set_Error
@@ -5551,16 +5372,16 @@ is
   Is_End_Of_File : Boolean;
   Character_Read : Boolean;
 
-  This_Function : constant Error_Handler.Function_Classifier 
+  This_Function : constant Error_Handler.Function_Classifier
     := Error_Handler.TaxC_Prefixed;
 
 begin
 
-  Input_Handler.Next_Character(Input, Error_Log, Is_End_Of_File, 
+  Input_Handler.Next_Character(Input, Error_Log, Is_End_Of_File,
     Current_Character);
 
-  Discard_EOF_And_Error(Error_Log, Is_End_Of_File, Error_Handler.UBL_Lexer,
-    This_Function, Character_Read);
+  Input_Handler.Discard_EOF_And_Error(Error_Log, Is_End_Of_File,
+    Error_Handler.UBL_Lexer, This_Function, Character_Read);
 
   if not Character_Read then
     Token := None;
@@ -5571,15 +5392,15 @@ begin
 
     when 'a' =>
 
-      Finish_Composite_Element("tegory", 
+      Finish_Composite_Element("tegory",
         (Begin_TaxCategory, End_TaxCategory),
         This_Function, Input, Error_Log, Token, Tag_Type);
 
     when 'u' =>
 
-      Finish_Leaf_Element("rrencyCode", TaxCurrencyCode, 
+      Finish_Leaf_Element("rrencyCode", TaxCurrencyCode,
         This_Function, Input, Error_Log, Token, Tag_Type);
-  
+
     when others =>
 
       Error_Handler.Set_Error
@@ -5605,16 +5426,16 @@ is
   Character_Read : Boolean;
   Sequence_Confirmed : Boolean;
 
-  This_Function : constant Error_Handler.Function_Classifier 
+  This_Function : constant Error_Handler.Function_Classifier
     := Error_Handler.TaxEx_Prefixed;
 
 begin
 
-  Input_Handler.Next_Character(Input, Error_Log, Is_End_Of_File, 
+  Input_Handler.Next_Character(Input, Error_Log, Is_End_Of_File,
     Current_Character);
 
-  Discard_EOF_And_Error(Error_Log, Is_End_Of_File, Error_Handler.UBL_Lexer,
-    This_Function, Character_Read);
+  Input_Handler.Discard_EOF_And_Error(Error_Log, Is_End_Of_File,
+    Error_Handler.UBL_Lexer, This_Function, Character_Read);
 
   if not Character_Read then
     Token := None;
@@ -5625,14 +5446,14 @@ begin
 
     when 'c' =>
 
-      Finish_Leaf_Element_With_Attribute("lusiveAmount", 
-        TaxExclusiveAmount_With_Attribute, 
+      Finish_Leaf_Element_With_Attribute("lusiveAmount",
+        TaxExclusiveAmount_With_Attribute,
         This_Function, Input, Error_Log, Token, Tag_Type);
 
     when 'e' =>
 
-      Expect_Character_Sequence("mptionReason", Input, 
-        Error_Handler.UBL_Lexer, This_Function, Error_Log, 
+      Input_Handler.Expect_Character_Sequence("mptionReason", Input,
+        Error_Handler.UBL_Lexer, This_Function, Error_Log,
         Sequence_Confirmed);
 
       if not Sequence_Confirmed then
@@ -5641,7 +5462,7 @@ begin
       end if;
 
       TaxExemptionReason_Prefixed(Input, Error_Log, Token, Tag_Type);
-  
+
     when others =>
 
       Error_Handler.Set_Error
@@ -5666,16 +5487,16 @@ is
   Is_End_Of_File : Boolean;
   Character_Read : Boolean;
 
-  This_Function : constant Error_Handler.Function_Classifier 
+  This_Function : constant Error_Handler.Function_Classifier
     := Error_Handler.TaxExemptionReason_Prefixed;
 
 begin
 
-  Input_Handler.Next_Character(Input, Error_Log, Is_End_Of_File, 
+  Input_Handler.Next_Character(Input, Error_Log, Is_End_Of_File,
     Current_Character);
 
-  Discard_EOF_And_Error(Error_Log, Is_End_Of_File, Error_Handler.UBL_Lexer,
-    This_Function, Character_Read);
+  Input_Handler.Discard_EOF_And_Error(Error_Log, Is_End_Of_File,
+    Error_Handler.UBL_Lexer, This_Function, Character_Read);
 
   if not Character_Read then
     Token := None;
@@ -5686,17 +5507,17 @@ begin
 
     when ' ' | HT | CR | LF =>
 
-      Finish_Leaf_Element_No_Character_Sequence( TaxExemptionReason, 
+      Finish_Leaf_Element_No_Character_Sequence( TaxExemptionReason,
         This_Function, Input, Error_Log, Token, Tag_Type);
 
     when '>' =>
 
-      Finish_Leaf_Element_Confirm_Tag_Only( TaxExemptionReason, 
+      Finish_Leaf_Element_Confirm_Tag_Only( TaxExemptionReason,
         This_Function, Error_Log, Token, Tag_Type);
 
     when 'C' =>
 
-      Finish_Leaf_Element("ode", TaxExemptionReasonCode, 
+      Finish_Leaf_Element("ode", TaxExemptionReasonCode,
         This_Function, Input, Error_Log, Token, Tag_Type);
 
     when others =>
@@ -5723,16 +5544,16 @@ is
   Is_End_Of_File : Boolean;
   Character_Read : Boolean;
 
-  This_Function : constant Error_Handler.Function_Classifier 
+  This_Function : constant Error_Handler.Function_Classifier
     := Error_Handler.TaxS_Prefixed;
 
 begin
 
-  Input_Handler.Next_Character(Input, Error_Log, Is_End_Of_File, 
+  Input_Handler.Next_Character(Input, Error_Log, Is_End_Of_File,
     Current_Character);
 
-  Discard_EOF_And_Error(Error_Log, Is_End_Of_File, Error_Handler.UBL_Lexer,
-    This_Function, Character_Read);
+  Input_Handler.Discard_EOF_And_Error(Error_Log, Is_End_Of_File,
+    Error_Handler.UBL_Lexer, This_Function, Character_Read);
 
   if not Character_Read then
     Token := None;
@@ -5743,16 +5564,16 @@ begin
 
     when 'c' =>
 
-      Finish_Composite_Element("heme", 
+      Finish_Composite_Element("heme",
         (Begin_TaxScheme, End_TaxScheme),
         This_Function, Input, Error_Log, Token, Tag_Type);
 
     when 'u' =>
 
-      Finish_Composite_Element("btotal", 
+      Finish_Composite_Element("btotal",
         (Begin_TaxSubtotal, End_TaxSubtotal),
         This_Function, Input, Error_Log, Token, Tag_Type);
-  
+
     when others =>
 
       Error_Handler.Set_Error
