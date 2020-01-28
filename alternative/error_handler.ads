@@ -2,7 +2,7 @@ package Error_Handler is
 pragma SPARK_Mode( On );
 
 type Module_Classifier is 
-  ( None, Input_Handler, UBL_Lexer, UBL_Parser );
+  ( None, Input_Handler, UBL_Lexer, UBL_Parser, Syntax_Recognition );
 
 type Function_Classifier is 
 
@@ -39,7 +39,8 @@ type Function_Classifier is
     Tax_Prefixed, TaxC_Prefixed, TaxEx_Prefixed, TaxExemptionReason_Prefixed,
 
     TaxS_Prefixed,
-
+-- Prologue Parser
+    Parse_Prologue,
 -- Parser
     UBL_Invoice_State
  );
@@ -57,10 +58,11 @@ type Error_Descriptor is
 record
   Error_Occurred : Boolean := False;
   In_Line : Positive := 1;
-  In_Module : Module_Classifier;
-  In_Function : Function_Classifier;
-  Error_Code : Error_Classifier;
+  In_Module : Module_Classifier := None;
+  In_Function : Function_Classifier := None;
+  Error_Code : Error_Classifier := None;
 end record;
+
 
 procedure Set_Error
   ( Error_Log : in out Error_Descriptor;
