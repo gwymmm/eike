@@ -1,101 +1,75 @@
-with ada.text_io;
-with lexer;
-with lexer.syntax_recon;
-with lexer.get_token;
-with lexer.get_tail;
-with ada.strings.unbounded;
+-- Electronic Invoicing Kit for EU (EIKE) - Tools for EN 16931 E-Invoices
+-- Copyright (C) 2020  Dmitrij Novikov
+--
+-- This program is free software: you can redistribute it and/or modify
+-- it under the terms of the GNU General Public License as published by
+-- the Free Software Foundation, either version 3 of the License, or
+-- (at your option) any later version.
+--
+-- This program is distributed in the hope that it will be useful,
+-- but WITHOUT ANY WARRANTY; without even the implied warranty of
+-- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+-- GNU General Public License for more details.
+--
+-- You should have received a copy of the GNU General Public License
+-- along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-procedure main is
-use lexer;
-use lexer.get_token;
-log: lexer.input_record;
-result: lexer.syntax_recon.syntax_type;
-token: lexer.get_token.token_type;
+with File_Handler;
+with Error_Handler;
+with UBL_Lexer;
+with Ada.Text_IO;
+with Input_Handler;
+with Syntax_Recognition;
 
+procedure Main is
+pragma SPARK_Mode( On );
 
-tag_name: lexer.name_buffer;
-tag_value: ada.strings.unbounded.unbounded_string;
-attrs_name: lexer.attribute_buffer;
+  File_P : File_Handler.File_Descriptor;
+
+  Err : Error_Handler.Error_Descriptor;
+
+  --Token : UBL_Lexer.UBL_Token;
+  
+  Check : Boolean;
+
+  --use type UBL_Lexer.UBL_Token;
+
+  What_Syntax : Input_Handler.Invoice_Syntax_Type;
+ 
 begin
-lexer.utf8_input.open(log.file, lexer.utf8_input.IN_FILE, "lexer-test.xml", "");
 
-lexer.syntax_recon.run(log, result);
+  File_Handler.Open_File_For_Reading("test.xml", File_P, Check);
 
-if log.status /= lexer.OK then
-  ada.text_io.put_line("Error: " & lexer.input_status'image(log.status));
-  ada.text_io.put_line("At line " & positive'image(log.current_line));
-  ada.text_io.put_line("And column " & positive'image(log.current_column));
-else 
- ada.text_io.put_line("Syntax is: " & 
-   lexer.syntax_recon.syntax_type'image(result));
-end if;
+  if Check then
 
+  --loop
 
---loop
---  lexer.get_token.run(log, token, tag_name, attrs_name);
---
---  if log.status /= lexer.OK and log.status /= lexer.EOF then
---    ada.text_io.put_line("Error: " & lexer.input_status'image(log.status));
---    ada.text_io.put_line("At line " & positive'image(log.current_line));
---    ada.text_io.put_line("And column " & positive'image(log.current_column));
---    exit;
---  elsif token = lexer.get_token.EOF then
---    ada.text_io.put_line("End of file reached");
---    exit;
---  else
---    ada.text_io.put_line("TOKEN: " & lexer.get_token.token_type'image(token));
---    ada.text_io.put_line("TAG NAME: " & tag_name.content(1 .. tag_name.last));
---
---    ada.text_io.put_line("ATTR 1: " & 
---    attrs_name.attribute_one_name(1 .. attrs_name.last_of_attribute_one_name)
--- & '='
---  & attrs_name.attribute_one_value(1 .. attrs_name.last_of_attribute_one_value));
---
---    ada.text_io.put_line("ATTR 2: " & 
---    attrs_name.attribute_two_name(1 .. attrs_name.last_of_attribute_two_name)
---  & '='
---  & attrs_name.attribute_two_value(1 .. attrs_name.last_of_attribute_two_value));
---  end if;
---end loop;
+    --UBL_Lexer.Next_Token(File_P, Err, Token);
 
-lexer.get_token.run(log, token, tag_name, attrs_name);
+    --exit when Err.Error_Occurred or Token = UBL_Lexer.EOF;
 
-  if log.status /= lexer.OK and log.status /= lexer.EOF then
-    ada.text_io.put_line("Error: " & lexer.input_status'image(log.status));
-    ada.text_io.put_line("At line " & positive'image(log.current_line));
-    ada.text_io.put_line("And column " & positive'image(log.current_column));
-  elsif token = lexer.get_token.EOF then
-    ada.text_io.put_line("End of file reached");
+    --Ada.Text_IO.Put_Line(UBL_Lexer.UBL_Token'Image(Token));
+
+  --end loop;
+
+    Syntax_Recognition.Parse_Prologue(File_P, Err, What_Syntax);
+
+  end if; 
+
+  if Err.Error_Occurred then
+
+    Ada.Text_IO.Put_Line("Error:");
+    Ada.Text_IO.Put_Line(Positive'Image(Err.In_Line));
+    Ada.Text_IO.Put_Line(Error_Handler.Module_Classifier'Image(Err.In_Module));
+    Ada.Text_IO.Put_Line(Error_Handler.Function_Classifier'Image(Err.In_Function));
+    Ada.Text_IO.Put_Line(Error_Handler.Error_Classifier'Image(Err.Error_Code));
+
   else
-    ada.text_io.put_line("TOKEN: " & lexer.get_token.token_type'image(token));
-    ada.text_io.put_line("TAG NAME: " & tag_name.content(1 .. tag_name.last));
 
-    ada.text_io.put_line("ATTR 1: " & 
-    attrs_name.attribute_one_name(1 .. attrs_name.last_of_attribute_one_name)
-  & '='
-  & attrs_name.attribute_one_value(1 .. attrs_name.last_of_attribute_one_value));
+    Ada.Text_IO.Put_Line(Input_Handler.Invoice_Syntax_Type'Image(What_Syntax));
 
-    ada.text_io.put_line("ATTR 2: " & 
-    attrs_name.attribute_two_name(1 .. attrs_name.last_of_attribute_two_name)
- & '='
-  & attrs_name.attribute_two_value(1 .. attrs_name.last_of_attribute_two_value));
   end if;
+  
+  File_Handler.Close_File(File_P, Check);
 
-lexer.get_tail.run(log, tag_name, tag_value);
-
-  if log.status /= lexer.OK and log.status /= lexer.EOF then
-    ada.text_io.put_line("Error: " & lexer.input_status'image(log.status));
-    ada.text_io.put_line("At line " & positive'image(log.current_line));
-    ada.text_io.put_line("And column " & positive'image(log.current_column));
-  elsif token = lexer.get_token.EOF then
-    ada.text_io.put_line("End of file reached");
-  else
-    ada.text_io.put_line("END TAG NAME: " & tag_name.content(1 .. tag_name.last));
-    ada.text_io.put_line("CONTENT: " & ada.strings.unbounded.to_string(
-      tag_value));
-  end if;
-
---ada.strings.unbounded.to_string
-
-lexer.utf8_input.close(log.file);
-end main;
+end Main;

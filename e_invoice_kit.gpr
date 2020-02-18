@@ -2,8 +2,8 @@ with "gtkada.gpr";
 
 project e_invoice_kit is
 
---for source_dirs use ("source");
-for source_dirs use ("alternative");
+--for source_dirs use ("old-source");
+for source_dirs use ("source");
 
 for object_dir use "object";
 
