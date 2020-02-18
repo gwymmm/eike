@@ -1,3 +1,19 @@
+-- Electronic Invoicing Kit for EU (EIKE) - Tools for EN 16931 E-Invoices
+-- Copyright (C) 2020  Dmitrij Novikov
+--
+-- This program is free software: you can redistribute it and/or modify
+-- it under the terms of the GNU General Public License as published by
+-- the Free Software Foundation, either version 3 of the License, or
+-- (at your option) any later version.
+--
+-- This program is distributed in the hope that it will be useful,
+-- but WITHOUT ANY WARRANTY; without even the implied warranty of
+-- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+-- GNU General Public License for more details.
+--
+-- You should have received a copy of the GNU General Public License
+-- along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
 package Error_Handler is
 pragma SPARK_Mode( On );
 
@@ -40,10 +56,22 @@ type Function_Classifier is
 
     TaxS_Prefixed,
 -- Prologue Parser
-    Parse_Prologue,
+    Parse_Prologue, Evaluate_Syntax_Recon, Evaluate_BOM, Evaluate_BOM_2,
+
+    Evaluate_Post_BOM, Evaluate_PBC, Evaluate_Begin_Elem_Or_Comm,
+
+    Evaluate_Comm, Evaluate_Prolog, Evaluate_Prolog_End, Evaluate_Post_Prolog,
+
+    Evaluate_Begin_Elem, Evaluate_Resolve_Name, Evaluate_Cr_Prefixed,
+
+    Evaluate_Skip_Namespace_Declarations, 
+
+    Evaluate_Skip_Namespace_Declarations_2,
+    
 -- Parser
     UBL_Invoice_State
  );
+
 
 type Error_Classifier is 
  (  None, Read_From_File_Error, End_Of_File_Not_Expected, Unexpected_Character,

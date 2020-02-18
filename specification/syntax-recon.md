@@ -47,8 +47,18 @@
                or '<' begin-elem-or-comm
 
     begin-elem := (alpha) begin-elem
-               or ' ' skip-ns
-               or ':' begin-elem
+               --or ' ' skip-ns
+               or ':' resolve-name
 
-    skip-ns := (char, not '>') skip-ns
-            := '>' --<<<< return ubl-invoice or ubl-xxx or cii-invoice
+"Invoice", "CreditNote", "CrossIndustryInvoice"
+
+    resolve-name := 'I' 'nvoice' skip-ns
+                 or 'C' 'r' cr-prefixed
+
+    cr-prefixed := 'e' 'ditNote' skip-ns
+                := 'o' 'ssIndustryInvoice' skip-ns
+
+    skip-ns := ' ' skip-ns-2
+
+    skip-ns-2 := (char, not '>') skip-ns-2
+              or '>' --<<<< return ubl-invoice or ubl-xxx or cii-invoice

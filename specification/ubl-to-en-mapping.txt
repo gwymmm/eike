@@ -1,8 +1,109 @@
-I := Identifier
-T := Text
+-- Electronic Invoicing Kit for EU (EIKE) - Tools for EN 16931 E-Invoices
+-- Copyright (C) 2020  Dmitrij Novikov
+--
+-- This program is free software: you can redistribute it and/or modify
+-- it under the terms of the GNU General Public License as published by
+-- the Free Software Foundation, either version 3 of the License, or
+-- (at your option) any later version.
+--
+-- This program is distributed in the hope that it will be useful,
+-- but WITHOUT ANY WARRANTY; without even the implied warranty of
+-- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+-- GNU General Public License for more details.
+--
+-- You should have received a copy of the GNU General Public License
+-- along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+----------------------------------
+-  Mapping from UBL to EN 16931  -
+----------------------------------
+
+-- Data Types --
+
+A := Amount
+C := Code
+D := Date
+I := Identifier
+P := Percent
+Q := Quantity
+T := Text
+U := Unit Price Amount
+B := Binary Object
+O := Document Reference Identifier
+S := Attribute
+
+
+-- Codes --
+
+invoice type code := UNTDID 1001
+
+currency code := ISO 4217 Maintenance Agency 'Codes for the representation of 
+  currencies and funds'
+
+text code := UNTDID 4451
+
+
+-- Format --
+
+An arrow '=>' denotes mapping from an UBL element to an EN element. Then the cardinality
+of the EN element is given. Finally the element type is given in brackets (followed by
+optional info). Short notation:
+
+========================================================================================
+|                                                                                      |
+| UBL-ELEMENT '=>' EN-ELEMENT CARDINALITY '(' ELEMENT-TYPE [ ',' ADDITIONAL-INFO ] ')' |
+|                                                                                      |
+========================================================================================
+
+Missing elements (____) mean that an UML element does not map to an EN element.
+The UML element is just a container for other elements that will have a mapping
+to EN. Example:
+
+  ElementXXX => ____ [1..1] (_)
+
+Indentation is used for nested elements. Example:
+
+  ContainerElement
+
+    ElementA_in_ContainerElement
+    ElementB_in_ContainerElement
+
+-- Invoice / CreditNote Issue --
+
+Try to combine UBL Invoice and UBL CreditNote in a single grammar and
+subsequently in a single parser.
+
+
+-- Mapping UBL -> EN --
+
+********************************************************************************
+********************************************************************************
 Invoice / CreditNote:
 
   CustomizationID => BT_24 [1..1] (I, no scheme ID)
+
   ProfileID => BT_23 [0..1] (T)
+
   ID => BT_1 [1..1] (I, no scheme ID)
+
+  IssueDate => BT_2 [1..1] (D)
+
+  DueDate => BT_9 [0..1] (D)
+
+  InvoiceTypeCode => BT_3 [1..1] (C, invoice type code)
+
+  Note => BT_21 [0..1] (C, text code)  \
+                                        \
+                                         ----> can be repeated, 
+                                        /      so [0..n] for the (BT-21, BT-22) tuple,
+  Note => BT_22 [1..1] (T)             /       ! needs special handling ! TODO Description_Code_Seen
+
+  TaxPointDate => BT_7 [0..1] (D)
+
+  DocumentCurrencyCode => BT_5 [1..1] (C, currency code)
+
+  TaxCurrencyCode => BT_6 [0..1] (C, currency code)
+
+  AccountingCost => BT_19 [0..1] (T)
+
+  BuyerReference => BT_10 [0..1] (T)

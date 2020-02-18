@@ -135,38 +135,31 @@ gtk.text_buffer.get_end_iter(text_buf, it);
 --gtk.text_buffer.insert_at_cursor(text_buf, 
 --"Name: XY" & character'val(16#A#) & "Adresse: XXX YYYY");
 gtk.text_buffer.insert_with_tags(text_buf, it,
-"In diesem Textfeld sollen die Rechnungsdaten angezeigt werden." & character'val(16#A#) &
-"Der Text kann markiert und in die Zwischenablage kopiert werden." & character'val(16#A#) &
-"Ein Verändern des Textes ist aber nicht möglich." & character'val(16#A#) &
-"Für längere Texte kann die Scrollbar auf der rechten Seite genutzt werden, " &
-"um im Textfenster verschiedene Bereiche auszuwählen." & character'val(16#A#) &
+--"In diesem Textfeld sollen die Rechnungsdaten angezeigt werden." & character'val(16#A#) &
+--"Der Text kann markiert und in die Zwischenablage kopiert werden." & character'val(16#A#) &
+--"Ein Verändern des Textes ist aber nicht möglich." & character'val(16#A#) &
+--"Für längere Texte kann die Scrollbar auf der rechten Seite genutzt werden, " &
+--"um im Textfenster verschiedene Bereiche auszuwählen." & character'val(16#A#) &
 --2#11101100# 2#10010101# 2#10011001#
-"Name: XY" & character'val(16#A#) & "Adresse: XXX YYYY" &
-"Name: XY" & character'val(16#A#) & "Adresse: XXX YYYY" &
-"Name: XY" & character'val(16#A#) & "Adresse: XXX YYYY" &
-"Name: XY" & character'val(16#A#) & "Adresse: XXX YYYY" &
-"Name: XY" & character'val(16#A#) & "Adresse: XXX YYYY" &
-"Name: XY" & character'val(16#A#) & "Adresse: XXX YYYY" &
-"Name: XY" & character'val(16#A#) & "Adresse: XXX YYYY" &
-"Name: XY" & character'val(16#A#) & "Adresse: XXX YYYY" &
-"Name: XY" & character'val(16#A#) & "Adresse: XXX YYYY" &
-"Name: XY" & character'val(16#A#) & "Adresse: XXX YYYY" &
-"Name: XY" & character'val(16#A#) & "Adresse: XXX YYYY" &
-"Name: XY" & character'val(16#A#) & "Adresse: XXX YYYY" &
-"Name: XY" & character'val(16#A#) & "Adresse: XXX YYYY" &
-"Name: XY" & character'val(16#A#) & "Adresse: XXX YYYY" &
-"Name: XY" & character'val(16#A#) & "Adresse: XXX YYYY" &
-"Name: XY" & character'val(16#A#) & "Adresse: XXX YYYY" &
-"Name: XY" & character'val(16#A#) & "Adresse: XXX YYYY" &
-"Name: XY" & character'val(16#A#) & "Adresse: XXX YYYY" &
-"Name: XY" & character'val(16#A#) & "Adresse: XXX YYYY" &
-"Name: XY" & character'val(16#A#) & "Adresse: XXX YYYY" &
-"Name: XY" & character'val(16#A#) & "Adresse: XXX YYYY" &
-"Name: XY" & character'val(16#A#) & "Adresse: XXX YYYY" &
-"Name: XY" & character'val(16#A#) & "Adresse: XXX YYYY" &
-"Name: XY" & character'val(16#A#) & "Adresse: XXX YYYY" &
-"Name: XY" & character'val(16#A#) & "Adresse: XXX YYYY" &
-"Name: XY" & character'val(16#A#) & "Adresse: XXX YYYY",
+"BT-1 ( Rechnungsnummer ) : TOSL110" & character'val(16#A#) & 
+"BT-2 ( Rechnungsdatum ) : 2013-04-10" & character'val(16#A#) & 
+"BT-3 ( Code für den Rechnungstyp ) : 380 (Rechnung)" & character'val(16#A#) &
+"BT-5 ( Code für die Rechnungswährung ) : DKK (Dänische Krone)" & character'val(16#A#) & 
+"BT-9 ( Fälligkeitsdatum der Zahlung ): 2013-05-10" & character'val(16#A#) &
+character'val(16#A#) & 
+"-- BG-2 ( PROZESSSTEUERUNG ) --" & character'val(16#A#) &
+character'val(16#A#) & 
+"BT-24 ( Spezifikationskennung ): urn:cen.eu:en16931:2017" & character'val(16#A#) &
+character'val(16#A#) &
+"-- BG-4 ( VERKÄUFER ) --" & character'val(16#A#) &
+character'val(16#A#) &
+"BT-27 ( Name des Verkäufers ): SellerCompany" & character'val(16#A#) &
+"BT-31 ( Umsatzsteueridentifikationsnummer des Verkäufers ): DK123456789MVA" & character'val(16#A#) &
+character'val(16#A#) &
+"-- BG-5 ( POSTANSCHRIFT DES VERKÄUFERS ) --" & character'val(16#A#) &
+"...",
+--"Name: XY" & character'val(16#A#) & "Adresse: XXX YYYY" &
+--"Name: XY" & character'val(16#A#) & "Adresse: XXX YYYY",
 tag);
 
 gtk.text_buffer.get_start_iter(text_buf, it);

@@ -1,7 +1,25 @@
+-- Electronic Invoicing Kit for EU (EIKE) - Tools for EN 16931 E-Invoices
+-- Copyright (C) 2020  Dmitrij Novikov
+--
+-- This program is free software: you can redistribute it and/or modify
+-- it under the terms of the GNU General Public License as published by
+-- the Free Software Foundation, either version 3 of the License, or
+-- (at your option) any later version.
+--
+-- This program is distributed in the hope that it will be useful,
+-- but WITHOUT ANY WARRANTY; without even the implied warranty of
+-- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+-- GNU General Public License for more details.
+--
+-- You should have received a copy of the GNU General Public License
+-- along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
 with File_Handler;
 with Error_Handler;
 with UBL_Lexer;
 with Ada.Text_IO;
+with Input_Handler;
+with Syntax_Recognition;
 
 procedure Main is
 pragma SPARK_Mode( On );
@@ -10,27 +28,31 @@ pragma SPARK_Mode( On );
 
   Err : Error_Handler.Error_Descriptor;
 
-  Token : UBL_Lexer.UBL_Token;
+  --Token : UBL_Lexer.UBL_Token;
   
   Check : Boolean;
 
-  use type UBL_Lexer.UBL_Token;
+  --use type UBL_Lexer.UBL_Token;
+
+  What_Syntax : Input_Handler.Invoice_Syntax_Type;
  
 begin
 
-  File_Handler.Open_File_For_Reading("lexer-test-1.xml", File_P, Check);
+  File_Handler.Open_File_For_Reading("test.xml", File_P, Check);
 
   if Check then
 
-    loop
+  --loop
 
-      UBL_Lexer.Next_Token(File_P, Err, Token);
+    --UBL_Lexer.Next_Token(File_P, Err, Token);
 
-      exit when Err.Error_Occurred or Token = UBL_Lexer.EOF;
+    --exit when Err.Error_Occurred or Token = UBL_Lexer.EOF;
 
-      Ada.Text_IO.Put_Line(UBL_Lexer.UBL_Token'Image(Token));
+    --Ada.Text_IO.Put_Line(UBL_Lexer.UBL_Token'Image(Token));
 
-    end loop;
+  --end loop;
+
+    Syntax_Recognition.Parse_Prologue(File_P, Err, What_Syntax);
 
   end if; 
 
@@ -41,6 +63,10 @@ begin
     Ada.Text_IO.Put_Line(Error_Handler.Module_Classifier'Image(Err.In_Module));
     Ada.Text_IO.Put_Line(Error_Handler.Function_Classifier'Image(Err.In_Function));
     Ada.Text_IO.Put_Line(Error_Handler.Error_Classifier'Image(Err.Error_Code));
+
+  else
+
+    Ada.Text_IO.Put_Line(Input_Handler.Invoice_Syntax_Type'Image(What_Syntax));
 
   end if;
   
