@@ -34,6 +34,10 @@ procedure Append_Character
 
   with Global => null;
 
+function To_String(T : in Text) return String
+
+  with Global => null; 
+
 -- return content, no scheme_id
 function Get_BT_24( Invoice : in Electronic_Invoice_Model )
   return Text

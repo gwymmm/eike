@@ -65,6 +65,8 @@ procedure Parse_BT_24
 
   with
     Global => null;
+
+
 --==============================================================================
 
 procedure Parse_UBL_Invoice
@@ -161,7 +163,9 @@ begin
       if Error_Log.Error_Occurred then
         Next_State := Error_State;
       else
-        Next_State := Post_Customization_ID;
+        Next_State := End_State;
+        -- TODO continue
+        --Next_State := Post_Customization_ID;
       end if;
 
     when others =>
@@ -185,7 +189,46 @@ procedure Parse_BT_24
     Error_Log : in out Error_Handler.Error_Descriptor;
     Invoice : in out EN_16931.Electronic_Invoice_Model )
 is
+
+  Element_Content : EN_16931.Text;
+
+  This_Function : constant Error_Handler.Function_Classifier
+    := Error_Handler.Parse_BT_24;
+
+  Element_End : constant String := "CustomizationID";
+
+  Sequence_Confirmed : Boolean;
+  Tag_End_Confirmed : Boolean;
+
 begin
+
+  Input_Handler.Parse_Text(Input, Error_Log, Error_Handler.UBL_Parser,
+    This_Function, Element_Content);
+
+  if Error_Log.Error_Occurred then
+    return;
+  else
+    EN_16931.Set_BT_24(Invoice, Element_Content);
+  end if;
+
+-- TODO make 'confirm end tag' procedure ***************************************
+  Input_Handler.Skip_Namespace_In_End_Tag(Input, Error_Log,
+    Error_Handler.UBL_Parser, This_Function);
+
+  if Error_Log.Error_Occurred then
+    return;
+  end if;
+
+  Input_Handler.Expect_Character_Sequence(Element_End, Input,
+    Error_Handler.UBL_Parser, This_Function, Error_Log, Sequence_Confirmed);
+
+  if not Sequence_Confirmed then
+    return;
+  end if;
+
+  Input_Handler.Expect_Tag_End(Input, Error_Handler.UBL_Lexer,
+    This_Function, Error_Log, Tag_End_Confirmed);
+-- TODO make 'confirm end tag' procedure ***************************************
 
 end Parse_BT_24;
 

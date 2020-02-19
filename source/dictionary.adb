@@ -16,46 +16,31 @@
 
 with Ada.Strings.Unbounded;
 
-package body EN_16931 is
-pragma SPARK_Mode( Off );
+package body Dictionary is
 
-procedure Append_Character
-  ( T : in out Text;
-    Character_To_Append : in Character)
+subtype UTF_8_Text is Ada.Strings.Unbounded.Unbounded_String;
+
+type Look_Up_Table is array (Phrases) of UTF_8_Text;
+
+Phrase_Mapping : Look_Up_Table := 
+  ( others => Ada.Strings.Unbounded.To_Unbounded_String("XXX") );
+
+function Look_Up(Phrase : Phrases) return UTF_8_String
 is
 begin
+  return Ada.Strings.Unbounded.To_String(Phrase_Mapping(Phrase));
+end Look_Up;
 
-  Ada.Strings.Unbounded.Append(
-    Ada.Strings.Unbounded.Unbounded_String(T), Character_To_Append);
-
-end Append_Character;
-
-
-function To_String(T : in Text) return String
+procedure Initialize_With_Default_Language
 is
-begin
-  return Ada.Strings.Unbounded.To_String(
-            Ada.Strings.Unbounded.Unbounded_String(T) );
-end To_String;
-
-
-procedure Set_BT_24
-  ( Invoice : in out Electronic_Invoice_Model;
-    New_Content : in Text )
-is
+  use Ada.Strings.Unbounded;
 begin
 
-  Invoice.BG_2.BT_24.Content := New_Content;
+  Phrase_Mapping(Refresh) := To_Unbounded_String("Aktualisieren");
+  Phrase_Mapping(Export) := To_Unbounded_String("Exportieren");
+  Phrase_Mapping(Status_Report) := To_Unbounded_String("Status Report");
+  Phrase_Mapping(Content) := To_Unbounded_String("Inhalt");
 
-end Set_BT_24;
+end Initialize_With_Default_Language;
 
-
-function Get_BT_24( Invoice : in Electronic_Invoice_Model ) return Text
-is
-begin
-
-  return Invoice.BG_2.BT_24.Content;
-
-end Get_BT_24;
-
-end EN_16931;
+end Dictionary;

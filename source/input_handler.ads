@@ -16,6 +16,7 @@
 
 with File_Handler;
 with Error_Handler;
+with EN_16931;
 
 package Input_Handler is
 pragma SPARK_Mode( On );
@@ -66,6 +67,29 @@ procedure Expect_Tag_End
     In_Function : Error_Handler.Function_Classifier;
     Error_Log : in out Error_Handler.Error_Descriptor;
     Tag_End_Confirmed : out Boolean )
+
+  with
+    Global => null;
+
+-- read until '<'
+procedure Parse_Text
+
+  ( Input : in File_Handler.File_Descriptor;
+    Error_Log : in out Error_Handler.Error_Descriptor;
+    In_Module : Error_Handler.Module_Classifier;
+    In_Function : Error_Handler.Function_Classifier;
+    Text_Content : out EN_16931.Text )
+
+  with
+    Global => null;
+
+
+procedure Skip_Namespace_In_End_Tag
+
+  ( Input : in File_Handler.File_Descriptor;
+    Error_Log : in out Error_Handler.Error_Descriptor;
+    In_Module : Error_Handler.Module_Classifier;
+    In_Function : Error_Handler.Function_Classifier )
 
   with
     Global => null;

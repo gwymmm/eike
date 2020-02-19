@@ -16,10 +16,12 @@
 
 with File_Handler;
 with Error_Handler;
-with UBL_Lexer;
+--with UBL_Lexer;
 with Ada.Text_IO;
 with Input_Handler;
 with Syntax_Recognition;
+with UBL_Parser;
+with EN_16931;
 
 procedure Main is
 pragma SPARK_Mode( On );
@@ -35,10 +37,12 @@ pragma SPARK_Mode( On );
   --use type UBL_Lexer.UBL_Token;
 
   What_Syntax : Input_Handler.Invoice_Syntax_Type;
+
+  Invoice : EN_16931.Electronic_Invoice_Model;
  
 begin
 
-  File_Handler.Open_File_For_Reading("test.xml", File_P, Check);
+  File_Handler.Open_File_For_Reading("invoice.xml", File_P, Check);
 
   if Check then
 
@@ -64,9 +68,28 @@ begin
     Ada.Text_IO.Put_Line(Error_Handler.Function_Classifier'Image(Err.In_Function));
     Ada.Text_IO.Put_Line(Error_Handler.Error_Classifier'Image(Err.Error_Code));
 
+    File_Handler.Close_File(File_P, Check);
+    return;
+
   else
 
     Ada.Text_IO.Put_Line(Input_Handler.Invoice_Syntax_Type'Image(What_Syntax));
+
+  end if;
+
+  UBL_Parser.Parse_UBL_Invoice(File_P, Err, Input_Handler.UBL_Invoice, Invoice);
+
+  if Err.Error_Occurred then
+
+    Ada.Text_IO.Put_Line("Error:");
+    Ada.Text_IO.Put_Line(Positive'Image(Err.In_Line));
+    Ada.Text_IO.Put_Line(Error_Handler.Module_Classifier'Image(Err.In_Module));
+    Ada.Text_IO.Put_Line(Error_Handler.Function_Classifier'Image(Err.In_Function));
+    Ada.Text_IO.Put_Line(Error_Handler.Error_Classifier'Image(Err.Error_Code));
+
+  else
+
+    Ada.Text_IO.Put_Line(EN_16931.To_String(EN_16931.Get_BT_24(Invoice)));
 
   end if;
   

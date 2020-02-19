@@ -69,7 +69,7 @@ type Function_Classifier is
     Evaluate_Skip_Namespace_Declarations_2,
     
 -- Parser
-    UBL_Invoice_State
+    UBL_Invoice_State, Parse_BT_24
  );
 
 
@@ -79,7 +79,7 @@ type Error_Classifier is
     Inconsistent_Tag_Type_Bug, No_End_Tag_For_Leaf_XML_Element_Expected,
 
 -- Parser
-    Unexpected_Token
+    Unexpected_Token, Text_Content_Expected, Namespace_Expected
  );
 
 type Error_Descriptor is

@@ -221,4 +221,116 @@ begin
 
 end Expect_Tag_End;
 
+
+-- read until '<'
+procedure Parse_Text
+
+  ( Input : in File_Handler.File_Descriptor;
+    Error_Log : in out Error_Handler.Error_Descriptor;
+    In_Module : Error_Handler.Module_Classifier;
+    In_Function : Error_Handler.Function_Classifier;
+    Text_Content : out EN_16931.Text )
+is
+
+  Character_Read : Boolean;
+  Current_Character : Character;
+  Is_End_Of_File : Boolean;
+
+begin
+
+  loop
+
+    Next_Character(Input, Error_Log, Is_End_Of_File, Current_Character);
+
+    Discard_EOF_And_Error(Error_Log, Is_End_Of_File, In_Module,
+      In_Function, Character_Read);
+
+    if not Character_Read then
+    -- TODO is set error necessary?
+        Error_Handler.Set_Error
+          ( Error_Log => Error_Log,
+            In_Module => In_Module,
+            In_Function => In_Function,
+            What => Error_Handler.Text_Content_Expected );
+
+      return;
+
+    end if;
+
+    case Current_Character is
+
+      when '<' =>
+
+      -- TODO check, if Text is empty
+
+        return;
+
+      when others =>
+
+        EN_16931.Append_Character(Text_Content, Current_Character);
+
+    end case;
+
+  end loop;
+
+end Parse_Text;
+
+
+procedure Skip_Namespace_In_End_Tag
+
+  ( Input : in File_Handler.File_Descriptor;
+    Error_Log : in out Error_Handler.Error_Descriptor;
+    In_Module : Error_Handler.Module_Classifier;
+    In_Function : Error_Handler.Function_Classifier )
+is
+
+  Sequence_Confirmed : Boolean;
+  Character_Read : Boolean;
+  Current_Character : Character;
+  Is_End_Of_File : Boolean;
+
+begin
+
+  Expect_Character_Sequence("/", Input, In_Module, In_Function, 
+    Error_Log, Sequence_Confirmed);
+
+  if not Sequence_Confirmed then
+    return;
+  end if;
+
+  loop
+
+    Next_Character(Input, Error_Log, Is_End_Of_File, Current_Character);
+
+    Discard_EOF_And_Error(Error_Log, Is_End_Of_File, In_Module,
+      In_Function, Character_Read);
+
+    if not Character_Read then
+      return;
+    end if;
+
+    case Current_Character is
+
+      when ':' =>
+
+        return;
+
+      when 'A' .. 'Z' | 'a' .. 'z' =>
+
+        null;
+
+      when others =>
+
+        Error_Handler.Set_Error
+          ( Error_Log => Error_Log,
+            In_Module => In_Module,
+            In_Function => In_Function,
+            What => Error_Handler.Namespace_Expected );
+
+    end case;
+
+  end loop;
+
+end Skip_Namespace_In_End_Tag;
+
 end Input_Handler;

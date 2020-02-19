@@ -1,0 +1,22 @@
+-- Skip whitespaces until '>' --
+
+skip
+  := ' ' skip
+  or '>'
+
+
+-- Read text until '<' --
+
+read
+  := '<'
+  or (char, not '<') read
+
+
+-- Skip namespace in end tag --
+
+skip
+  := '/' skip-ns
+
+skip-ns
+  := (alpha) skip-ns
+  or ':'

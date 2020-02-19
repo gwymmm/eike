@@ -14,48 +14,38 @@
 -- You should have received a copy of the GNU General Public License
 -- along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-with Ada.Strings.Unbounded;
+with GTK.Widget;
+with GTK.Main;
+with GTK.File_Chooser_Button;
+with Ada.Text_IO;
 
-package body EN_16931 is
-pragma SPARK_Mode( Off );
+package body Eike_GUI is
 
-procedure Append_Character
-  ( T : in out Text;
-    Character_To_Append : in Character)
+procedure Create_Main_Window_Layout
+is
+begin
+  null;
+end Create_Main_Window_Layout;
+
+procedure Exit_Main_Callback
+   (Top_Level_Window : access GTK.Widget.GTK_Widget_Record'Class)
 is
 begin
 
-  Ada.Strings.Unbounded.Append(
-    Ada.Strings.Unbounded.Unbounded_String(T), Character_To_Append);
+   GTK.Widget.Destroy(Top_Level_Window);
+   GTK.Main.Main_Quit;
 
-end Append_Character;
+end Exit_Main_Callback;
 
 
-function To_String(T : in Text) return String
-is
+procedure Input_File_Chooser_Callback(Self : access 
+  GTK.File_Chooser_Button.GTK_File_Chooser_Button_Record'Class) is
+
 begin
-  return Ada.Strings.Unbounded.To_String(
-            Ada.Strings.Unbounded.Unbounded_String(T) );
-end To_String;
+  ada.text_io.put_line("FC-BUTTON: File selection changed");
+  ada.text_io.put_line(gtk.file_chooser_button.get_filename(self));
+  my_glob := my_glob + 1;
+  ada.text_io.put_line(natural'image(my_glob));
+end Input_File_Chooser_Callback;
 
-
-procedure Set_BT_24
-  ( Invoice : in out Electronic_Invoice_Model;
-    New_Content : in Text )
-is
-begin
-
-  Invoice.BG_2.BT_24.Content := New_Content;
-
-end Set_BT_24;
-
-
-function Get_BT_24( Invoice : in Electronic_Invoice_Model ) return Text
-is
-begin
-
-  return Invoice.BG_2.BT_24.Content;
-
-end Get_BT_24;
-
-end EN_16931;
+end Eike_GUI;
