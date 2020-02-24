@@ -21,7 +21,7 @@ subtype UTF_8_String is String;
 
 type Phrases is 
 -- top level window
-(Refresh, Export, Status_Report, Content);
+(Refresh, Export, Status_Report, Content, Choose_A_File);
 
 -- static values
 procedure Initialize_With_Default_Language;

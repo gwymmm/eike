@@ -21,7 +21,13 @@ with GTK.button;
 with GTK.combo_box_text;
 with GTK.file_chooser_button;
 
+with GTK.Text_Tag;
+with GTK.Text_Buffer;
+with GTK.Label;
+
 package Eike_GUI is
+
+subtype UTF_8_String is String;
 
 -- temp var
 my_glob : natural := 0;
@@ -30,17 +36,19 @@ my_glob : natural := 0;
 Main_Window : GTK.Window.GTK_Window := null;
 
 -- fixed parts
-Top_Level_Vbox : GTK.Box.GTK_Box;
-First_Hbox : GTK.Box.GTK_Box;
-Second_Hbox : GTK.Box.GTK_Box;
-Refresh_Button : GTK.Button.GTK_Button;
-Export_Button : GTK.Button.GTK_Button;
-CIUS_Chooser : GTK.Combo_Box_Text.GTK_Combo_Box_Text;
-Input_File_Chooser : GTK.File_Chooser_Button.GTK_File_Chooser_Button;
+Font_Tag : GTK.Text_Tag.GTK_Text_Tag;
 
 -- variable parts TODO
+Status_Label : GTK.Label.GTK_Label;
+Text_Output_Buffer : GTK.Text_Buffer.GTK_Text_Buffer;
 
 procedure Create_Main_Window_Layout;
+
+procedure Clear_Text_Output_Buffer;
+
+procedure Show_Success(Message : in UTF_8_String);
+
+procedure Show_Failure(Message : in UTF_8_String);
 
 -- signal handler
 procedure Exit_Main_Callback

@@ -195,10 +195,7 @@ is
   This_Function : constant Error_Handler.Function_Classifier
     := Error_Handler.Parse_BT_24;
 
-  Element_End : constant String := "CustomizationID";
-
-  Sequence_Confirmed : Boolean;
-  Tag_End_Confirmed : Boolean;
+  End_Element_Name : constant String := "CustomizationID";
 
 begin
 
@@ -211,24 +208,8 @@ begin
     EN_16931.Set_BT_24(Invoice, Element_Content);
   end if;
 
--- TODO make 'confirm end tag' procedure ***************************************
-  Input_Handler.Skip_Namespace_In_End_Tag(Input, Error_Log,
-    Error_Handler.UBL_Parser, This_Function);
-
-  if Error_Log.Error_Occurred then
-    return;
-  end if;
-
-  Input_Handler.Expect_Character_Sequence(Element_End, Input,
-    Error_Handler.UBL_Parser, This_Function, Error_Log, Sequence_Confirmed);
-
-  if not Sequence_Confirmed then
-    return;
-  end if;
-
-  Input_Handler.Expect_Tag_End(Input, Error_Handler.UBL_Lexer,
-    This_Function, Error_Log, Tag_End_Confirmed);
--- TODO make 'confirm end tag' procedure ***************************************
+  Input_Handler.Confirm_End_Tag(End_Element_Name, Input,
+    Error_Handler.UBL_Parser, This_Function, Error_Log);
 
 end Parse_BT_24;
 

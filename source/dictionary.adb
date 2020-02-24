@@ -40,6 +40,7 @@ begin
   Phrase_Mapping(Export) := To_Unbounded_String("Exportieren");
   Phrase_Mapping(Status_Report) := To_Unbounded_String("Status Report");
   Phrase_Mapping(Content) := To_Unbounded_String("Inhalt");
+  Phrase_Mapping(Choose_A_File) := To_Unbounded_String("Datei auswählen");
 
 end Initialize_With_Default_Language;
 

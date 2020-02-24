@@ -333,4 +333,38 @@ begin
 
 end Skip_Namespace_In_End_Tag;
 
+
+procedure Confirm_End_Tag
+
+  ( Element_Name : in String;
+    Input : in File_Handler.File_Descriptor;
+    In_Module : Error_Handler.Module_Classifier;
+    In_Function : Error_Handler.Function_Classifier;
+    Error_Log : in out Error_Handler.Error_Descriptor )
+is
+
+  Sequence_Confirmed : Boolean;
+  Tag_End_Confirmed : Boolean;
+
+begin
+
+  Input_Handler.Skip_Namespace_In_End_Tag(Input, Error_Log,
+    In_Module, In_Function);
+
+  if Error_Log.Error_Occurred then
+    return;
+  end if;
+
+  Input_Handler.Expect_Character_Sequence(Element_Name, Input,
+    In_Module, In_Function, Error_Log, Sequence_Confirmed);
+
+  if not Sequence_Confirmed then
+    return;
+  end if;
+
+  Input_Handler.Expect_Tag_End(Input, In_Module,
+    In_Function, Error_Log, Tag_End_Confirmed);
+
+end Confirm_End_Tag;
+
 end Input_Handler;

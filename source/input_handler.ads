@@ -94,4 +94,16 @@ procedure Skip_Namespace_In_End_Tag
   with
     Global => null;
 
+
+procedure Confirm_End_Tag
+
+  ( Element_Name : in String;
+    Input : in File_Handler.File_Descriptor;
+    In_Module : Error_Handler.Module_Classifier;
+    In_Function : Error_Handler.Function_Classifier;
+    Error_Log : in out Error_Handler.Error_Descriptor )
+
+  with
+    Global => null;
+
 end Input_Handler;
