@@ -69,7 +69,9 @@ type Function_Classifier is
     Evaluate_Skip_Namespace_Declarations_2,
     
 -- Parser
-    UBL_Invoice_State, Parse_BT_24
+    UBL_Invoice_State, Parse_BT_24, Post_Customization_ID_State, Parse_BT_23,
+
+    Parse_BT_1
  );
 
 

@@ -50,6 +50,30 @@ procedure Set_BT_24
 
   with Global => null;
 
+-- TODO correct types
+function Get_BT_23( Invoice : in Electronic_Invoice_Model )
+  return Text
+
+  with Global => null;
+
+procedure Set_BT_23
+  ( Invoice : in out Electronic_Invoice_Model; 
+    New_Content : in Text )
+
+  with Global => null;
+
+
+function Get_BT_1( Invoice : in Electronic_Invoice_Model )
+  return Text
+
+  with Global => null;
+
+procedure Set_BT_1
+  ( Invoice : in out Electronic_Invoice_Model; 
+    New_Content : in Text )
+
+  with Global => null;
+
 private
 pragma SPARK_Mode( Off );
 
@@ -70,8 +94,10 @@ record
   BT_24 : Identifier_Type;
 end record;
 
+-- SEMANTIC MODEL DATASTRUCTURE
 type Electronic_Invoice_Model is
 record
+  BT_1 : Identifier_Type;
   BG_2 : BG_2_Record;
 end record;
 

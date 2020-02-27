@@ -24,7 +24,11 @@ pragma SPARK_Mode( On );
 
 type UBL_Parser_States is (
 
-  UBL_Invoice, Post_Customization_ID, Post_Description_Code,
+  UBL_Invoice, Post_Customization_ID, 
+
+  Post_Profile_ID, Post_ID, 
+
+  Post_Description_Code, --> last one
 
   Error_State, End_State );
 
@@ -56,6 +60,16 @@ procedure UBL_Invoice_State
   with
     Global => null;
 
+procedure Post_Customization_ID_State
+
+  ( Input : in File_Handler.File_Descriptor;
+    Error_Log : in out Error_Handler.Error_Descriptor;
+    Invoice : in out EN_16931.Electronic_Invoice_Model; 
+    Current_Token : in UBL_Lexer.Not_None_UBL_Token;
+    Next_State : out UBL_Parser_States )
+
+  with
+    Global => null;
 
 procedure Parse_BT_24
 
@@ -66,6 +80,23 @@ procedure Parse_BT_24
   with
     Global => null;
 
+procedure Parse_BT_23
+
+  ( Input : in File_Handler.File_Descriptor;
+    Error_Log : in out Error_Handler.Error_Descriptor;
+    Invoice : in out EN_16931.Electronic_Invoice_Model )
+
+  with
+    Global => null;
+
+procedure Parse_BT_1
+
+  ( Input : in File_Handler.File_Descriptor;
+    Error_Log : in out Error_Handler.Error_Descriptor;
+    Invoice : in out EN_16931.Electronic_Invoice_Model )
+
+  with
+    Global => null;
 
 --==============================================================================
 
@@ -129,8 +160,13 @@ begin
 
     when Post_Customization_ID =>
 
-      null;
+      Post_Customization_ID_State(Input, Error_Log, Invoice, Current_Token,
+        Next_State);
 
+    when Post_Profile_ID =>
+      Next_State := End_State;
+    when Post_ID =>
+      Next_State := End_State;
     when Post_Description_Code =>
 
       null;
@@ -163,9 +199,7 @@ begin
       if Error_Log.Error_Occurred then
         Next_State := Error_State;
       else
-        Next_State := End_State;
-        -- TODO continue
-        --Next_State := Post_Customization_ID;
+        Next_State := Post_Customization_ID;
       end if;
 
     when others =>
@@ -182,6 +216,61 @@ begin
 
 end UBL_Invoice_State;
 
+
+procedure Post_Customization_ID_State
+
+  ( Input : in File_Handler.File_Descriptor;
+    Error_Log : in out Error_Handler.Error_Descriptor;
+    Invoice : in out EN_16931.Electronic_Invoice_Model; 
+    Current_Token : in UBL_Lexer.Not_None_UBL_Token;
+    Next_State : out UBL_Parser_States )
+is
+
+  This_Function : constant Error_Handler.Function_Classifier
+    := Error_Handler.Post_Customization_ID_State;
+
+  Sequence_Confirmed : Boolean;
+
+begin
+
+  case Current_Token is
+
+    when UBL_Lexer.ProfileID =>
+
+      Parse_BT_23(Input, Error_Log, Invoice);
+
+      if Error_Log.Error_Occurred then
+        Next_State := Error_State;
+      else
+        Next_State := Post_Profile_ID;
+      end if;
+
+    when UBL_Lexer.ID_With_Optional_Attribute =>
+
+      Input_Handler.Expect_Character_Sequence(">", Input,
+        Error_Handler.UBL_Parser, This_Function, Error_Log, Sequence_Confirmed);
+
+      Parse_BT_1(Input, Error_Log, Invoice);
+
+      if Error_Log.Error_Occurred then
+        Next_State := Error_State;
+      else
+        Next_State := Post_ID;
+      end if;
+
+    when others =>
+
+      Next_State := Error_State;
+
+      Error_Handler.Set_Error
+        ( Error_Log => Error_Log,
+          In_Module => Error_Handler.UBL_Parser,
+          In_Function => This_Function,
+          What => Error_Handler.Unexpected_Token );
+
+  end case;
+
+end Post_Customization_ID_State;
 
 procedure Parse_BT_24
 
@@ -212,5 +301,67 @@ begin
     Error_Handler.UBL_Parser, This_Function, Error_Log);
 
 end Parse_BT_24;
+
+
+procedure Parse_BT_23
+
+  ( Input : in File_Handler.File_Descriptor;
+    Error_Log : in out Error_Handler.Error_Descriptor;
+    Invoice : in out EN_16931.Electronic_Invoice_Model )
+is
+
+  Element_Content : EN_16931.Text; --EN_16931.Text, ...
+
+  This_Function : constant Error_Handler.Function_Classifier
+    := Error_Handler.Parse_BT_23;
+
+  End_Element_Name : constant String :=  "ProfileID";
+
+begin
+
+  Input_Handler.Parse_Text(Input, Error_Log, Error_Handler.UBL_Parser,
+    This_Function, Element_Content);
+
+  if Error_Log.Error_Occurred then
+    return;
+  else
+    EN_16931.Set_BT_23(Invoice, Element_Content);
+  end if;
+
+  Input_Handler.Confirm_End_Tag(End_Element_Name, Input,
+    Error_Handler.UBL_Parser, This_Function, Error_Log);
+
+end Parse_BT_23;
+
+
+procedure Parse_BT_1
+
+  ( Input : in File_Handler.File_Descriptor;
+    Error_Log : in out Error_Handler.Error_Descriptor;
+    Invoice : in out EN_16931.Electronic_Invoice_Model )
+is
+
+  Element_Content : EN_16931.Text; --EN_16931.Text, ...
+
+  This_Function : constant Error_Handler.Function_Classifier
+    := Error_Handler.Parse_BT_1;
+
+  End_Element_Name : constant String := "ID";
+
+begin
+
+  Input_Handler.Parse_Text(Input, Error_Log, Error_Handler.UBL_Parser,
+    This_Function, Element_Content);
+
+  if Error_Log.Error_Occurred then
+    return;
+  else
+    EN_16931.Set_BT_1(Invoice, Element_Content);
+  end if;
+
+  Input_Handler.Confirm_End_Tag(End_Element_Name, Input,
+    Error_Handler.UBL_Parser, This_Function, Error_Log);
+
+end Parse_BT_1;
 
 end UBL_Parser;

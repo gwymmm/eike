@@ -152,9 +152,9 @@ begin
   GTK.Text_Tag_Table.Add(Tag_Table_For_Output, Font_Tag);
 
   Pango.Font.Set_Property(Font_Tag, GTK.Text_Tag.Font_Desc_Property,
-    Pango.Font.From_String("courier 14"));
-  Pango.Enums.Set_Property(Font_Tag, GTK.Text_Tag.Weight_Property,
-    Pango.Enums.Pango_Weight_Ultraheavy);
+    Pango.Font.From_String("courier 15"));
+  --Pango.Enums.Set_Property(Font_Tag, GTK.Text_Tag.Weight_Property,
+    --Pango.Enums.Pango_Weight_Heavy);
 
   --
   Text_Output_Buffer := GTK.Text_Buffer.GTK_Text_Buffer_New(
@@ -257,6 +257,45 @@ begin
 end Set_Line;
 
 
+procedure Show_Invoice(Invoice : in EN_16931.Electronic_Invoice_Model)
+is
+begin
+
+    Clear_Text_Output_Buffer;
+
+    Set_Line("## EN 16931 Rechnung ##");
+
+    Set_Line("");
+
+    Set_Line("BT-1 (Rechnungsnummer) : " &
+      EN_16931.To_String(EN_16931.Get_BT_1(Invoice)) );
+
+    Set_Line("");
+
+    Set_Line("-- BG-2 ( PROZESSSTEUERUNG ) --");
+
+    Set_Line("");
+
+    --Set_Line("BT-23 (Geschäftsprozesstyp) : " &
+     -- EN_16931.To_String(EN_16931.Get_BT_23(Invoice)) );
+    Set_Line("BT-24 (Spezifikationskennung) : " &
+      EN_16931.To_String(EN_16931.Get_BT_24(Invoice)) );
+
+end Show_Invoice;
+
+procedure Show_Error(Error_Log : in Error_Handler.Error_Descriptor)
+is
+begin
+
+    Clear_Text_Output_Buffer;
+
+    Set_Line("Fehler in Zeile " & Positive'Image(Error_Log.In_Line) & ": ");
+    Set_Line(Error_Handler.Module_Classifier'Image(Error_Log.In_Module) & "::"
+      & Error_Handler.Function_Classifier'Image(Error_Log.In_Function) & "::"
+      & Error_Handler.Error_Classifier'Image(Error_Log.Error_Code) );
+
+end Show_Error;
+
 procedure Parse_Invoice(File_Name : in UTF_8_String)
 is
 
@@ -282,22 +321,32 @@ begin
 
     Show_Failure("Syntax konnte nicht erkannt werden");
 
-    Clear_Text_Output_Buffer;
-
-    Set_Line("Error:");
-    Set_Line(Positive'Image(Error_Log.In_Line));
-    Set_Line(Error_Handler.Module_Classifier'Image(Error_Log.In_Module));
-    Set_Line(Error_Handler.Function_Classifier'Image(Error_Log.In_Function));
-    Set_Line(Error_Handler.Error_Classifier'Image(Error_Log.Error_Code));
+    Show_Error(Error_Log);
 
     File_Handler.Close_File(File_Pointer, Open_Successful);
     return;
 
+  end if;
+
+  UBL_Parser.Parse_UBL_Invoice(File_Pointer, Error_Log,
+    Input_Handler.UBL_Invoice, Invoice);
+
+  if Error_Log.Error_Occurred then
+
+    Show_Failure("Formatfehler");
+
+    Show_Error(Error_Log);
+
   else
 
-    Show_Success(Input_Handler.Invoice_Syntax_Type'Image(What_Syntax));
+    Show_Success("Einlesen erfolgreich, Syntax: " &
+      Input_Handler.Invoice_Syntax_Type'Image(What_Syntax));
+
+    Show_Invoice(Invoice);
 
   end if;
+  
+  File_Handler.Close_File(File_Pointer, Open_Successful);
 
 end Parse_Invoice;
 

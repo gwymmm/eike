@@ -96,7 +96,7 @@ Invoice / CreditNote:
                                         \
                                          ----> can be repeated, 
                                         /      so [0..n] for the (BT-21, BT-22) tuple,
-  Note => BT_22 [1..1] (T)             /       ! needs special handling ! TODO Description_Code_Seen
+  Note => BT_22 [1..1] (T)             /       ! description in EN 3-2 misleading !
 
   TaxPointDate => BT_7 [0..1] (D)
 
