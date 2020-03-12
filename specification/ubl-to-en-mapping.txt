@@ -66,6 +66,7 @@ Indentation is used for nested elements. Example:
   ContainerElement
 
     ElementA_in_ContainerElement
+
     ElementB_in_ContainerElement
 
 -- Invoice / CreditNote Issue --
@@ -78,7 +79,7 @@ subsequently in a single parser.
 
 ********************************************************************************
 ********************************************************************************
-Invoice / CreditNote:
+Invoice:                                                                       *CreditNote:
 
   CustomizationID => BT_24 [1..1] (I, no scheme ID)
 
@@ -88,15 +89,15 @@ Invoice / CreditNote:
 
   IssueDate => BT_2 [1..1] (D)
 
-  DueDate => BT_9 [0..1] (D)
+  DueDate => BT_9 [0..1] (D)                                                   *  PaymentMeans [0..1]
+                                                                               *
+                                                                               *    PaymentDueDate => BT_9 [0..1] (D)
 
-  InvoiceTypeCode => BT_3 [1..1] (C, invoice type code)
+  InvoiceTypeCode => BT_3 [1..1] (C, invoice type code)                        *  CreditNoteTypeCode => BT_3 [1..1] (C, invoice type code)
 
-  Note => BT_21 [0..1] (C, text code)  \
-                                        \
-                                         ----> can be repeated, 
-                                        /      so [0..n] for the (BT-21, BT-22) tuple,
-  Note => BT_22 [1..1] (T)             /       ! description in EN 3-2 misleading !
+  Note => BT_22 [0..n] (T, BT_21 (text code can be embedded 
+                                    in the text as #code# prefix)
+    -- ! description in EN 3-2 is misleading ! --
 
   TaxPointDate => BT_7 [0..1] (D)
 
@@ -107,3 +108,616 @@ Invoice / CreditNote:
   AccountingCost => BT_19 [0..1] (T)
 
   BuyerReference => BT_10 [0..1] (T)
+
+  InvoicePeriod => BG_14 [0..1]
+
+    StartDate => BT_73 [0..1] (D)
+
+    EndDate => BT_74 [0..1] (D)
+      -- ! StartDate and EndDate optional [0..1] in EN, but this is nonsense ! --
+
+    DescriptionCode => BT_8 [0..1] (C, UNTDID 2005)
+
+  OrderReference => ____ [0..1]
+
+    ID => BT_13 [0..1] (O)
+
+    SalesOrderID => BT_14 [0..1] (O)
+
+  Billing Reference -- prefix of InvoiceDocumentReference --
+
+    InvoiceDocumentReference => BG_3 [0..n]
+
+      ID => BT_25 [1..1] (O)
+
+      IssueDate => BT_26 [0..1] (D)
+
+  DespatchDocumentReference
+
+    ID => BT_16 [0..1] (O)
+
+  ReceiptDocumentReference
+
+    ID => BT_15 [0..1] (O)
+
+  OriginatorDocumentReference
+
+    ID => BT_17 [0..1] (O)
+
+  ContractDocumentReference
+
+    ID => BT_12 [0..1] (O)
+
+  AdditionalDocumentReference => BG_24 [0..n]
+
+  /*  ID => BT_18 [0..1] (I)
+
+        @schemeID => BT_18_1 [0..1] (S)
+
+      ID => BT_122 [1..1] (O)  */
+
+    !!! ID is mapped to two different BTs, no way to decide which one to take
+        in which case, NONSENSE !!!
+
+    WORKAROUND:
+
+    ID => BT_122 [1..1] (O)
+
+    DocumentTypeCode => ____ [1..1] (constant: '130')
+      -- according to xrechnung testsuite --
+
+    !!! BT_18 will not be used !!!
+
+    DocumentDescription => BT_123 [0..1] (T)
+
+    Attachment (prefix of EmbeddedDocumentBinaryObject / ExternalReference)
+
+      EmbeddedDocumentBinaryObject => BT_125 [0..1] (B, will not be held in memory)
+
+        @mimeCode => BT_125_1 [1..1] (S)
+
+        @filename => BT_125_2 [1..1] (S)
+
+      ExternalReference -- prefix of URI --
+
+        URI => BT_124 [0..1] (T)
+
+  ProjectReference -- prefix of ID --                                          *  AdditionalDocumentReference -- again?                       
+                                                                               *
+    ID => BT_11 [0..1] (O)                                                     *    ID [1..1] => BT_11 [0..1] (O)
+                                                                               *
+                                                                               *    DocumentTypeCode => ____ [1..1] (constant: '50')
+
+  AccountingSupplierParty => BG_4 [1..1]
+
+    Party [1..1]
+
+      EndpointID => BT_34 [0..1] (I)
+
+        @schemeID => BT_34_1 [1..1] (S)
+
+      PartyIdentification -- prefix of ID --
+
+     /*  ID => BT_29 [0..n] (I) 
+
+         ID => BT_90 [0..1] (I)
+
+          @schemeID => BT_29_1 [0..1] (S)  */
+
+    !! nonsense, workaround follows !!
+
+        ID => BT_29 / BT_90 [0..n] (I)
+
+          @schemeID => BT_29_1 [0..1] (S, ISO/IEC 6523)
+
+    !! if schemeID is 'SEPA' write to both BT_29 and BT_90, else write only to
+        BT_29 !!
+
+    !! BT_90 should have an extra attribute to distinguish seller and payee !!
+
+      PartyName [0..1]
+
+        Name => BT_28 [0..1] (T)
+
+      PostalAddress => BG_5 [1..1]
+
+        StreetName => BT_35 [0..1] (T)
+
+        AdditionalStreetName => BT_36 [0..1] (T)
+
+        CityName => BT_37 [0..1] (T)
+
+        PostalZone => BT_38 [0..1] (T)
+
+        CountrySubentity => BT_39 [0..1] (T)
+
+        AddressLine [0..1]
+
+       -- AddressLine is optional, but when AddressLine comes, also Line has to
+       -- come
+
+          Line [1..1] => BT_162 [0..1] (T)
+
+        Country [1..1]
+
+          IdentificationCode => BT_40 [1..1] (C, EN ISO 3166-1)
+
+      PartyTaxScheme [0..1]
+
+     /* CompanyID => BT_31 [0..1] (I)
+
+        CompanyID => BT_32 [0..1] (I) */
+
+      -- write to BT_31 if ID='VAT' else write to BT_32 --
+
+        CompanyID => BT_31 / BT_32 [0..1] (I)
+
+        TaxScheme [1..1]
+
+          ID => ____ ('VAT' or others)
+
+      PartyLegalEntity [1..1]
+
+        RegistrationName => BT_27 [1..1] (T)
+
+        CompanyID => BT_30 [0..1] (I)
+
+          @schemeID => BT_30_1 [0..1] (S)
+
+        CompanyLegalForm => BT_33 [0..1] (T)
+
+      Contact => BG_6 [0..1]
+
+        Name => BT_41 [0..1] (T)
+
+        Telephone => BT_42 [0..1] (T)
+
+        ElectronicMail => BT_43 [0..1] (T)
+
+  AccountingCustomerParty => BG_7 [1..1]
+
+    Party [1..1]
+
+      EndpointID => BT_49 [0..1] (I)
+
+        @schemeID => BT_49_1 [1..1] (S)
+
+      PartyIdentification [0..1]
+
+        ID => BT_46 [1..1] (I)
+
+          @schemeID => BT_46_1 [0..1] (S, ISO/IEC 6523)
+
+      PartyName [0..1]
+
+        -- mandatory field in UBL
+        Name [1..1] => BT_45 [0..1] (T)
+
+      PostalAddress => BG_8 [1..1]
+
+        StreetName => BT_50 [0..1] (T)
+
+        AdditionalStreetName => BT_51 [0..1] (T)
+
+        CityName => BT_52 [0..1] (T)
+
+        PostalZone => BT_53 [0..1] (T)
+
+        CountrySubentity => BT_54 [0..1] (T)
+
+        AddressLine [0..1]
+
+          -- mandatory in UBL
+          Line [1..1] => BT_163 [0..1] (T)
+
+        Country [1..1]
+
+          IdentificationCode => BT_55 [1..1] (C, EN ISO 3166-1)
+
+********************************************************************************
+
+      PartyTaxScheme [0..1]
+
+        -- single entry in PartyTaxScheme, so obligatory
+        CompanyID [1..1] => BT_48 [0..1]
+
+        TaxScheme [1..1]
+
+          ID => ____ [1..1] (constant 'VAT')
+
+      PartyLegalEntity [1..1]
+
+        RegistrationName => BT_44 [1..1] (T)
+
+        CompanyID => BT_47 [0..1] (I)
+
+          @schemeID => BT_47_1 (S, ISO/IEC 6523 )
+
+      Contact => BG_9 [0..1]
+
+        Name => BT_56 [0..1] (T)
+
+        Telephone => BT_57 [0..1] (T)
+
+        ElectronicMail => BT_58 [0..1] (T)
+
+********************************************************************************
+
+  PayeeParty => BG_10 [0..1]
+
+    PartyIdentification [0..1]
+
+      !! workaround like in AccountingSupplierParty !!
+
+        ID => BT_60 / BT_90 [0..1] (I)
+
+          @schemeID => BT_60_1 [0..1] (S, ISO/IEC 6523)
+
+      !! if schemeID is 'SEPA' write to both BT_60 and BT_90, else write only to
+          BT_60 !!
+
+    PartyName [1..1]
+
+      Name => BT_59 [1..1] (T)
+
+    PartyLegalEntity [0..1]
+
+      CompanyID => BT_61 [0..1] (I)
+
+        @schemeID =>  BT_61_1 [0..1] (S, ISO/IEC 6523)
+
+********************************************************************************
+
+  TaxRepresentativeParty => BG_11 [0..1]
+
+    PartyName [1..1]
+
+      Name => BT_62 [1..1] (T)
+
+    PostalAddress => BG_12 [1..1]
+
+      StreetName => BT_64 [0..1] (T)
+
+      AdditionalStreetName => BT_65 [0..1] (T)
+
+      CityName => BT_66 [0..1] (T)
+
+      PostalZone => BT_67 [0..1] (T)
+
+      CountrySubentity => BT_68 [0..1] (T)
+
+      AddressLine [0..1]
+
+        Line [1..1] => BT_164 [0..1] (T)
+
+      Country [1..1]
+
+        IdentificationCode => [1..1] (C, EN ISO 3166-1)
+
+    PartyTaxScheme [1..1]
+
+      CompanyID => BT_63 [1..1] (I)
+
+      TaxScheme [1..1]
+
+        ID => ____ [1..1] (constant 'VAT')
+
+********************************************************************************
+
+  Delivery => BG_13 [0..1]
+
+    ActualDeliveryDate => BT_72 [0..1] (D)
+
+    DeliveryLocation [0..1]
+
+      ID => BT_71 [0..1] (I)
+        @schemeID => BT_71_1 [0..1] (S, ISO/IEC 6523)
+
+      Address => BG_15 [0..1]
+
+        StreetName => BT_75 [0..1] (T)
+
+        AdditionalStreetName => BT_76 [0..1] (T)
+
+        CityName => BT_77 [0..1] (T)
+
+        PostalZone => BT_78 [0..1] (T)
+
+        CountrySubentity => BT_79 [0..1] (T)
+
+        AddressLine [0..1]
+
+          Line [1..1] => BT_165 [0..1] (T)
+
+        Country [1..1]
+
+          IdentificationCode => BT_80 [1..1] (C, EN ISO 3166-1)
+
+********************************************************************************
+
+    DeliveryParty [0..1]
+
+      PartyName [1..1]
+
+        Name [1..1] => BT_70 [0..1] (T)
+
+********************************************************************************
+
+  PaymentMeans => BG_16 [0..1]
+
+    PaymentMeansCode => BT_81 [1..1] (C, UNTDID 4461)
+
+      @Name => BT_82 [0..1] (T)
+
+    PaymentID => BT_83 [0..1] (T)
+
+    CardAccount => BG_18 [0..1]
+
+      PrimaryAccountNumberID => BT_87 [1..1] (T)
+
+      NetworkID => ____ [1..1] (use card Network identifier)
+
+      HolderName => BT_88 [0..1] (T)
+
+    /* PayeeFinancialAccount [0..1] => BG_17 [0..n] */ -- [0..1] => [0..n] ?? --
+
+      PayeeFinancialAccount => BG_17 [0..n]
+
+        ID => BT_84 [1..1] (I)
+
+        Name => BT_85 [0..1] (T)
+
+        FinancialInstitutionBranch [0..1]
+
+          ID [1..1] => BT_86 [0..1] (I)
+
+********************************************************************************
+
+    PaymentMandate => BG_19 [0..1]
+
+      ID => BT_89 [0..1] (I)
+
+      PayerFinancialAccount [0..1]
+
+        ID [1..1] => BT_91 [0..1] (I)
+
+********************************************************************************
+
+  PaymentTerms [0..1]
+
+    Note [1..1] => BT_20 [0..1] (T)
+
+********************************************************************************
+
+  -- write to BG_20 when ChargeIndicator (next element) is 'false' and to BG_21
+      when ChargeIndicator is 'true'
+  AllowanceCharge => BG_20 / BG_21 [0..n]
+
+    ChargeIndicator => ____ [1..1] ('true' / 'false')
+
+    -- 'BT_If_Allowance' / 'BT_If_Charge'
+
+    AllowanceChargeReasonCode => BT_98 / BT_105 [0..1] (C, UNTDID 5189 / UNTDID 7161)
+
+    AllowanceChargeReason => BT_97 / BT_104 [0..1] (T)
+
+    MultiplierFactorNumeric => BT_94 / BT_101 [0..1] (P)
+
+    Amount => BT_92 / BT_99 [1..1] (A)
+
+      @currencyID => ____ [1..1] (use content of BT-5)
+
+    BaseAmount => BT_93 / BT_100 [0..1] (A)
+
+      @currencyID => ____ [1..1] (use content of BT-5)
+
+    TaxCategory [1..1]
+
+      ID => BT_95 / BT_102 [1..1] (C, subset of UNTDID 5305)
+
+      Percent => BT_96 / BT_103 [0..1] (P)
+
+      TaxScheme [1..1]
+
+        ID => ____ [1..1] (constant 'VAT')
+
+********************************************************************************
+
+  TaxTotal [1..1]
+
+    -- write to BT-110 if BT-5 = BT-6, else write to BT_111
+    TaxAmount => BT_110 / BT_111 [0..1] (A)
+
+      @currencyID => ____ [1..1] (value of BT-5 or BT-6)
+
+    TaxSubtotal => BG_23 [1..n]
+
+      TaxableAmount => BT_116 [1..1] (A)
+
+        @currencyID => ____ (value of BT-5 or BT-6)
+
+      TaxAmount => BT_117 [1..1] (A)
+
+        @currencyID => ____ (value of BT-5 or BT-6)
+
+      TaxCategory [1..1]
+
+        ID => BT_118 [1..1] (C, subset of UNTDID 5305)
+
+        Percent => BT_119 [0..1] (P)
+
+        TaxExemptionReasonCode => BT_121 [0..1] (C, Connecting Europe Facility)
+
+        TaxExemptionReason => BT_120 [0..1] (T)
+
+        TaxScheme [1..1]
+
+          ID => ____ [1..1] (constant 'VAT')
+
+********************************************************************************
+
+  LegalMonetaryTotal => BG_22 [1..1]
+
+    LineExtensionAmount => BT_106 [1..1] (A)
+
+      @currencyID => ____ [1..1] (value of BT-5)
+
+    TaxExclusiveAmount => BT_109 [1..1] (A)
+
+      @currencyID => ____ [1..1] (value of BT-5)
+
+    TaxInclusiveAmount => BT_112 [1..1] (A)
+
+      @currencyID => ____ [1..1] (value of BT-5)
+
+    AllowanceTotalAmount => BT_107 [0..1] (A)
+
+      @currencyID => ____ [1..1] (value of BT-5)
+
+    ChargeTotalAmount => BT_108 [0..1] (A)
+
+      @currencyID => ____ [1..1] (value of BT-5)
+
+    PrepaidAmount => BT_113 [0..1] (A)
+
+      @currencyID => ____ [1..1] (value of BT-5)
+
+    PayableRoundingAmount => BT_114 [0..1] (A)
+
+      @currencyID => ____ [1..1] (value of BT-5)
+
+    PayableAmount => BT_115 [1..1] (A)
+
+      @currencyID => ____ [1..1] (value of BT-5)
+
+********************************************************************************
+
+  InvoiceLine => BG_25 [1..n]                                                  *  CreditNoteLine => BG_25 [1..n]
+
+    ID => BT_126 [1..1] (I)
+
+    Note => BT_127 [0..1] (T)
+
+    InvoicedQuantity => BT_129 [1..1] (Q)                                      *    CreditedQuantity => BT_129 [1..1] (Q)
+
+      @unitCode => BT_130 [1..1] (C, string only)
+
+    LineExtensionAmount => BT_131 [1..1] (A)
+
+      @currencyID => ____ [1..1] (value of BT-5)
+
+    AccountingCost => BT_133 [0..1] (T)
+
+    InvoicePeriod => BG_26 [0..1]
+
+      StartDate => BT_134 [1..1] (D)
+
+      EndDate => BT_135 [0..1] (D)
+
+    OrderLineReference [0..1]
+
+      LineID [1..1] => BT_132 [0..1] (O)
+
+    DocumentReference [0..1]
+
+      ID [1..1] => BT_128 [0..1] (I)
+
+        @schemeID => BT_128_1 [0..1] (S, UNTDID 1153)
+
+********************************************************************************
+
+    -- write to BG_27 when ChargeIndicator (next element) is 'false' and to BG_28
+        when ChargeIndicator is 'true'
+    AllowanceCharge => BG_27 / BG_28 [0..n]
+
+      ChargeIndicator => ____ [1..1] ('true' / 'false')
+
+      -- 'BT_If_Allowance' / 'BT_If_Charge'
+      AllowanceChargeReasonCode => BT_140 / BT_145 [0..1] (C, UNTDID 5189)
+
+      AllowanceChargeReason => BT_139 / BT_144 [0..1] (T)
+
+      MultiplierFactorNumeric => BT_138 / BT_143 [0..1] (P)
+
+      Amount => BT_136 / BT_141 [1..1] (A)
+
+        @currencyID => ____ [1..1] (value of BT-5)
+
+      BaseAmount => BT_137 / BT_142 [0..1] (A)
+
+        @currencyID => ____ [1..1] (value of BT-5)
+
+********************************************************************************
+
+    Item => BG_31 [1..1]
+
+      -- typo in EN 3-2: [0..n] should be [0..1]
+      Description => BT_154 [0..1] (T)
+
+      Name => BT_153 [1..1] (T)
+
+      BuyersItemIdentification [0..1]
+
+        ID [1..1] => BT_156 [0..1] (I)
+
+      SellersItemIdentification [0..1]
+
+        ID [1..1] => BT_155 [0..1] (I)
+
+      StandardItemIdentification [0..1]
+
+        ID [1..1] => BT_157 [0..1] (I)
+
+          @schemeID => BT_157_1 [1..1] (S, ISO/IEC 6523)
+
+      OriginCountry [0..1]
+
+        IdentificationCode [1..1] => BT_159 [0..1] (C, EN ISO 3166-1)
+
+      CommodityClassification [0..n]
+
+        ItemClassificationCode [0..1] => BT_158 [0..n] (I)
+
+          @listID => BT_158_1 [0..1] (S, UNTDID 7143)
+
+          @listVersionID => BT_158_2 [0..1] (S)
+
+      ClassifiedTaxCategory => BG_30 [1..1]
+
+        ID => BT_151 [1..1] (C, subset of UNTDID 5305)
+
+        Percent => BT_152 [0..1] (P)
+
+        TaxScheme [1..1]
+
+          ID => ____ [1..1] (constant 'VAT')
+
+      AdditionalItemProperty => BG_32 [0..n]
+
+        Name => BT_160 [1..1] (T)
+
+        Value => BT_161 [1..1] (T)
+
+********************************************************************************
+
+    Price => BG_29 [1..1]
+
+      PriceAmount => BT_146 [1..1] (U)
+
+        @currencyID => ____ [1..1] (value of BT-5)
+
+      BaseQuantity => BT_149 [0..1] (Q)
+
+        @unitCode => BT_150 [0..1] (C, assert BT_150 = BT_130)
+
+      AllowanceCharge [0..1]
+
+        ChargeIndicator => ____ [1..1] (constant 'false')
+
+        Amount => BT_147 [0..1] (U)
+
+          @currencyID => ____ [1..1] (value of BT-5)
+
+        BaseAmount => BT_148 [0..1] (U)
+
+          @currencyID => ____ [1..1] (value of BT-5)
