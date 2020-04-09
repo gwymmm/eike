@@ -1,0 +1,253 @@
+-- Electronic Invoicing Kit for EU (EIKE) - Tools for EN 16931 E-Invoices
+-- Copyright (C) 2020  Dmitrij Novikov
+--
+-- This program is free software: you can redistribute it and/or modify
+-- it under the terms of the GNU General Public License as published by
+-- the Free Software Foundation, either version 3 of the License, or
+-- (at your option) any later version.
+--
+-- This program is distributed in the hope that it will be useful,
+-- but WITHOUT ANY WARRANTY; without even the implied warranty of
+-- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+-- GNU General Public License for more details.
+--
+-- You should have received a copy of the GNU General Public License
+-- along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
+-- UBL invoice or credit note
+
+UBL_Invoice := 'CustomizationID' Post_CustomizationID
+
+
+Post_CustomizationID := 
+
+  'ProfileID' Post_ProfileID
+
+  'ID_With_Optional_Attribute' Post_ID  -- no attribute expected here
+
+
+Post_ProfileID := 'ID_With_Optional_Attribute' Post_ID  -- no attribute expected here
+
+
+Post_ID := 'IssueDate' Post_IssueDate
+
+
+Post_IssueDate :=
+
+  'DueDate' Post_DueDate  -- invoice only
+
+  'Begin_PaymentMeans' Post_Begin_PaymentMeans  -- credit note only
+
+  'InvoiceTypeCode' Post_Invoice_Or_CreditNoteTypeCode  -- invoice only
+
+  'CreditNoteTypeCode' Post_Invoice_Or_CreditNoteTypeCode  -- credit note only
+
+
+Post_DueDate := 'InvoiceTypeCode' Post_Invoice_Or_CreditNoteTypeCode
+
+
+Post_Begin_PaymentMeans := 'PaymentDueDate' Post_PaymentDueDate
+
+
+Post_PaymentDueDate := 'End_PaymentMeans' Post_End_PaymentMeans
+
+
+Post_End_PaymentMeans := 'CreditNoteTypeCode' Post_Invoice_Or_CreditNoteTypeCode
+
+
+Post_Invoice_Or_CreditNoteTypeCode :=
+
+  'Note' Post_Invoice_Or_CreditNoteTypeCode  -- read #code# prefix
+
+  'TaxPointDate' Post_TaxPointDate
+
+  'DocumentCurrencyCode' Post_DocumentCurrencyCode
+
+
+Post_TaxPointDate := 'DocumentCurrencyCode' Post_DocumentCurrencyCode
+
+
+Post_DocumentCurrencyCode := 
+
+  'TaxCurrencyCode' Post_TaxCurrencyCode
+
+  'AccountingCost' Post_AccountingCost
+
+  'BuyerReference' Post_BuyerReference
+
+  'Begin_InvoicePeriod' Post_Begin_InvoicePeriod
+
+  'Begin_OrderReference' Post_Begin_OrderReference
+
+  'Begin_BillingReference' Post_Begin_BillingReference
+
+  'Begin_DespatchDocumentReference' Post_Begin_DespatchDocumentReference
+
+  'Begin_ReceiptDocumentReference' Post_Begin_ReceiptDocumentReference
+
+  'Begin_OriginatorDocumentReference' Post_Begin_OriginatorDocumentReference
+
+  'Begin_ContractDocumentReference' Post_Begin_ContractDocumentReference
+
+  'Begin_AdditionalDocumentReference' Post_Begin_AdditionalDocumentReference  -- TODO remember credit note special case
+
+  'Begin_ProjectReference' Post_Begin_ProjectReference  -- invoice only
+
+  'Begin_AccountingSupplierParty' Post_Begin_AccountingSupplierParty
+
+
+Post_TaxCurrencyCode :=
+
+  'AccountingCost' Post_AccountingCost
+
+  'BuyerReference' Post_BuyerReference
+
+  'Begin_InvoicePeriod' Post_Begin_InvoicePeriod
+
+  'Begin_OrderReference' Post_Begin_OrderReference
+
+  'Begin_BillingReference' Post_Begin_BillingReference
+
+  'Begin_DespatchDocumentReference' Post_Begin_DespatchDocumentReference
+
+  'Begin_ReceiptDocumentReference' Post_Begin_ReceiptDocumentReference
+
+  'Begin_OriginatorDocumentReference' Post_Begin_OriginatorDocumentReference
+
+  'Begin_ContractDocumentReference' Post_Begin_ContractDocumentReference
+
+  'Begin_AdditionalDocumentReference' Post_Begin_AdditionalDocumentReference  -- TODO remember credit note special case
+
+  'Begin_ProjectReference' Post_Begin_ProjectReference  -- invoice only
+
+  'Begin_AccountingSupplierParty' Post_Begin_AccountingSupplierParty
+
+
+Post_AccountingCost :=
+
+  'BuyerReference' Post_BuyerReference
+
+  'Begin_InvoicePeriod' Post_Begin_InvoicePeriod
+
+  'Begin_OrderReference' Post_Begin_OrderReference
+
+  'Begin_BillingReference' Post_Begin_BillingReference
+
+  'Begin_DespatchDocumentReference' Post_Begin_DespatchDocumentReference
+
+  'Begin_ReceiptDocumentReference' Post_Begin_ReceiptDocumentReference
+
+  'Begin_OriginatorDocumentReference' Post_Begin_OriginatorDocumentReference
+
+  'Begin_ContractDocumentReference' Post_Begin_ContractDocumentReference
+
+  'Begin_AdditionalDocumentReference' Post_Begin_AdditionalDocumentReference  -- TODO remember credit note special case
+
+  'Begin_ProjectReference' Post_Begin_ProjectReference  -- invoice only
+
+  'Begin_AccountingSupplierParty' Post_Begin_AccountingSupplierParty
+
+
+Post_BuyerReference :=
+
+  'Begin_InvoicePeriod' Post_Begin_InvoicePeriod
+
+  'Begin_OrderReference' Post_Begin_OrderReference
+
+  'Begin_BillingReference' Post_Begin_BillingReference
+
+  'Begin_DespatchDocumentReference' Post_Begin_DespatchDocumentReference
+
+  'Begin_ReceiptDocumentReference' Post_Begin_ReceiptDocumentReference
+
+  'Begin_OriginatorDocumentReference' Post_Begin_OriginatorDocumentReference
+
+  'Begin_ContractDocumentReference' Post_Begin_ContractDocumentReference
+
+  'Begin_AdditionalDocumentReference' Post_Begin_AdditionalDocumentReference  -- TODO remember credit note special case
+
+  'Begin_ProjectReference' Post_Begin_ProjectReference  -- invoice only
+
+  'Begin_AccountingSupplierParty' Post_Begin_AccountingSupplierParty
+
+
+Post_Begin_InvoicePeriod := 
+
+  'StartDate' Post_StartDate_Of_InvoicePeriod
+
+  'EndDate' Post_EndDate_Of_InvoicePeriod
+
+  'DescriptionCode' Post_DescriptionCode
+
+  'End_InvoicePeriod' Post_End_InvoicePeriod
+
+
+Post_StartDate_Of_InvoicePeriod := 
+
+  'EndDate' Post_EndDate_Of_InvoicePeriod
+
+  'DescriptionCode' Post_DescriptionCode
+
+  'End_InvoicePeriod' Post_End_InvoicePeriod
+
+
+Post_EndDate_Of_InvoicePeriod :=
+
+  'DescriptionCode' Post_DescriptionCode
+
+  'End_InvoicePeriod' Post_End_InvoicePeriod 
+
+
+Post_DescriptionCode := 
+
+  'End_InvoicePeriod' Post_End_InvoicePeriod
+
+
+Post_End_InvoicePeriod :=
+
+  'Begin_OrderReference' Post_Begin_OrderReference
+
+  'Begin_BillingReference' Post_Begin_BillingReference
+
+  'Begin_DespatchDocumentReference' Post_Begin_DespatchDocumentReference
+
+  'Begin_ReceiptDocumentReference' Post_Begin_ReceiptDocumentReference
+
+  'Begin_OriginatorDocumentReference' Post_Begin_OriginatorDocumentReference
+
+  'Begin_AdditionalDocumentReference' Post_Begin_AdditionalDocumentReference
+
+  'Begin_ProjectReference' Post_Begin_ProjectReference  -- invoice only
+
+  'Begin_AccountingSupplierParty' Post_Begin_AccountingSupplierParty
+
+
+Post_Begin_OrderReference :=
+
+** **
+
+
+Post_End_OrderReference :=
+
+  'Begin_BillingReference' Post_Begin_BillingReference
+
+  'Begin_DespatchDocumentReference' Post_Begin_DespatchDocumentReference
+
+  'Begin_ReceiptDocumentReference' Post_Begin_ReceiptDocumentReference
+
+  'Begin_OriginatorDocumentReference' Post_Begin_OriginatorDocumentReference
+
+  'Begin_AdditionalDocumentReference' Post_Begin_AdditionalDocumentReference
+
+  'Begin_ProjectReference' Post_Begin_ProjectReference  -- invoice only
+
+  'Begin_AccountingSupplierParty' Post_Begin_AccountingSupplierParty
+
+
+
+
+
+
+
+
+END

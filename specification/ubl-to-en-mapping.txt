@@ -113,8 +113,7 @@ Invoice:                                                                       *
 
     StartDate => BT_73 [0..1] (D)
 
-    EndDate => BT_74 [0..1] (D)
-      -- ! StartDate and EndDate optional [0..1] in EN, but this is nonsense ! --
+    EndDate  => BT_74 [0..1] (D)
 
     DescriptionCode => BT_8 [0..1] (C, UNTDID 2005)
 
@@ -124,7 +123,7 @@ Invoice:                                                                       *
 
     SalesOrderID => BT_14 [0..1] (O)
 
-  Billing Reference -- prefix of InvoiceDocumentReference --
+  BillingReference [0..n]
 
     InvoiceDocumentReference => BG_3 [0..n]
 
@@ -132,19 +131,19 @@ Invoice:                                                                       *
 
       IssueDate => BT_26 [0..1] (D)
 
-  DespatchDocumentReference
+  DespatchDocumentReference [0..1]
 
     ID => BT_16 [0..1] (O)
 
-  ReceiptDocumentReference
+  ReceiptDocumentReference [0..1]
 
     ID => BT_15 [0..1] (O)
 
-  OriginatorDocumentReference
+  OriginatorDocumentReference [0..1]
 
     ID => BT_17 [0..1] (O)
 
-  ContractDocumentReference
+  ContractDocumentReference [0..1]
 
     ID => BT_12 [0..1] (O)
 
@@ -170,7 +169,7 @@ Invoice:                                                                       *
 
     DocumentDescription => BT_123 [0..1] (T)
 
-    Attachment (prefix of EmbeddedDocumentBinaryObject / ExternalReference)
+    Attachment [0..1]
 
       EmbeddedDocumentBinaryObject => BT_125 [0..1] (B, will not be held in memory)
 
@@ -178,11 +177,11 @@ Invoice:                                                                       *
 
         @filename => BT_125_2 [1..1] (S)
 
-      ExternalReference -- prefix of URI --
+      ExternalReference [0..1]
 
         URI => BT_124 [0..1] (T)
 
-  ProjectReference -- prefix of ID --                                          *  AdditionalDocumentReference -- again?                       
+  ProjectReference [0..1]                                                      *  AdditionalDocumentReference -- again?                       
                                                                                *
     ID => BT_11 [0..1] (O)                                                     *    ID [1..1] => BT_11 [0..1] (O)
                                                                                *
@@ -721,3 +720,6 @@ Invoice:                                                                       *
         BaseAmount => BT_148 [0..1] (U)
 
           @currencyID => ____ [1..1] (value of BT-5)
+
+
+END
